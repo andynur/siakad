@@ -71,11 +71,11 @@ class RefPresensi extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->setSource("ref_presensi");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->setSource("ref_presensi");
+    // }
 
     /**
      * Returns table name mapped in the model.

@@ -21,11 +21,11 @@ class RefSysProvinsi extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->hasMany('id', 'RefSysKabupaten', 'province_id', ['alias' => 'RefSysKabupaten']);
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->hasMany('id', 'RefSysKabupaten', 'province_id', ['alias' => 'RefSysKabupaten']);
+    // }
 
     /**
      * Returns table name mapped in the model.

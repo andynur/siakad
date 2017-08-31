@@ -84,11 +84,11 @@ class RefSemester extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->setSource("ref_semester");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->setSource("ref_semester");
+    // }
 
     /**
      * Returns table name mapped in the model.

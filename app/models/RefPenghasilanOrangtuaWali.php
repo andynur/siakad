@@ -64,11 +64,11 @@ class RefPenghasilanOrangtuaWali extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->setSource("ref_penghasilan_orangtua_wali");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->setSource("ref_penghasilan_orangtua_wali");
+    // }
 
     /**
      * Returns table name mapped in the model.

@@ -28,13 +28,13 @@ class RefSysKecamatan extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->setSource("ref_sys_kecamatan");
-        $this->hasMany('id', 'RefSysKelurahan', 'district_id', ['alias' => 'RefSysKelurahan']);
-        $this->belongsTo('regency_id', '\RefSysKabupaten', 'id', ['alias' => 'RefSysKabupaten']);
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->setSource("ref_sys_kecamatan");
+    //     $this->hasMany('id', 'RefSysKelurahan', 'district_id', ['alias' => 'RefSysKelurahan']);
+    //     $this->belongsTo('regency_id', '\RefSysKabupaten', 'id', ['alias' => 'RefSysKabupaten']);
+    // }
 
     /**
      * Returns table name mapped in the model.

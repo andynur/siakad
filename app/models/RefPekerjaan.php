@@ -50,11 +50,11 @@ class RefPekerjaan extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->setSource("ref_pekerjaan");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->setSource("ref_pekerjaan");
+    // }
 
     /**
      * Returns table name mapped in the model.

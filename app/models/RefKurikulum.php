@@ -85,11 +85,11 @@ class RefKurikulum extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->setSource("ref_kurikulum");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->setSource("ref_kurikulum");
+    // }
 
     /**
      * Returns table name mapped in the model.

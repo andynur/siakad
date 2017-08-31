@@ -71,10 +71,10 @@ class RefAkdMhsCuti extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    // }
 
     /**
      * Returns table name mapped in the model.

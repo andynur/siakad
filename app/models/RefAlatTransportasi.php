@@ -50,11 +50,11 @@ class RefAlatTransportasi extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->setSource("ref_alat_transportasi");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->setSource("ref_alat_transportasi");
+    // }
 
     /**
      * Returns table name mapped in the model.
