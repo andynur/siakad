@@ -36,11 +36,11 @@ class TesCrud extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->setSource("tes_crud");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->setSource("tes_crud");
+    // }
 
     /**
      * Returns table name mapped in the model.
