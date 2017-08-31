@@ -5,6 +5,7 @@ use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Mvc\Url;
 use Phalcon\Mvc\Model\Query\Builder;
+use Phalcon\Http\Request\File;
 
 class PesertaDidikController extends \Phalcon\Mvc\Controller
 {
@@ -105,14 +106,33 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
         $explode = explode('-', $get_session);
         $ps_id = $explode[1];
         $rombel_id = $_POST['rombel'];
+        $foto = 'woman-1.png'; // default
+        $path =  DOCUMENT_ROOT . 'img/mhs/';
+
+        if ($this->request->hasFiles() == true) {
+            foreach ($this->request->getUploadedFiles() as $file) {
+                $ext = explode('/', $file->getRealType()) ;
+                $nama_file = md5(uniqid(rand(), true)) . '.' . $ext[1];
+                
+                if ($this->imageCheck($file->getRealType())) {
+                    if ($file->moveTo($path.$nama_file)) {
+                        $foto = $nama_file;
+                    } else {                    
+                        die('gagal masuk bro!');
+                    }
+                }
+            }
+        } else {
+            die('gk masuk piye bro');
+        }
 
         $data->assign(array(
             'id_jenis' => 2,
             'nama' => $_POST['nama'],
             'id_ps' => $ps_id,
             'ps_kur' => 1,
-            'foto' => 'woman-1.png',
             'id_agama' => 1,
+            'foto' => $foto,
             'rombel_sekarang' => $rombel_id,
             'gol_darah' => $_POST['gol_darah'],
             'gender' => $_POST['gender'],
@@ -151,8 +171,8 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
             'alamat_ortu' => $_POST['alamat_ortu'],
             'soft_delete' => 0,
             'updater_id' => 0            
-        ));
-        
+        ));                              
+
         if ($data->save()) {
             $new_id = $data->getWriteConnection()->lastInsertId();
             $anggota = new RefRombelAnggota();
@@ -163,7 +183,7 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
                 'soft_delete' => 0,
                 'updater_id' => 0
             ]);
-            $anggota->save();
+            $anggota->save();            
 
             $this->title = 'Sukses';
             $this->text = 'Data berhasil di' . $message;
@@ -178,6 +198,18 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
         }         
     }   
     
+    private function imageCheck($extension)
+    {
+        $allowedTypes = [
+            'image/gif',
+            'image/jpg',
+            'image/png',
+            'image/jpeg'
+        ];
+
+        return in_array($extension, $allowedTypes);
+    }
+
     public function validation($validation, $column, $name) 
     {
         $validation->add($column, new PresenceOf([

@@ -1,3 +1,10 @@
+<style>
+    .bootstrap-filestyle label {
+        width: 9.3em;
+        font-size: 1.1em;
+    }
+</style>
+
 <section class="content-header">
     <h1>
         <button type="button" onclick="back({{id}})" class="btn bg-navy btn-flat"><i class="fa fa-arrow-circle-left"></i> &nbsp; Kembali</button>
@@ -19,7 +26,7 @@
                     <h3 class="box-title">Tambah Siswa Baru</h3>
                 </div>
 
-                <form method="post" class="edit_form" id="form_add">
+                <form method="post" class="edit_form" id="form_add" action="{{ url('pesertadidik/newSiswa') }}" >
                     <div class="box-body" style="height:auto;">
                         <div class="row">
 
@@ -114,11 +121,10 @@
                                     <div class="form-group">
                                         <label>Foto</label>
                                         <div style="background: #ddd; width:100%; align-text:center;">
-                                            <img src="img/user.png" alt="foto siswa" style="width: 100%">
+                                            <img src="img/user.png" alt="foto siswa" style="width: 100%; border-radius: 6px;" id="uploadPreview1" />
                                         </div>
-                                        <!-- /.col-lg-12 -->
                                     </div>
-                                    <button type="button" class="btn btn-danger" style="width: 100%;"><i class="fa fa-cloud-upload"></i>&nbsp; Upload Foto</button>
+                                    <input type="file" name="foto" id="uploadImage1" onchange="PreviewImage(1)">
                                 </div>
                             </div>
 
@@ -447,7 +453,7 @@
                             <label style="padding: 10px 0;">&nbsp; &nbsp; Tanda <span style="color:red">*</span> wajib diisi!</label>
                         </div>
                         <div class="col-md-3">
-                            <button id="frm_data" type="button" class="btn btn-lg btn-danger" onclick="save_data('#form_add', 'newSiswa')"><i class="fa fa-paper-plane"></i>&nbsp; Simpan Data</button>
+                            <button id="frm_data" type="submit" class="btn btn-lg btn-danger"><i class="fa fa-paper-plane"></i>&nbsp; Simpan Data</button>
                         </div>
                     </div>
                 </form>
@@ -457,25 +463,65 @@
 </section>
 <!-- /.content -->
 
+<script src="js/bootstrap-filestyle.min.js"></script>
+
 <script type="text/javascript">
+    $(function () {
+        // datepicker config
+        $('#tgl_lahir').datepicker({
+            format: 'yyyy-mm-dd',
+            startDate: `-50y`,
+            endDate: '+1d',
+        });
+        $('#tgl_masuk').datepicker({
+            format: 'yyyy-mm-dd',
+            startDate: '-8y',
+            endDate: '+1d',
+        });    
+
+        // filestyle config
+        $(":file").filestyle({
+            input: false,
+            buttonText: "Upload",
+            buttonName: "btn-danger",            
+            iconName: "fa fa-cloud-upload"
+        });
+
+    });
+
+    (function() {
+
+        $('#form_add').on('submit', function(e) {
+            var form = $(this);
+            var url = form.prop('action');
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                dataType:'json',
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(data){
+                    reload_page2('pesertadidik/addSiswa/{{id}}');
+                    new PNotify({
+                        title: data.title,
+                        text: data.text,
+                        type: data.type
+                    });
+                }
+            });
+
+            e.preventDefault();
+        });
+    })();
+
     // set back button
     function back(id) {
         var url_target = '{{ url("pesertadidik/kelas/") }}' + id;
         go_page(url_target);
     }
-
-    // datepicker config
-    $('#tgl_lahir').datepicker({
-        format: 'yyyy-mm-dd',
-        startDate: `-50y`,
-        endDate: '+1d',
-    });
-    $('#tgl_masuk').datepicker({
-        format: 'yyyy-mm-dd',
-        startDate: '-8y',
-        endDate: '+1d',
-    });    
-
     // autochange class
     $("#rombel").change(function(){
         rombel = $("#rombel").val();
@@ -559,22 +605,31 @@
         });
     });
 
-    function save_data(target, action) {
-        $.ajax({
-            method: "POST",
-            dataType: "json",
-            url: '{{ url("pesertadidik/' + action + '") }}',
-            data: $(target).serialize()
-        }).done(function (data) {
-            reload_page2('pesertadidik/addSiswa/{{id}}');
-            new PNotify({
-                title: data.title,
-                text: data.text,
-                type: data.type
-            });
-        });
+    // function save_data(target, action) {
+    //     $.ajax({
+    //         method: "POST",
+    //         dataType: "json",
+    //         url: '{{ url("pesertadidik/' + action + '") }}',
+    //         data: $('#form_add').serialize()
+    //     }).done(function (data) {
+    //         reload_page2('pesertadidik/addSiswa/{{id}}');
+    //         new PNotify({
+    //             title: data.title,
+    //             text: data.text,
+    //             type: data.type
+    //         });
+    //     });
 
-        return false;
-    }
+    //     return false;
+    // }
+
+    function PreviewImage(id) {
+        var oFReader = new FileReader();
+        oFReader.readAsDataURL(document.getElementById("uploadImage"+id).files[0]);
+
+        oFReader.onload = function (oFREvent) {
+            document.getElementById("uploadPreview"+id).src = oFREvent.target.result;
+        };
+    };
 
 </script>
