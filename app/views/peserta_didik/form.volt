@@ -9,10 +9,15 @@
     <h1>
         <button type="button" onclick="back({{id}})" class="btn bg-navy btn-flat"><i class="fa fa-arrow-circle-left"></i> &nbsp; Kembali</button>
     </h1>
+    {% for opt in rombel %}
+        {% if (opt.rombongan_belajar_id == id) %}
+            {% set data = [opt.nama_tingkat, opt.nama_rombel] %}
+        {% endif %}
+    {% endfor %}
     <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i>Kelas 1</a></li>
-        <li><a href="#">ADAM</a></li>
-        <li><a href="#">Data Siswa</a></li>
+        <li><a href="#"><i class="fa fa-dashboard"></i>{{ data[0] }}</a></li>
+        <li><a href="#">{{ data[1] }}</a></li>   
+        <li><a href="#">Data Murid</a></li>
         <li class="active">Tambah</li>
     </ol>
 </section>
@@ -23,16 +28,16 @@
         <div class="col-md-offset-2 col-md-8">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Tambah Siswa Baru</h3>
+                    <h3 class="box-title">Tambah Murid Baru</h3>
                 </div>
 
-                <form method="post" class="edit_form" id="form_add" action="{{ url('pesertadidik/newSiswa') }}" >
+                <form method="post" class="edit_form" id="form_add" action="{{ url('pesertadidik/newMurid') }}" >
                     <div class="box-body" style="height:auto;">
                         <div class="row">
 
                             <div class="col-lg-12">
                                 <div class="callout callout-info custom">
-                                    <h4><i class="fa fa-user"></i>&nbsp; Profil Siswa</h4>
+                                    <h4><i class="fa fa-user"></i>&nbsp; Profil Murid</h4>
                                 </div>
 
                                 <div class="col-lg-9">
@@ -60,7 +65,7 @@
                                         <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label>NIS</label>
-                                                <input type="text" name="nis" id="nis" placeholder="Nomor Induk Siswa" class="form-control" maxlength="10">
+                                                <input type="text" name="nis" id="nis" placeholder="Nomor Induk Murid" class="form-control" maxlength="10">
                                             </div>
                                         </div>
                                         <!-- /.col-lg-12 -->
@@ -120,11 +125,12 @@
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Foto</label>
-                                        <div style="background: #ddd; width:100%; align-text:center;">
-                                            <img src="img/user.png" alt="foto siswa" style="width: 100%; border-radius: 6px;" id="uploadPreview1" />
+                                        <div style="width:100%; align-text:center;">
+                                            <img src="img/user.png" alt="foto murid" style="width: 100%; border-radius: 6px;" id="uploadPreview1" />
                                         </div>
                                     </div>
                                     <input type="file" name="foto" id="uploadImage1" onchange="PreviewImage(1)">
+                                    <input type="hidden" name="foto_lama" value="woman-1.png">
                                 </div>
                             </div>
 
@@ -415,7 +421,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>No Telepon Rumah</label>
-                                        <input name="telpon" type="text" id="telpon" placeholder="Telepo Rumah" class="form-control">
+                                        <input name="telpon" type="text" id="telpon" placeholder="Telepon Rumah" class="form-control">
                                     </div>
                                 </div>
                                 <!-- /.col-lg-12 -->
@@ -504,7 +510,7 @@
                 cache: false,
                 processData: false,
                 success: function(data){
-                    reload_page2('pesertadidik/addSiswa/{{id}}');
+                    reload_page2('pesertadidik/addMurid/{{id}}');
                     new PNotify({
                         title: data.title,
                         text: data.text,
@@ -612,7 +618,7 @@
     //         url: '{{ url("pesertadidik/' + action + '") }}',
     //         data: $('#form_add').serialize()
     //     }).done(function (data) {
-    //         reload_page2('pesertadidik/addSiswa/{{id}}');
+    //         reload_page2('pesertadidik/addMurid/{{id}}');
     //         new PNotify({
     //             title: data.title,
     //             text: data.text,

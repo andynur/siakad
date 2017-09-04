@@ -2,11 +2,11 @@
     <h1>
         {{data[0].nama_tingkat}} - {{data[0].nama_rombel}}
         <small>Pengelolaan data kelas</small>
-    </h1>
+    </h1>    
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> {{data[0].nama_tingkat}}</a></li>
         <li><a href="#">{{data[0].nama_rombel}}</a></li>
-        <li class="active">Data Siswa</li>
+        <li class="active">Data Murid</li>
     </ol>
 </section>
 
@@ -16,13 +16,13 @@
         <div class="col-md-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">Data Siswa Per-Kelas </h3>
+                    <h3 class="box-title">Data Murid Per-Kelas </h3>
                 </div>
                 <div class="box-body">
                     <form class="form-horizontal">
                         <div class="form-group">
                             <div class="col-sm-4">
-                                <a href="#" onclick="go_page('pesertadidik/addSiswa/{{rombel_id}}')" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp; Tambah Data</a>
+                                <a href="#" onclick="go_page('pesertadidik/addMurid/{{rombel_id}}')" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp; Tambah Data</a>
                             </div>
 
                             <label for="semester" class="col-sm-2 control-label"><i class="fa fa-arrow-circle-o-right"></i> &nbsp; Semester/Kurikulum</label>
@@ -58,7 +58,7 @@
                             <tr>
                                 <th style="width: 10px">No</th>
                                 <th>Foto</th>
-                                <th style="width: 12em">Siswa</th>
+                                <th style="width: 12em">Murid</th>
                                 <th style="width: 14em">Orang Tua</th>
                                 <th style="width: 10em">Kontak</th>
                                 <th>Alamat</th>
@@ -67,11 +67,11 @@
                         </thead>
                         <tbody>
                             {% set no=1 %} {% for v in data %}
-                            <tr id="data_{{v.siswa_id}}" class="middle-row">
+                            <tr id="data_{{v.murid_id}}" class="middle-row">
                                 <td align="center">{{no}}</td>
-                                <td align="center"><img src="img/mhs/{{v.foto}}" alt="{{v.nama_siswa}}" style="height: 3em"></td>
+                                <td align="center"><img src="img/mhs/{{v.foto}}" alt="{{v.nama_murid}}" style="height: 3em"></td>
                                 <td>
-                                    <span style="font-weight: 600;">{{v.nama_siswa}}</span> <br/> 
+                                    <span style="font-weight: 600;">{{v.nama_murid}}</span> <br/> 
                                     <span class="label label-default">NIS</span> 
                                     <span class="label label-primary">{{v.nis}}</span>
                                     <span class="label label-default">NISN</span> 
@@ -91,9 +91,9 @@
                                 </td>
                                 <td>{{v.alamat}}</td>
                                 <td align="center">
-                                    <a class="btn btn-primary btn-xs btn-flat" data-toggle="modal" data-target="#myModal" onclick="show_modal('{{ v.siswa_id }}')"><i class="glyphicon glyphicon-edit"></i> Ubah &nbsp;</a>
+                                    <a class="btn btn-primary btn-xs btn-flat" onclick="edit_data('{{v.murid_id}}', '{{rombel_id}}')"><i class="glyphicon glyphicon-edit"></i> Ubah &nbsp;</a>
 
-                                    <a onclick="delete_data('{{v.siswa_id}}')" class="btn btn-danger btn-xs btn-flat"><i class="glyphicon glyphicon-trash"></i> Hapus</a>
+                                    <a onclick="delete_data('{{v.murid_id}}')" class="btn btn-danger btn-xs btn-flat"><i class="glyphicon glyphicon-trash"></i> Hapus</a>
                                 </td>
                             </tr>
                             {% set no=no+1 %} {% endfor %}
@@ -171,7 +171,7 @@
         
         var data_target = "";
 
-        var urel = '{{ url("pesertadidik/addSiswa/") }}' + id;
+        var urel = '{{ url("pesertadidik/addMurid/") }}' + id;
         go_page_data(urel, data_target);          
     }
 
@@ -209,8 +209,13 @@
         return false;
     }
 
+    function edit_data(id, rombel_id) {
+        var link = '{{ url("pesertadidik/editMurid/") }}' + id + '/' + rombel_id;
+        go_page(link);
+    }
+
     function delete_data(id) {
-        var url_target = '{{ url("jenjangpendidikan/deleteJenjang") }}/' + id;
+        var url_target = '{{ url("pesertadidik/deleteMurid") }}/' + id;
         (new PNotify({
             title: 'Pesan Konfirmasi',
             text: 'Apakah Anda Yakin menghapus data ini?',
@@ -232,7 +237,7 @@
                 dataType: "JSON",
                 url: url_target,
                 success: function (data) {
-                    reload_page2('jenjangpendidikan/index');
+                    reload_page2('pesertadidik/kelas/{{rombel_id}}');
                     new PNotify({
                         title: 'Sukses',
                         text: 'Data berhasil dihapus',
