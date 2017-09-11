@@ -56,6 +56,13 @@ class RefRombonganBelajar extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var string
+     * @Column(type="string", nullable=false)
+     */
+    public $Tipe;
+
+    /**
+     *
      * @var integer
      * @Column(type="integer", length=11, nullable=true)
      */
@@ -127,11 +134,11 @@ class RefRombonganBelajar extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    // public function initialize()
-    // {
-    //     $this->setSchema("siakad");
-    //     $this->setSource("ref_rombongan_belajar");
-    // }
+    public function initialize()
+    {
+        $this->setSchema("siakad");
+        $this->setSource("ref_rombongan_belajar");
+    }
 
     /**
      * Returns table name mapped in the model.

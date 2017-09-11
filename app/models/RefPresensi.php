@@ -17,7 +17,7 @@ class RefPresensi extends \Phalcon\Mvc\Model
      * @var integer
      * @Column(type="integer", length=11, nullable=false)
      */
-    public $Rombel_history_id;
+    public $Rombongan_belajar_id;
 
     /**
      *
@@ -52,6 +52,13 @@ class RefPresensi extends \Phalcon\Mvc\Model
      * @var string
      * @Column(type="string", nullable=false)
      */
+    public $Presensi;
+
+    /**
+     *
+     * @var string
+     * @Column(type="string", nullable=false)
+     */
     public $Status_email;
 
     /**
@@ -66,16 +73,16 @@ class RefPresensi extends \Phalcon\Mvc\Model
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Created_date;
+    public $Created_at;
 
     /**
      * Initialize method for model.
      */
-    // public function initialize()
-    // {
-    //     $this->setSchema("siakad");
-    //     $this->setSource("ref_presensi");
-    // }
+    public function initialize()
+    {
+        $this->setSchema("siakad");
+        $this->setSource("ref_presensi");
+    }
 
     /**
      * Returns table name mapped in the model.
