@@ -120,7 +120,7 @@
 .datepicker table tr td.disabled,
 .datepicker table tr td.disabled:hover {
   background: none;
-  color: #444;
+  color: #ccc;
   cursor: default;
 }
 .datepicker table tr td.today,
@@ -128,8 +128,8 @@
 .datepicker table tr td.today.disabled,
 .datepicker table tr td.today.disabled:hover {
   color: #000000;
-  background: rgba(0,0,0,0.2);
-  border-color: #ffb733;
+  background: #0066CC;
+  border-color: #003D7A;
 }
 .datepicker table tr td.today:hover,
 .datepicker table tr td.today:hover:hover,
@@ -229,8 +229,8 @@ fieldset[disabled] .datepicker table tr td.today.active,
 fieldset[disabled] .datepicker table tr td.today:hover.active,
 fieldset[disabled] .datepicker table tr td.today.disabled.active,
 fieldset[disabled] .datepicker table tr td.today.disabled:hover.active {
-  background: rgba(0,0,0,0.2);
-  border-color: #ffb733;
+  background: #06C;
+  border-color: #004F9F;
 }
 .datepicker table tr td.today:hover:hover {
   color: #000;
@@ -495,8 +495,8 @@ fieldset[disabled] .datepicker table tr td.selected.disabled:hover.active {
 .open .dropdown-toggle.datepicker table tr td.active.disabled,
 .open .dropdown-toggle.datepicker table tr td.active.disabled:hover {
   color: #ffffff;
-  background: rgba(0,0,0,0.5);
-  border-color: #285e8e;
+  background: #CC0000;
+  border-color: #930000;
 }
 .datepicker table tr td.active:active,
 .datepicker table tr td.active:hover:active,
