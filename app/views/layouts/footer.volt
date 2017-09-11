@@ -47,6 +47,7 @@
 
 	<!-- bootstrap datepicker -->
 	<script src="plugins/datepicker/bootstrap-datepicker.js"></script>
+	<script src="plugins/datepicker/locales/bootstrap-datepicker.id.js"></script>
 	<script src="plugins/timepicker/bootstrap-timepicker.min.js"></script>
 	<!-- SlimScroll -->
 	<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
