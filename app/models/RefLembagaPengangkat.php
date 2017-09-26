@@ -50,11 +50,11 @@ class RefLembagaPengangkat extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->setSource("ref_lembaga_pengangkat");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->setSource("ref_lembaga_pengangkat");
+    // }
 
     /**
      * Returns table name mapped in the model.

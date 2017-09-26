@@ -50,11 +50,11 @@ class RefStatusKepegawaian extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->setSource("ref_status_kepegawaian");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->setSource("ref_status_kepegawaian");
+    // }
 
     /**
      * Returns table name mapped in the model.

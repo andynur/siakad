@@ -57,11 +57,11 @@ class RefPangkatGolongan extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->setSource("ref_pangkat_golongan");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->setSource("ref_pangkat_golongan");
+    // }
 
     /**
      * Returns table name mapped in the model.

@@ -120,11 +120,11 @@ class RefJenisPtk extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->setSource("ref_jenis_ptk");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->setSource("ref_jenis_ptk");
+    // }
 
     /**
      * Returns table name mapped in the model.
