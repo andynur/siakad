@@ -509,6 +509,7 @@
         var url_target = '{{ url("pesertadidik/kelas/") }}' + id;
         go_page(url_target);
     }
+
     // autochange class
     $("#rombel").change(function(){                          
         rombel = $("#rombel").val();

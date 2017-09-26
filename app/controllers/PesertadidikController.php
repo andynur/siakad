@@ -146,7 +146,8 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
             "penghasilan" => $penghasilan,
             "transportasi" => $transportasi,
             "tinggal" => $tinggal,
-            "rombel_id" => $rombel_id
+            "rombel_id" => $rombel_id,
+            "back_link" => $_POST['back_link']
         ]);
         
         $this->view->pick('peserta_didik/form_edit');

@@ -69,7 +69,7 @@
                             {% set no=1 %} {% for v in data %}
                             <tr id="data_{{v.murid_id}}" class="middle-row">
                                 <td align="center">{{no}}</td>
-                                <td align="center"><img src="img/mhs/{{v.foto}}" alt="{{v.nama_murid}}" style="height: 3em"></td>
+                                <td align="center"><img src="img/mhs/{{v.foto}}" alt="{{v.nama_murid}}" style="height: 3em; border-radius: 100%;"></td>
                                 <td>
                                     <span style="font-weight: 600;">{{v.nama_murid}}</span> <br/> 
                                     <span class="label label-default">NIS</span> 
@@ -100,39 +100,6 @@
                         </tbody>
                     </table>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="myModal" role="dialog">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Ubah Data</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="form_edit">
-                                        <div class="form-group">
-                                            <label for="nama">Nama</label>
-                                            <input type="text" class="form-control" name="nama" id="edit_nama">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="jenjang_lembaga">Jenjang Lembaga</label>
-                                            <input type="text" class="form-control" name="jenjang_lembaga" id="edit_jenjang_lembaga">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="jenjang_orang">Jenjang Orang</label>
-                                            <input type="text" class="form-control" name="jenjang_orang" id="edit_jenjang_orang">
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal" id="btn_batal">Batal</button>
-                                    <button type="button" class="btn btn-primary" id="btn_edit">Simpan</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.Modal -->
                 </div>
                 <!-- /.box-body -->
             </div>
@@ -210,8 +177,11 @@
     }
 
     function edit_data(id, rombel_id) {
-        var link = '{{ url("pesertadidik/editMurid/") }}' + id + '/' + rombel_id;
-        go_page(link);
+        var url = '{{ url("pesertadidik/editMurid/") }}' + id + '/' + rombel_id;
+        var back_link = '{{ url("pesertadidik/kelas/") }}' + id;
+        var data = 'back_link='+back_link;
+
+        go_page_data(url, data);         
     }
 
     function delete_data(id) {
