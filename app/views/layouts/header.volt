@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SIAKAD SD Islam Al-Azhar 29 Semarang</title>
+  <title>SISKO SD Islam Al-Azhar BSB 29 Semarang</title>
   <!-- favicon  -->
   <link rel="icon" href="img/favicon.png" sizes="32x32" />
   <link rel="icon" href="img/favicon.png" sizes="192x192" />
@@ -55,7 +55,7 @@
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>SD</b>A</span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>SIAKAD</b> SD Al Azhar</span>
+          <span class="logo-lg"><b>SISKO</b> SD Al Azhar</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">

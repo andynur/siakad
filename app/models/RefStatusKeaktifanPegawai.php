@@ -1,86 +1,49 @@
 <?php
 
-class RefPresensi extends \Phalcon\Mvc\Model
+class RefStatusKeaktifanPegawai extends \Phalcon\Mvc\Model
 {
 
     /**
      *
      * @var integer
-     * @Primary
-     * @Identity
-     * @Column(type="integer", length=11, nullable=false)
+     * @Column(type="integer", length=2, nullable=false)
      */
-    public $Presensi_id;
+    public $Status_keaktifan_id;
 
     /**
      *
-     * @var integer
-     * @Column(type="integer", length=11, nullable=false)
+     * @var string
+     * @Column(type="string", length=30, nullable=false)
      */
-    public $Rombongan_belajar_id;
+    public $Nama;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Tanggal;
-
-    /**
-     *
-     * @var string
-     * @Column(type="string", nullable=true)
-     */
-    public $Waktu;
+    public $Create_date;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Tipe;
-
-    /**
-     *
-     * @var integer
-     * @Column(type="integer", length=11, nullable=false)
-     */
-    public $Peserta_didik_id;
+    public $Last_update;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Presensi;
+    public $Expired_date;
 
     /**
      *
      * @var string
      * @Column(type="string", nullable=false)
      */
-    public $Status_email;
-
-    /**
-     *
-     * @var string
-     * @Column(type="string", nullable=true)
-     */
-    public $Keterangan;
-
-    /**
-     *
-     * @var integer
-     * @Column(type="integer", length=11, nullable=false)
-     */
-    public $Created_by;
-
-    /**
-     *
-     * @var string
-     * @Column(type="string", nullable=false)
-     */
-    public $Created_at;
+    public $Last_sync;
 
     /**
      * Initialize method for model.
@@ -88,7 +51,7 @@ class RefPresensi extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->setSchema("siakad");
-        $this->setSource("ref_presensi");
+        $this->setSource("ref_status_keaktifan_pegawai");
     }
 
     /**
@@ -98,14 +61,14 @@ class RefPresensi extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'ref_presensi';
+        return 'ref_status_keaktifan_pegawai';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return RefPresensi[]|RefPresensi|\Phalcon\Mvc\Model\ResultSetInterface
+     * @return RefStatusKeaktifanPegawai[]|RefStatusKeaktifanPegawai|\Phalcon\Mvc\Model\ResultSetInterface
      */
     public static function find($parameters = null)
     {
@@ -116,7 +79,7 @@ class RefPresensi extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return RefPresensi|\Phalcon\Mvc\Model\ResultInterface
+     * @return RefStatusKeaktifanPegawai|\Phalcon\Mvc\Model\ResultInterface
      */
     public static function findFirst($parameters = null)
     {

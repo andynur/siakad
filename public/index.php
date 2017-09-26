@@ -30,6 +30,7 @@ try {
     include APP_PATH . '/config/loader.php';
     include APP_PATH . "/config/acl.php";
     include APP_PATH . "/library/predis/autoload.php";
+    include APP_PATH . "/library/phpmailer/PHPMailerAutoload.php";
     Predis\Autoloader::register();
 
     /**

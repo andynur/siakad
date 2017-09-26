@@ -26,6 +26,13 @@
                             <input type="text" class="form-control" name="nama" placeholder="Nama rombel">
                         </div>
                         <div class="form-group">
+                            <label for="nama">Tipe</label>
+                            <div class="radio">
+                                <label><input type="radio" name="tipe" value="umum">Umum</label> &nbsp; &nbsp;
+                                <label><input type="radio" name="tipe" value="ekskul"> Ekskul</label>
+                            </div>
+                        </div>                        
+                        <div class="form-group">
                             <label for="tingkat_pendidikan_id">Tingkat Pendidikan</label>
                             <select class="form-control" name="tingkat_pendidikan_id">
                                 <option value="">-- Pilih Tingkat --</option>
@@ -71,7 +78,8 @@
                             <tr>
                                 <th style="width: 10px">No</th>
                                 <th>Nama Rombel</th>
-                                <th>Tingkat Pendidikan</th>
+                                <th>Tingkat</th>
+                                <th>Tipe</th>
                                 <th>Semester</th>
                                 <th>Kurikulum</th>
                                 <th>Aksi</th>
@@ -83,6 +91,7 @@
                                 <td>{{no}}</td>
                                 <td>{{v.nama_rombel}}</td>
                                 <td>{{v.nama_tingkat}}</td>
+                                <td>{{v.tipe}}</td>
                                 <td>{{v.nama_semester}}</td>
                                 <td>{{v.nama_kurikulum}}</td>
                                 <td>
@@ -110,6 +119,13 @@
                                             <label for="nama">Nama Rombel</label>
                                             <input type="text" class="form-control" name="nama" placeholder="Nama rombel" id="edit_nama">
                                         </div>
+                                        <div class="form-group">
+                                            <label for="nama">Tipe</label>
+                                            <div class="radio">
+                                                <label><input type="radio" name="tipe" value="umum" id="tipe_umum">Umum</label> &nbsp; &nbsp;
+                                                <label><input type="radio" name="tipe" value="ekskul" id="tipe_ekskul"> Ekskul</label>
+                                            </div>
+                                        </div>                                         
                                         <div class="form-group">
                                             <label for="tingkat_pendidikan_id">Tingkat Pendidikan</label>
                                             <select class="form-control" name="tingkat_pendidikan_id" id="edit_tingkat">
@@ -179,11 +195,18 @@
 
     function show_modal(id) {
         var get_tingkat = $('#data_' + id + ' > td').eq(2).html();
-        var get_semester = $('#data_' + id + ' > td').eq(3).html();
-        var get_kurikulum = $('#data_' + id + ' > td').eq(4).html();
+        var get_tipe = $('#data_' + id + ' > td').eq(3).html();
+        var get_semester = $('#data_' + id + ' > td').eq(4).html();
+        var get_kurikulum = $('#data_' + id + ' > td').eq(5).html();
         var selected_tingkat = $('#edit_tingkat option:contains("'+get_tingkat+'")').attr('value');
         var selected_semester = $('#edit_semester option:contains("'+get_semester+'")').attr('value');
         var selected_kurikulum = $('#edit_kurikulum option:contains("'+get_kurikulum+'")').attr('value');
+
+        if (get_tipe == 'umum') {
+            $('#tipe_umum').prop('checked', true);
+        } else {
+            $('#tipe_ekskul').prop('checked', true);
+        }
 
         $('#edit_nama').val($('#data_' + id + ' > td').eq(1).html());        
         $('#edit_tingkat').val(selected_tingkat);

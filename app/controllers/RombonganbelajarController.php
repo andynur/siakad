@@ -30,7 +30,7 @@ class RombonganBelajarController extends \Phalcon\Mvc\Controller
                 ->join('RefSemester', 'r.semester_id = s.semester_id', 's')
                 ->join('RefKurikulum', 'r.kurikulum_id = k.kurikulum_id', 'k')
                 ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
-                ->columns(['r.rombongan_belajar_id', 'r.nama AS nama_rombel', 's.nama AS nama_semester', 't.nama AS nama_tingkat', 'k.nama_kurikulum'])
+                ->columns(['r.rombongan_belajar_id', 'r.nama AS nama_rombel', 'r.tipe', 's.nama AS nama_semester', 't.nama AS nama_tingkat', 'k.nama_kurikulum'])
                 ->orderBy('r.rombongan_belajar_id DESC')
                 ->groupBy('r.rombongan_belajar_id')
                 ->getQuery()
@@ -85,6 +85,7 @@ class RombonganBelajarController extends \Phalcon\Mvc\Controller
     {
         $data->assign(array(
             'nama' => $_POST['nama'],
+            'tipe' => $_POST['tipe'],
             'tingkat_pendidikan_id' => $_POST['tingkat_pendidikan_id'],
             'semester_id' => $_POST['semester_id'],
             'kurikulum_id' => $_POST['kurikulum_id'],

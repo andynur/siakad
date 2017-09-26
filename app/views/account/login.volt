@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
-  <title>SIAKAD SD Islam Al-Azhar 29 Semarang</title>
+  <title>SISKO SD Islam Al-Azhar BSB 29 Semarang</title>
   <!-- favicon  -->
   <link rel="icon" href="../img/favicon.png" sizes="32x32" />
   <link rel="icon" href="../img/favicon.png" sizes="192x192" />
@@ -28,7 +28,7 @@
           <img src="../img/logo.png" style="height: 6em;float: left; padding: 0 0.5em 0 1em;">
           <div style="float: left;padding: 1.5em 0 0 1em;">
             <h1 style="text-transform: uppercase;margin: 0;font-size: 2em;color: #0282c6;">
-              <b>SIAKAD SD Islam Al Azhar</b>
+              <b>SISKO SD Islam Al Azhar BSB 29</b>
             </h1>
             <p style="color: #333;">Jl. RM. Hadisoebeno Sosro Wardoyo, Mijen, Kedungpane, Jawa Tengah, Kode Pos. 50211, Telp. 08112799510</p>
           </div>
@@ -42,7 +42,7 @@
       <div class="pull-left tab-selected">Pengumuman</div>
       <div class="pull-left cells">
         <p style="color: #555;text-align: center;margin-top: 0.7em;">
-          <marquee>Aplikasi SIAKAD SD Islam Al Azhar BSB 29 Semarang telah diluncurkan.</marquee>
+          <marquee>Aplikasi SISKO SD Islam Al Azhar BSB 29 Semarang telah diluncurkan.</marquee>
         </p>
       </div>
     </div>
@@ -116,7 +116,7 @@
     <div class="col-md-4">
       <div class="card card-container" style="margin-top: 0px">
         <label style="width: 100%;text-align: left; color: #0282c6; border-bottom: solid;">
-        <h3>AKUN SIAKAD</h3></label>
+        <h3>AKUN SISKO</h3></label>
         <form class="form-signin" action="{{ url('account/loginProses') }}" method="post">
           <span id="reauth-email" class="reauth-email"></span>
           <label>Login</label>

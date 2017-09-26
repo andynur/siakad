@@ -1,16 +1,14 @@
 {
-    "name": "siato/sia",
-    "description": "sistem informasi akademik terpadu online",
-    "require-dev": {
-        "add": "1"
-    },
+    "name": "andynur/siakad",
+    "description": "sistem informasi sekolah",
     "authors": [
         {
-            "name": "rifkiferdian",
-            "email": "rifkiferdian.111@gmail.com"
+            "name": "andynur",
+            "email": "andylulz@yahoo.com"
         }
     ],
     "require": {
-        "m1ome/phalcon-datatables": "1.1.*"
+        "m1ome/phalcon-datatables": "1.1.*",
+        "phpmailer/phpmailer": "~6.0"        
     }
 }
