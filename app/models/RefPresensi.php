@@ -29,7 +29,7 @@ class RefPresensi extends \Phalcon\Mvc\Model
     /**
      *
      * @var string
-     * @Column(type="string", nullable=false)
+     * @Column(type="string", nullable=true)
      */
     public $Waktu;
 
@@ -60,6 +60,13 @@ class RefPresensi extends \Phalcon\Mvc\Model
      * @Column(type="string", nullable=false)
      */
     public $Status_email;
+
+    /**
+     *
+     * @var string
+     * @Column(type="string", nullable=true)
+     */
+    public $Keterangan;
 
     /**
      *
