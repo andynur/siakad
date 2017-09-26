@@ -48,11 +48,11 @@ class RefStatusKeaktifanPegawai extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->setSource("ref_status_keaktifan_pegawai");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->setSource("ref_status_keaktifan_pegawai");
+    // }
 
     /**
      * Returns table name mapped in the model.
