@@ -2,3 +2,6 @@
 cache/
 master/
 app/config/config.php
+public/img
+vendor/
+composer.lock
