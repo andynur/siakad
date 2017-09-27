@@ -153,7 +153,9 @@ class PresensiController extends \Phalcon\Mvc\Controller
         // $mail->SMTPDebug = 3;
         
         $mail->isSMTP();
+        $mail->SMTPDebug    = 1;
         $mail->SMTPAuth     = true;
+        $mail->SMTPSecure   = 'tls';
         $mail->Host         = $config->mail->info->server;
         $mail->Username     = $config->mail->info->username;
         $mail->Password     = $config->mail->info->password;
