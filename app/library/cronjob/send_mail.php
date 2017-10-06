@@ -36,14 +36,15 @@ if ($result->num_rows > 0) {
     $mail = new PHPMailer;
     
     $mail->isSMTP();
-    $mail->SMTPAuth = true;
-    $mail->Host     = 'tls://email-smtp.eu-west-1.amazonaws.com';
-    $mail->Username = 'AKIAJ5GQDG2P6I4QSZYA';
-    $mail->Password = 'AgPWeERrMTMlx30sZqfIPl13uNR0XYSGwhxgsBgNWmEL';
-    $mail->Port     = 587;
-    // $mail->SMTPSecure = 'tls';
+    $mail->SMTPDebug    = 1;
+    $mail->SMTPAuth     = true;
+    $mail->SMTPSecure   = 'tls';
+    $mail->Host         = 'smtp.gmail.com';
+    $mail->Username     = 'andy.xcrashx@gmail.com';
+    $mail->Password     = 'secure090@)';
+    $mail->Port         = 587;
 
-    $mail->setFrom('code@ztoro.com', 'Admin SISKO');
+    $mail->setFrom('andy.xcrashx@gmail.com', 'Admin SISKO');
     $mail->isHTML(true);
     
     $no = 1;
@@ -59,6 +60,7 @@ if ($result->num_rows > 0) {
         if(!$mail->send()) {
             echo "Email gagal dikirim!\n";
             echo "Error: " . $mail->ErrorInfo;
+            die();
         } else {
             echo "#".$no." Email berhasil dikirim ke ".$data[$y]['email']."\n";    
             $no++;
