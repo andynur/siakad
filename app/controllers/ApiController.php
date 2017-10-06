@@ -146,7 +146,7 @@ class ApiController extends Controller {
             ->leftJoin('RefRombonganBelajar', 'p.rombongan_belajar_id = r.rombongan_belajar_id', 'r')
             ->leftJoin('RefAkdMhs', 'p.peserta_didik_id = m.id_mhs', 'm')
             ->columns(['p.semester_id', 'm.nis', 'p.tanggal', 'p.tipe', 'p.presensi', 'p.waktu', 'r.nama AS kelas'])
-            ->where('p.peserta_didik_id = ' . $nis)
+            ->where('m.nis = ' . $nis)
             ->andWhere('p.semester_id = ' . $semester)
             ->orderBy('p.tanggal DESC')
             ->getQuery()
