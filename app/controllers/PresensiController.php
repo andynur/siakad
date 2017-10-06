@@ -99,6 +99,7 @@ class PresensiController extends \Phalcon\Mvc\Controller
             'waktu' => $_POST['waktu'],
             'tipe' => $_POST['tipe'],
             'peserta_didik_id' => $murid_id,
+            'semester_id' => '20171',
             'presensi' => $_POST['presensi'],
             'status_email' => 'T',
             'keterangan' => $_POST['keterangan'],
