@@ -233,7 +233,11 @@ class PresensiController extends \Phalcon\Mvc\Controller
             $tanggal_indo_long = $this->helper->dateBahasaIndo($tanggal);            
 
             $subject = "SISKO SD Al-Azhar - Presensi murid $tipe ($tanggal_indo)";                  
-            $content = "Diberitahukan kepada orangtua/wali murid, <br> bahwa murid dengan nama <b>$nama</b> dari $nama_tingkat $nama_rombel telah $tipe dengan status <i>$presensi</i> pada tanggal $tanggal_indo_long pukul $waktu. <br><br> - Admin Al-Azhar BSB City";
+            $content = "Assalaamualaikum. Wr.Wb.<br>
+            Diberitahukan kepada orang tua/wali murid al azhar bsb city. Bahwa ananda <b>$nama</b> $nama_tingkat $nama_rombel sudah $tipe kelas dan dinyatakan $presensi tanggal $tanggal_indo_long pukul $waktu. <br>
+            Terimakasih. <br><br>
+            Wassalamualaikum Wr. Wb. <br><br>            
+            Pemberitahuan ini tidak bisa untuk d balas.";
     
             $send_mail = self::sendMail($email, $subject, $content);
             
