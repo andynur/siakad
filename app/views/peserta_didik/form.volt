@@ -64,7 +64,7 @@
                                         </div>
                                         <div class="col-lg-5">
                                             <div class="form-group">
-                                                <label>NIS</label>
+                                                <label>NIS <span style="color:red">*</span></label>
                                                 <input type="text" name="nis" id="nis" placeholder="Nomor Induk Murid" class="form-control" maxlength="10">
                                             </div>
                                         </div>
@@ -148,8 +148,9 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Semester</label>
+                                        <label>Tahun Ajaran</label>
                                         <input type="text" class="form-control" id="semester" readonly>
+                                        <input type="hidden" name="semester_id" id="semester_id">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -540,7 +541,8 @@
             cache     : false,
             success   : function(data){    
                 console.log(data);
-                $('#semester').val(data[0]["nama_semester"]);
+                $('#semester').val(data[0]["nama_semester"].slice(0,-2));
+                $('#semester_id').val(data[0]["semester_id"].slice(0,-1) + '1'); // set default ganjil
                 $('#kurikulum').val(data[0]["nama_kurikulum"]);
             }
         });

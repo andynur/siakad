@@ -5,7 +5,7 @@ use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Mvc\Url;
 use Phalcon\Mvc\Model\Query\Builder;
-use Phalcon\Http\Request\File;
+use Phalcon\Image\Adapter\Imagick;
 
 class PesertaDidikController extends \Phalcon\Mvc\Controller
 {
@@ -55,6 +55,8 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
                 ->join('RefKurikulum', 'r.kurikulum_id = k.kurikulum_id', 'k')
                 ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
                 ->columns(['r.rombongan_belajar_id', 'r.nama AS nama_rombel', 's.nama AS nama_semester', 't.nama AS nama_tingkat', 'k.nama_kurikulum'])                
+                ->where('r.tipe = "umum"')                
+                ->orderBy('t.nama')                
                 ->getQuery()
                 ->execute();
 
@@ -168,23 +170,36 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
 
     public function save($data, $message) 
     {
-        $get_session = $this->session->get('ps_id');
-        $explode = explode('-', $get_session);
-        $ps_id = $explode[1];
-        $rombel_id = $_POST['rombel'];        
-        $foto = $_POST['foto_lama'];
-        $path =  DOCUMENT_ROOT . 'img/mhs/';
+        $get_session    = $this->session->get('ps_id');
+        $explode        = explode('-', $get_session);
+        $ps_id          = $explode[1];
+        $rombel_id      = $_POST['rombel'];        
+        $rombel_id      = $_POST['rombel'];        
+        $foto           = $_POST['foto_lama'];
+        $path           = DOCUMENT_ROOT . 'img/mhs/';
 
-        if ($this->request->hasFiles() == true) {
+        if ($this->request->hasFiles()) {
             foreach ($this->request->getUploadedFiles() as $file) {
-                $ext = explode('/', $file->getRealType()) ;
-                $nama_file = md5(uniqid(rand(), true)) . '.' . $ext[1];
-                
-                if ($this->imageCheck($file->getRealType())) {
-                    if ($file->moveTo($path.$nama_file)) {
-                        $foto = $nama_file;
-                    } else {                    
-                        die('gagal masuk bro!');
+                // check if file is uploaded
+                if ($file->getSize() > 0) {                   
+                    $ext = $file->getExtension();
+                    $nama_file = $_POST['nis'] . '.' . $ext;
+                    $path_file = $path . $nama_file;
+                    
+                    if ($this->imageCheck($file->getRealType())) {
+                        if ($file->moveTo($path_file)) {
+                            // resize image to 200px
+                            $image = new Imagick($path_file);
+                            $image->resize(
+                                200,
+                                null,
+                                \Phalcon\Image::WIDTH
+                            )->save();                               
+
+                            $foto = $nama_file;
+                        } else {                    
+                            die('gagal masuk bro!');
+                        }
                     }
                 }
             }
@@ -244,6 +259,7 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
                 $anggota->assign([
                     'rombongan_belajar_id' => $rombel_id,
                     'peserta_didik_id' => $new_id,
+                    'semester_id' => $_POST['semester_id'],
                     'jenis_pendaftaran_id' => 1,
                     'soft_delete' => 0,
                     'updater_id' => 0
@@ -306,6 +322,7 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
         $check = new Validation();
 
         $this->validation($check, 'nama', 'Nama Murid');        
+        $this->validation($check, 'nis', 'NIS');        
         $this->validation($check, 'tempat_lahir', 'Tempat lahir');        
         $this->validation($check, 'tgl_lahir', 'Tanggal lahir');        
         $this->validation($check, 'gender', 'Jenis kelamin');        
@@ -371,7 +388,7 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
             ->addFrom('RefRombonganBelajar', 'r')
             ->join('RefSemester', 'r.semester_id = s.semester_id', 's')
             ->join('RefKurikulum', 'r.kurikulum_id = k.kurikulum_id', 'k')
-            ->columns(['s.nama AS nama_semester', 'k.nama_kurikulum'])
+            ->columns(['s.nama AS nama_semester', 's.semester_id', 'k.nama_kurikulum'])
             ->where('r.rombongan_belajar_id = ' . $id)
             ->getQuery()
             ->execute();         

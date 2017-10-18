@@ -57,7 +57,7 @@
                                         </div>
                                         <div class="col-lg-5">
                                             <div class="form-group">
-                                                <label>NIS</label>
+                                                <label>NIS <span style="color:red">*</span></label>
                                                 <input type="text" name="nis" id="nis" placeholder="Nomor Induk Murid" value="{{ data[0].nis }}" class="form-control" maxlength="10">
                                             </div>
                                         </div>
@@ -147,6 +147,7 @@
                                     <div class="form-group">
                                         <label>Semester</label>
                                         <input type="text" class="form-control" id="semester" value="{{data[0].semester}}" readonly>
+                                        <input type="hidden" name="semester_id" id="semester_id" value="{{data[0].semester_id}}">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -522,6 +523,7 @@
             cache     : false,
             success   : function(data){    
                 $('#semester').val(data[0]["nama_semester"]);
+                $('#semester_id').val(data[0]["semester_id"]);
                 $('#kurikulum').val(data[0]["nama_kurikulum"]);
             }
         });
