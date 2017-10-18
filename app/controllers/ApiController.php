@@ -60,7 +60,7 @@ class ApiController extends Controller {
 		$akun_db = $this->modelsManager->createBuilder()
             ->addFrom('RefUser', 'u')
             ->join('RefAkdMhs', 'u.uid = m.nis', 'm')
-            ->columns(['m.nama','u.passwd', 'u.uid','m.email'])
+            ->columns(['m.nama','u.passwd', 'u.uid','m.email', 'm.rombel_sekarang','m.foto'])
             ->where("u.uid = '" . $userLogin."'")
             ->orWhere("m.email = '" . $userLogin."'")
             ->getQuery()
@@ -78,10 +78,18 @@ class ApiController extends Controller {
 		}else{
 			$login="failed";
 		}
+		$foto=$akun1['foto'];
+		$a="http://sisko.al-azharbsbcity.or.id/public/img/mhs/".$foto;
+		if (getimagesize($a) !== false) {
+		    
+		}else{
+			$foto="user_icon.png";
+		}
+		// echo "<pre>".print_r($a,1)."</pre>";die;
 		// $mhs = RefAkdMhs::find(["nis = '" . $userLogin."'"])->toArray();
 		// echo $login;die($userLogin."==".$akun1['passwd']."!=".$passwd);
 		// $mhs = RefAkdMhs::find('angkatan = 2015 limit 1')->toArray();
-		// echo "<pre>".print_r($mhs,1)."</pre>";die;
+		// echo "<pre>".print_r($akun_db,1)."</pre>";die;
 		// if (count($mhs) == 0 or $login=='failed') {
 		if ($login=='failed') {
 			$result = [
@@ -103,6 +111,8 @@ class ApiController extends Controller {
 				, 'status' => 'success'
 				, 'detail' => 'Signed  In. have a nice day.'
 				, 'user' => $user
+				, 'rombel_id' => $akun1['rombel_sekarang']
+				, 'foto' => $foto
 			];
 		}
 		echo json_encode($result);
@@ -136,6 +146,50 @@ class ApiController extends Controller {
 		echo json_encode($result);
 	}
 
+    public function getIklanLoginAction($jml){
+    	$result = [[
+    		"line1"=>"Selamat Datang di Al Azhar Apps", 
+    		"line2"=>"Uji coba aplikasi Al-Azhar versi Demo"
+    	],[
+    		"line1"=>"Untuk Cek Tagihan di menu tagihan", 
+    		"line2"=>"mengingatkan agar tagihan yang ada tidak lewat jatuh tempo"
+    	],[
+    		"line1"=>"Istighfar untuk masa yang lalumu", 
+    		"line2"=>"agar dihapuskan dosa-dosamu"
+    	],[
+    		"line1"=>"Syukuri apa yang ada saat ini", 
+    		"line2"=>"agar ditambah nikmat oleh Allah"
+    	],[
+    		"line1"=>"Berdoalah untuk masa depan", 
+    		"line2"=>"agar kita senantiasa terjaga dalam kebaikan"
+    	]];
+    	echo json_encode($result);	
+    }
+
+    public function getPengumumanAction($rombel_id){
+    	$result = [[
+			"pengirim" => "Ibu Mardiyah"
+			, "isi" => "Selasa depan tugas matematika bab trigonometri dikumpulkan. Harap diperhatikan!!"
+			, "tanggal" => "Rabu, 2 Februari 2018"
+			, "lampiran" => "soal.jpg"
+			, "kepada" => "Murid Kelas IX"
+			],[
+				"pengirim" => "Ibu Mardiyah"
+				, "isi" => "Kerja bakti akan dilaksanankan jumat sore. mohon dipersiapkan"
+				, "tanggal" => "Kamis, 3 Februari 2018"
+				, "lampiran" => "suratedaran.jpg"
+				, "kepada" => "Murid Kelas IX"
+			],[
+				"pengirim" => "Ibu Mardiyah"
+				, "isi" => "Bagi yang remidi ulangan harian fisika, hari senin akan di adakan ulangan remidi fisika. Selamat belajar."
+				, "tanggal" => "Kamis, 3 Februari 2018"
+				, "lampiran" => "materi.jpg"
+				, "kepada" => "Murid Kelas IX"
+			]
+		];
+		echo json_encode($result);	
+    }
+
     public function getPresensiAction($nis, $semester)
     {
 		$this->authAction();
@@ -146,7 +200,7 @@ class ApiController extends Controller {
             ->leftJoin('RefRombonganBelajar', 'p.rombongan_belajar_id = r.rombongan_belajar_id', 'r')
             ->leftJoin('RefAkdMhs', 'p.peserta_didik_id = m.id_mhs', 'm')
             ->columns(['p.semester_id', 'm.nis', 'p.tanggal', 'p.tipe', 'p.presensi', 'p.waktu', 'r.nama AS kelas'])
-            ->where('p.peserta_didik_id = ' . $nis)
+            ->where('m.nis = ' . $nis)
             ->andWhere('p.semester_id = ' . $semester)
             ->orderBy('p.tanggal DESC')
             ->getQuery()
@@ -159,32 +213,34 @@ class ApiController extends Controller {
         }                         
         
         $result = [];
-        foreach($data as $a => $v) {                        
-            $masuk = $hadir[$v->tanggal]['masuk'];
-            $keluar = $hadir[$v->tanggal]['keluar'];
-            if ($masuk['waktu']) {
-            	$m=substr($masuk['waktu'], 0, -3);
-            }else{
-            	$m='';
-            }
-            if ($keluar['waktu']) {
-            	$k=substr($keluar['waktu'], 0, -3);
-            }else{
-            	$k='';
-            }
-            $result[] = [
-                "semester" => $masuk['semester_id'],
-                "nis" => $masuk['nis'],
-                "tanggal" => $this->helper->konversi_tgl($masuk['tanggal']),
-                "masuk" => $m,
-                "masuk_presensi" => $masuk['presensi'],
-                "keluar" => $k,
-                "keluar_presensi" => $keluar['presensi'],
-                "kelas" => $masuk['kelas']
-            ];
+        foreach($data as $a => $v) {         
+			if ($a % 2 == 1) {               
+				$masuk = $hadir[$v->tanggal]['masuk'];
+				$keluar = $hadir[$v->tanggal]['keluar'];
+				if ($masuk['waktu']) {
+					$m=substr($masuk['waktu'], 0, -3);
+				}else{
+					$m='';
+				}
+				if ($keluar['waktu']) {
+					$k=substr($keluar['waktu'], 0, -3);
+				}else{
+					$k='';
+				}
+				$result[] = [
+					"semester" => $masuk['semester_id'],
+					"nis" => $masuk['nis'],
+					"tanggal" => $this->helper->konversi_tgl($masuk['tanggal']),
+					"masuk" => $m,
+					"masuk_presensi" => $masuk['presensi'],
+					"keluar" => $k,
+					"keluar_presensi" => $keluar['presensi'],
+					"kelas" => $masuk['kelas']
+				];
+			}
         }
 
-        array_shift($result);
+        // array_shift($result);
         echo json_encode($result);
         die();
     }	
