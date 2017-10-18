@@ -1,69 +1,73 @@
+{# Define variables #}
+{% set tanggalIndo = helper.dateBahasaIndo(date('Y-m-d')) %}
+
+{# Global css #}
+<style>{% include "include/view.css" %}</style>
+
+<!-- Header content -->
 <section class="content-header">
-  <h1>
-    User Profil
-    <small>it all starts here</small>
-  </h1>
-  <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-dashboard"></i> User</a></li>
-    <li class="active">Profil</li>
-  </ol>
+    <h1>
+        Ubah Akun
+        <small>
+            <i class="fa fa-calendar-o"></i> {{ tanggalIndo }} 
+            <i class="fa fa-clock-o"></i> <span id="waktu">00:00:00</span>
+        </small> 
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> User</a></li>
+        <li class="active">Ubah Akun</li>
+    </ol>   
 </section>
 
 <!-- Main content -->
 <section class="content">
-  <!-- row -->
-  <div class="row">
-      <div class="box box-primary">
-        <div class="box-header with-border">
-          <h3 class="box-title">Ubah Account</h3>
+    <div class="row">
+        <!-- Table column -->
+        <div class="col-md-offset-3 col-md-6">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Ubah Akun Pengguna</h3>
+                </div>
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" class="form-control" id="username" value="<?= $this->session->get('uid'); ?>">
+                    </div>
+                    <div class="form-group">
+                        <label>Password Lama</label>
+                        <input type="password" id="pass" class="form-control">
+                    </div>                        
+                    <div class="form-group">
+                        <label>Password Baru</label>
+                        <input type="password" id="pass_baru" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Ulangi Password Baru</label>
+                        <input type="password" onChange="checkPasswordMatch();" id="ulangi" class="form-control ul2">
+
+                        <p class="notip" style="color:#dd4b39; display:none;">Password tidak sama!</p>
+                    </div>  
+                    <div class="form-group">           
+                        <input class="btn btn-xs btn-success btn-flat" id="show" type="checkbox" style="margin: 0">  
+                        <label for="show" style="font-weight: normal">Tampilkan Password</label>
+                    </div>                                                 
+
+                    <div class="pull-right">
+                        <button onclick="ganti_login()" class="pull-right btn bg-navy btn-flat margin">Simpan</button>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
         </div>
+    </div>
 
-        <div class="box-body">
-        <div class="col-md-2"></div>        
-        <div class="col-md-8">
+</section>
+<!-- /.content -->
 
-          <table class="table">
-            <tbody>
-              <tr>
-                <td><b>Password Lama :</b></td>
-                <td><input type="password" id="pass" class="form-control" placeholder="Enter..."></td>
-                <td></td>
-                <td></td>
-              </tr>
-              <tr class="form-horizontal">
-                <td><b>Login baru :</b></td>
-                <td><input type="text" class="form-control" id="username" placeholder="Enter..."><p class="text-aqua">*tanpa spasi</p></td>
-                <td><label for="inputEmail3" class="col-sm-2 control-label">Password</label></td>
-                <td><input type="password" id="pass_baru" class="form-control" placeholder="Enter..."></td>
-              </tr>
-              <tr>
-                <td><b class="ul">Ulangi Password baru :</b></td>
-                <td><input type="password" onChange="checkPasswordMatch();" id="ulangi" class="form-control ul2" placeholder="Enter...">
-                <p class="notip" style="color:#dd4b39; display:none;">Passwords tidak sama.</p>
-                </td>
-                <td></td>
-                <td></td>
-              </tr>
-             
-              <tr>
-                <td></td>
-                <td><input class="btn btn-xs btn-success btn-flat" id="show" type="checkbox"> Tampilkan Password</td>
-                <td></td>
-                <td><button onclick="ganti_login()" class="pull-right btn bg-navy btn-flat margin">Ganti</button></td>
-              </tr>
-            </tbody>
-          </table>
+<!-- global script -->
+<script>{% include "include/view.js" %}</script>
 
-<!-- <button style="margin-bottom:20px;" type="submit" id="frm_data" class="btn btn-primary btn-block pull-right" onclick="reset_data('<?= $this->session->get('id'); ?>')">Ubah</button> -->
-
-        </div>
-        <div class="col-md-2"></div>
-
-        </div>
-
-      </div><!-- /.box -->
-  </div><!-- /.row -->
-</section><!-- /.content -->
 <script type="text/javascript">
 
 function checkPasswordMatch() {
@@ -166,7 +170,6 @@ $(document).ready(function () {
 
   // Show Password
   $(document).on('click','#show',function() {
-    $('#pass').removeAttr('type').attr({type:'text'});
     $('#pass_baru').removeAttr('type').attr({type:'text'});
     $('#ulangi').removeAttr('type').attr({type:'text'});
     $('#show').removeAttr('id').attr({id:'hide'});
@@ -174,7 +177,6 @@ $(document).ready(function () {
   });
 
   $(document).on('click','#hide',function() {
-    $('#pass').removeAttr('type').attr({type:'password'});
     $('#pass_baru').removeAttr('type').attr({type:'password'});
     $('#ulangi').removeAttr('type').attr({type:'password'});
     $('#hide').removeAttr('id').attr({id:'show'});
