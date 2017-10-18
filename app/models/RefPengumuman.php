@@ -64,11 +64,11 @@ class RefPengumuman extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("siakad");
-        $this->setSource("ref_pengumuman");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("siakad");
+    //     $this->setSource("ref_pengumuman");
+    // }
 
     /**
      * Returns table name mapped in the model.
