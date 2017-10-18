@@ -10,7 +10,7 @@
 
 	<footer class="main-footer">
 	    <div class="container">
-	      <strong>Copyright &copy; 2017 <a href="#"> SISKO SD Al Azhar</a>.</strong> All rights
+	      <strong>Copyright &copy; 2017 <a href="#"> SISKO Al Azhar 29 & 16 BSB City Semarang</a>.</strong> All rights
 	      reserved.
 	    </div>
 	    <!-- /.container -->

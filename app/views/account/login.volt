@@ -43,7 +43,10 @@
       <div class="pull-left tab-selected">Pengumuman</div>
       <div class="pull-left cells">
         <p style="color: #555;text-align: center;margin-top: 0.7em;">
-          <marquee>Aplikasi SISKO Al Azhar 29 & 16 BSB City Semarang telah diluncurkan.</marquee>
+          <marquee>
+            Aplikasi SISKO Al Azhar 29 & 16 BSB City Semarang telah diluncurkan. |
+            Kunjungsi website portal untuk mendownload APK aplikasi SISKO di <a href="http://portal.al-azharbsbcity.or.id/">al-azharbsbcity.or.id</a>
+          </marquee>
         </p>
       </div>
     </div>
@@ -59,47 +62,47 @@
         </ol>
         <div class="carousel-inner">
           <div class="item active">
-            <img src="../img/galeri/staff.jpg" class="img-responsive">
+            <img src="../img/galeri/1da5ef665095718224b5c77e156b97da.jpg" class="img-responsive">
             <div class="container">
               <div class="carousel-caption">
-                <h1>Staff Beserta Jajaran</h1> 
-                <p>SD Islam Al Azhar BSB 29 Semarang</p>
+                <h2>Milad Yayasan Al Hisyam</h2> 
+                <p>Pembukaan acara Milad Yayasan Al Hisyam ke 16</p>
               </div>
             </div>
           </div>
           <div class="item">
-            <img src="../img/galeri/depan.jpg" class="img-responsive">
+            <img src="../img/galeri/981c267b005954c4b16abdc982ca625f.jpeg" class="img-responsive">
             <div class="container">
               <div class="carousel-caption">
-                <h1>Bangunan Depan</h1>                
-                <p>SD Islam Al Azhar BSB 29 Semarang</p>                
+                <h2>Milad Yayasan Al Hisyam</h2>                
+                <p>Puncak acara Milad Yayasan Al Hisyam ke 16</p>                
               </div>
             </div>
           </div>  
           <div class="item">
-            <img src="../img/galeri/halaman.jpg" class="img-responsive">
+            <img src="../img/galeri/18289e7f9413c48120d30558b9165146.jpg" class="img-responsive">
             <div class="container">
               <div class="carousel-caption">
-                <h1>Halaman Sekolah</h1>
-                <p>SD Islam Al Azhar BSB 29 Semarang</p> 
+                <h2>SD Islam Al Azhar 29</h2>
+                <p>Prestasi SD Islam Al Azhar 29 BSB Semarang</p> 
               </div>
             </div>
           </div>                  
           <div class="item">
-            <img src="../img/galeri/khotmil.jpg" class="img-responsive">
+            <img src="../img/galeri/97d59cf3bf45bd7baecdac6f848b5ad4.jpg" class="img-responsive">
             <div class="container">
               <div class="carousel-caption">
-                <h1>Kegiatan Khotmil Quran</h1>
-                <p>SD Islam Al Azhar BSB 29 Semarang</p> 
+                <h2>SMP Islam Al Azhar 29</h2>
+                <p>Pelantikan OSIS SMP Islam Al Azhar 29 BSB Semarang</p> 
               </div>
             </div>
           </div>                  
           <div class="item">
-            <img src="../img/galeri/adiwiyata.jpg" class="img-responsive">
+            <img src="../img/galeri/901de8a07ae3d1d1c7aaeb0838092e77.jpeg" class="img-responsive">
             <div class="container">
               <div class="carousel-caption">
-                <h1>Adiwiyata</h1>
-                <p>SD Islam Al Azhar BSB 29 Semarang</p> 
+                <h2>SMA Islam Al Azhar 16</h2>
+                <p>Prestasi SMA Islam Al Azhar 16 BSB Semarang</p> 
               </div>
             </div>
           </div>                  
@@ -133,7 +136,7 @@
           <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit" value="Login">Login</button>
         </form>
         <!-- /form -->
-        <a href="#" class="forgot-password">Lupa Password? </a>
+        <a href="#" class="forgot-password" onclick="alert('Silahkan kontak admin untuk mereset password.')">Lupa Password? </a>
 
       </div>
       <!-- /card-container -->

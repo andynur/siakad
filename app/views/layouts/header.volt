@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SISKO SD Islam Al-Azhar BSB 29 Semarang</title>
+  <title>SISKO Al Azhar 29 & 16 BSB City Semarang</title>
   <!-- favicon  -->
   <link rel="icon" href="img/favicon.png" sizes="32x32" />
   <link rel="icon" href="img/favicon.png" sizes="192x192" />
@@ -53,9 +53,9 @@
         <!-- Logo -->
         <a href="{{ baseUri }}" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>SD</b>A</span>
+          <span class="logo-mini"><b>SI</b>A</span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>SISKO</b> SD Al Azhar</span>
+          <span class="logo-lg"><b>SISKO</b> Al Azhar</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -184,17 +184,20 @@
                   <li class="user-body">
 
                     <div class="col-xs-12 text-center">
-                      <a href="#" onclick="return load_page2('user/gantiLogin')">Ubah Akun Login</a>
+                      <!-- <a href="#" onclick="return load_page2('user/gantiLogin')">Ubah Akun Login</a> -->
+                      Selamat Datang di Web SISKO <br/> Al Azhar 29 & 16 BSB City Semarang
                     </div>
 
                   </li>
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                      <a href="#" onclick="return load_page2('user/profil')" class="btn btn-default btn-flat">Ubah Profil</a>
+                      <!-- <a href="#" onclick="return load_page2('user/profil')" class="btn 
+                      btn-default btn-flat">Ubah Profil</a> -->
+                      <a href="#" onclick="return load_page2('user/gantiLogin')" class="btn btn-default btn-flat"><i class="fa fa-refresh"></i> Ubah Akun</a>
                     </div>
                     <div class="pull-right">
-                      <a href="account/logout" class="btn btn-default btn-flat">Keluar</a>
+                      <a href="account/logout" class="btn btn-default btn-flat"><i class="fa fa-sign-out"></i> Keluar</a>
                     </div>
                   </li>
                 </ul>
