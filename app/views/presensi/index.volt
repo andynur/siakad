@@ -1,7 +1,12 @@
 <section class="content-header">
     <h1>
-        Presensi {{data[0].nama_tingkat}} - {{data[0].nama_rombel}}
-        <small>Pengelolaan data presensi</small>
+        Presensi {{data[0].nama_tingkat}} - {{data[0].nama_rombel}} &nbsp; 
+        <small>
+            <i class="fa fa-calendar-o"></i>&nbsp; 
+            <?= $this->helper->dateBahasaIndo(date('Y-m-d')); ?> &nbsp;        
+            <i class="fa fa-clock-o"></i>&nbsp; 
+            <span id="waktu" style="font-weight:400;">00:00:00</span>
+        </small> 
     </h1>    
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i>{{data[0].nama_tingkat}}</a></li>
@@ -21,9 +26,12 @@
                     <form class="form-horizontal">
                         <div class="form-group">                            
                             <div class="col-sm-1" style="width: 140px">
-                                <label for="semester" class="control-label"><i class="fa fa-arrow-circle-o-right"></i> &nbsp; Filter Tanggal: </label>
+                                <label class="control-label">
+                                    <i class="fa fa-arrow-circle-o-right"></i> 
+                                    &nbsp; Filter Tanggal: 
+                                </label>
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                 <div class="input-group">
                                     <a href="#" class="input-group-addon" style="background: #f9f9f9" onclick="change_date('-')">
                                         <i class="fa fa-arrow-circle-left"></i>
@@ -32,17 +40,25 @@
                                             <i class="fa fa-arrow-circle-right"></i>
                                         </a>                                    
                                     <div class="date" id="datetimepicker1" style="display: inherit;">
-                                        <input name="tanggal_pilih" type="text" id="tanggal_pilih" class="form-control" value="<?= $this->helper->dateBahasaIndo($tanggal); ?>" style="font-weight: 600;">
+                                        <input name="tanggal_pilih" type="text" id="tanggal_pilih" class="form-control" value="<?= $this->helper->dateBahasaIndo($tanggal); ?>" style="font-weight: 600; border-left: 0;">
                                         <span class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </span>
                                     </div>
                                 </div>
-                            </div>                            
-                            <div class="col-sm-5 pull-right">
-                                <p style="text-align: right; font-size: 12px;">
-                                    <i class="fa fa-calendar-o"></i>&nbsp; <?= $this->helper->dateBahasaIndo(date('Y-m-d')); ?><br/>
-                                    <i class="fa fa-clock-o"></i>&nbsp; <span id="waktu" style="font-weight:bold;">00:00:00</span>
+                            </div>      
+                            <div class="col-sm-5">
+                                <div class="form-group dropdown" style="margin-right: 10px">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-sign-in"></i>&nbsp; Presensi: &nbsp; 
+                                    <span class="caret"></span></button>
+
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" onclick="presensi_modal('hadir')">&raquo; Hadir</a></li>
+                                        <li><a href="#" onclick="presensi_modal('absen')">&raquo; Absen</a></li>              
+                                        <li><a href="#" onclick="presensi_modal('sakit')">&raquo; Sakit</a></li>
+                                        <li><a href="#" onclick="presensi_modal('izin')">&raquo; Izin</a></li>
+                                    </ul>
+                                </div>                              
                             </div>
                         </div>
                     </form>
@@ -207,7 +223,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="5" style="padding-top: 1em; vertical-align: middle;">
+                                <td colspan="3" style="padding-top: 1em; vertical-align: middle;">
                                     <p style="display: inline-block; margin-top: 7px;">
                                         <i class="fa fa-hand-pointer-o"></i>&nbsp;
                                         <span class="rows_selected" id="select_count">0</span> Data Terpilih
@@ -224,7 +240,7 @@
                                                 <li><a href="#" onclick="presensi_modal('izin')">&raquo; Izin</a></li>
                                             </ul>
                                         </div>                                        
-                                        <div class="form-group dropdown" style="margin-right: 10px">
+                                        <!-- <div class="form-group dropdown" style="margin-right: 10px">
                                             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-envelope-o"></i>&nbsp; Kirim Email:
                                             <span class="caret"></span></button>
                                             
@@ -232,7 +248,7 @@
                                                 <li><a href="#" onclick="send_mail('masuk')">&raquo; Email Masuk</a></li>
                                                 <li><a href="#" onclick="send_mail('keluar')">&raquo; Email Keluar</a></li>
                                             </ul>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </td>
                             </tr>
@@ -306,279 +322,4 @@
 </section>
 <!-- /.content -->
 
-<script type="text/javascript">
-    var checked_murid = [];
-
-    $(function () {
-        $('#data_table').DataTable({
-            "paging": true,
-            "lengthChange": true,
-            "searching": true,
-            "ordering": true,
-            "info": true,
-            "autoWidth": true,
-            "lengthMenu": [
-                [5, 10, 25, 50, -1],
-                [5, 10, 25, 50, "Semua"]
-            ],
-            "iDisplayLength": 5,
-            "language": {
-                "url": "js/Indonesian.json"
-            }
-        });
-
-        // timepicker config
-        $(".timepicker").timepicker({
-            showInputs: false,
-            showSeconds: false,
-            showMeridian: false,
-            maxHours: 24
-        });                
-        
-        // datepicker config
-        $('.date').datepicker({
-            language: 'id',            
-            format: 'dd-MM-yyyy',
-            autoclose: true,
-            startDate: `-1y`,
-            endDate: '0d',
-            todayBtn: true,
-            todayHighlight: true,
-            title: "Filter Tanggal"            
-        }).on('changeDate', function(ev){ 
-            var selected_date = ev.format(0,"yyyy-mm-dd");
-            var url = '{{ url("presensi/index/") }}{{rombel_id}}/' + selected_date;
-            go_page(url);
-        });
-
-        // pilih semua checkbox
-        $('#select_all').on('change', function(e) {
-            if ($(this).is(':checked', true)) {
-                $(".check").prop('checked', true);  
-                $('.check').map(function() {
-                    var id = $(this).data('id');
-                    checked_murid.push({
-                        murid_id: id, 
-                        nama: $('#data_'+id+' #nama_murid').html(),
-                        email: $('#data_'+id+' #email_wali').html()
-                    });
-                });
-            }  
-            else {  
-                $(".check").prop('checked',false);  
-                // hapus semua uncheckedbox array
-                $('.check').map(function() {
-                    var id = $(this).data('id');
-                    checked_murid = $.grep(checked_murid, function(e){ 
-                        return e.murid_id != id; 
-                    });
-                });
-            }		
-            
-            $("#select_count").html(checked_murid.length);
-            console.log(checked_murid);
-        });
-        
-        // pilih checkbox satuan
-        $(".check").on('change', function(e) {
-            var id = $(this).data('id');
-            if ($(this).is(':checked', true)) {
-                checked_murid.push({
-                    murid_id: id, 
-                    nama: $('#data_'+id+' #nama_murid').html(),
-                    email: $('#data_'+id+' #email_wali').html()
-                });
-                $("#select_count").html(checked_murid.length);
-            } else {
-                // hapus uncheckedbox array
-                checked_murid = $.grep(checked_murid, function(e){ 
-                    return e.murid_id != id; 
-                });
-            }
-
-            console.log(checked_murid);
-        });	    
-    });
-
-    // jam digital
-    window.setTimeout("waktu()",1000);
-    function waktu() {
-        var tanggal = new Date();
-        setTimeout("waktu()",1000);
-        $('#waktu').html(tanggal.getHours()+':'+tanggal.getMinutes()+':'+tanggal.getSeconds());
-    }
-
-    // ganti tanggal kemarin / besok
-    function change_date(type='-') {
-        var current_date = new Date('{{tanggal}}');
-        var new_date = new Date(current_date);
-        new_date.setDate(current_date.getDate() - 1);
-       
-        if (type == '+') {
-            new_date.setDate(current_date.getDate() + 1);
-        }
-
-        var dd = new_date.getDate();
-        var mm = new_date.getMonth()+1;
-        var yyyy = new_date.getFullYear();
-
-        if (dd < 10) {
-            dd = '0' + dd
-        } 
-        if (mm < 10) {
-            mm = '0' + mm
-        } 
-        
-        new_date = yyyy + '-' + mm + '-' + dd;
-        var url = '{{ url("presensi/index/") }}{{rombel_id}}/' + new_date;
-        go_page(url);
-
-        return false;
-    }
-
-    function add_new(id) {
-        var nama_tingkat = '{{data[0].nama_tingkat}}';
-        var nama_rombel = '{{data[0].nama_rombel}}';
-        var kurikulum_id = '{{data[0].kurikulum_id}}';
-        var semester_id = '{{data[0].semester_id}}';
-        
-        var data_target = "";
-
-        var urel = '{{ url("presensi/addPresensi/") }}' + id;
-        go_page_data(urel, data_target);          
-    }
-
-    function presensi_modal(jenis, single='') {
-        $('#presensiModal').modal('show');
-        $('#presensi_nama').closest('.form-group').show();
-        $('#presensi_jenis').html(jenis);
-
-        if (single !== '') {
-            var data_id = $(single).closest('tr').attr('id');
-            var id = data_id.split('_')[1];
-            var nama = $('#'+data_id+' #nama_murid').html();
-            var email = $('#'+data_id+' #email_wali').html();
-
-            $('#presensi_nama').val(nama);            
-
-            checked_murid = [];
-            checked_murid.push({
-                murid_id: id, 
-                nama: nama,
-                email: email
-            });
-        } else {
-            $('#presensi_nama').closest('.form-group').hide();
-        }
-
-        $('#presensi_simpan').attr('onclick', 'save_data(\''+jenis+'\')');
-    }
-
-
-    function edit_data(id, rombel_id) {
-        var link = '{{ url("presensi/editMurid/") }}' + id + '/' + rombel_id;
-        go_page(link);
-    }
-
-    function save_data(presensi) {
-		if (checked_murid.length <=0) {  
-			alert("Silahkan pilih data.");
-		} else { 				
-            var data_murid = JSON.stringify(checked_murid);
-            var url_target = '{{ url("presensi/status") }}';
-            var rombel_id = '{{rombel_id}}';
-            var tanggal = '{{tanggal}}';
-            var tipe = $('#presensi_tipe').val();
-            var waktu = $('#presensi_waktu').val();
-            var keterangan = $('#presensi_keterangan').val();
-
-            var data_send = 'rombel_id='+rombel_id+'&tanggal='+tanggal+'&waktu='+waktu+'&data_murid='+data_murid+'&presensi='+presensi+'&tipe='+tipe+'&keterangan='+keterangan;
-
-            $.ajax({ 
-                method: "POST",
-                dataType: "json",
-                url: url_target,
-                cache: false,
-                data: data_send,
-                complete: function() {
-                    $('#presensiModal').modal('hide');
-                    $('body').removeClass('modal-open');
-                    $("body").css("padding-right", "0px");
-                    $('.modal-backdrop').remove();
-                },
-                success: function(res){
-                    new PNotify({
-                        title: res.title,
-                        text: res.text,
-                        type: res.type
-                    });
-                    reload_page2('presensi/index/{{rombel_id}}/{{tanggal}}');
-                }                
-            });
-		}      
-
-        return false;
-    }
-
-    function edit_murid(id, rombel_id) {
-        var url = '{{ url("pesertadidik/editMurid/") }}' + id + '/' + rombel_id;
-        var back_link = '{{ url("presensi/index/") }}' + rombel_id + '/{{tanggal}}';
-        var data = 'back_link='+back_link;
-
-        go_page_data(url, data);                 
-    }
-
-    function send_mail(tipe, single='') {        
-        if (single !== '') {
-            var data_id = $(single).closest('tr').attr('id');
-            var id = data_id.split('_')[1];
-            var nama = $('#'+data_id+' #nama_murid').html();
-            var email = $('#'+data_id+' #email_wali').html();
-            
-            checked_murid = [];
-            checked_murid.push({
-                murid_id: id, 
-                nama: nama,
-                email: email
-            });
-        } else {
-            if (checked_murid.length <=0) {  
-                alert("Silahkan pilih data.");
-            }
-        }
-
-        var data_murid = JSON.stringify(checked_murid);
-        var url_target = '{{ url("presensi/mail") }}';  
-        var tanggal = '{{tanggal}}';
-
-        var data_send = 'data_murid='+data_murid+'&tanggal='+tanggal+'&tipe='+tipe;
-
-        $.ajax({ 
-            method: "POST",
-            dataType: "json",
-            url: url_target,  
-            cache: false,  
-            data: data_send,   
-            beforeSend: function() {
-                $('#loadingModal').modal('show');
-            },
-            complete: function() {
-                $('#loadingModal').modal('hide');
-                $('body').removeClass('modal-open');
-                $("body").css("padding-right", "0px");
-                $('.modal-backdrop').remove();
-            },
-            success: function(res){
-                new PNotify({
-                    title: res.title,
-                    text: res.text,
-                    type: res.type
-                });
-                reload_page2('presensi/index/{{rombel_id}}/{{tanggal}}');
-            }
-        });     
-        
-        return false;
-    }
-
-</script>
+<script>{% include "presensi/assets/presensi.js" %}</script>

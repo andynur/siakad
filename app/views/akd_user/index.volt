@@ -1,7 +1,21 @@
+{# Define variables #}
+{% set tanggalIndo = helper.dateBahasaIndo(date('Y-m-d')) %}
+{% set urlPost = url('user/addUser') %}
+
+{# Global css #}
+<style>{% include "include/view.css" %}</style>
+
+{# Custom css #}
+<style>{% include "rombel/assets/anggota.css" %}</style>
+
+<!-- Header content -->
 <section class="content-header">
     <h1>
         User Pengguna
-        <small>Manajemen User Pengguna</small>
+        <small>
+            <i class="fa fa-calendar-o"></i> {{ tanggalIndo }} 
+            <i class="fa fa-clock-o"></i> <span id="waktu">00:00:00</span>
+        </small> 
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Setup Admin</a></li>
@@ -21,13 +35,13 @@
                 <!-- /.box-header -->
                 <div class="box-body pad">
                     <div class="row">
-                        <form id="form_add">
+                        <form id="form_input" method="POST" action="{{ urlPost }}">
                             <div class="form-group col-md-12 text-center">
                                 <img src="img/user.png" alt="Foto User" height="85px" class="img-circle text-center" id="foto">
                             </div>
                             <div class="form-group col-md-5">
                                 <label for="id_jenis">Jenis User</label>
-                                <select class="form-control" name="id_jenis" id="jenis" onchange="changeJenis(this)">
+                                <select class="form-control" name="id_jenis">
                                     <option value="">Pilih:</option>
                                     {% for opt in jenis %}
                                         {% if (opt.nama == 'SDM') %}

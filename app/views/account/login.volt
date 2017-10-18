@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
-  <title>SISKO SD Islam Al-Azhar BSB 29 Semarang</title>
+  <title>SISKO Al Azhar 29 & 16 BSB City Semarang</title>
   <!-- favicon  -->
   <link rel="icon" href="../img/favicon.png" sizes="32x32" />
   <link rel="icon" href="../img/favicon.png" sizes="192x192" />
@@ -26,9 +26,10 @@
       <div class="col-md-12">
         <div style="margin: 0 auto; ">
           <img src="../img/logo.png" style="height: 6em;float: left; padding: 0 0.5em 0 1em;">
+          <img src="../img/logo-himsya.png" style="height: 6em;float: left; padding: 0 0.5em 0 0.5em;">
           <div style="float: left;padding: 1.5em 0 0 1em;">
             <h1 style="text-transform: uppercase;margin: 0;font-size: 2em;color: #0282c6;">
-              <b>SISKO SD Islam Al Azhar BSB 29</b>
+              <b>SISKO Al Azhar 29 & 16 BSB City Semarang</b>
             </h1>
             <p style="color: #333;">Jl. RM. Hadisoebeno Sosro Wardoyo, Mijen, Kedungpane, Jawa Tengah, Kode Pos. 50211, Telp. 08112799510</p>
           </div>
@@ -42,7 +43,7 @@
       <div class="pull-left tab-selected">Pengumuman</div>
       <div class="pull-left cells">
         <p style="color: #555;text-align: center;margin-top: 0.7em;">
-          <marquee>Aplikasi SISKO SD Islam Al Azhar BSB 29 Semarang telah diluncurkan.</marquee>
+          <marquee>Aplikasi SISKO Al Azhar 29 & 16 BSB City Semarang telah diluncurkan.</marquee>
         </p>
       </div>
     </div>
@@ -142,8 +143,8 @@
   
   <footer>
     <div class="text-center" style="color: #333;">
-      <p>Sistem Informasi Akademik</p>
-      <p style="font-weight:bold;color: #0282c6;"><a href="http://sd-alazhar29.sch.id/" target="_blank">SD Islam Al Azhar BSB 29  Semarang</a></p>
+      <p>Sistem Informasi Sekolah</p>
+      <p style="font-weight:bold;color: #0282c6;"><a href="http://sd-alazhar29.sch.id/" target="_blank">SISKO Al Azhar 29 & 16 BSB City Semarang</a></p>
       <p>Copyright © 2017</p>
     </div>
   </footer>

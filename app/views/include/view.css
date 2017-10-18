@@ -1,0 +1,26 @@
+#waktu {
+    font-weight: 400;
+}
+
+.width-10 {
+    width: 10px;
+}
+
+.width-30 {
+    width: 30px;
+}
+
+.margin-top-20 {
+    margin-top: 20px;
+}
+
+.fa {
+    padding-right: 3px;
+}
+
+.img-murid {
+    height: 3em;
+    float: left;
+    margin-right: 10px;
+    border-radius: 100%;
+}
