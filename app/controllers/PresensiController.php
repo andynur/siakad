@@ -30,7 +30,7 @@ class PresensiController extends \Phalcon\Mvc\Controller
                 ->join('RefRombonganBelajar', 'a.rombongan_belajar_id = r.rombongan_belajar_id', 'r')
                 ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
                 ->join('RefAkdMhs', 'a.peserta_didik_id = m.id_mhs', 'm')
-                ->columns(['a.anggota_rombel_id', 'r.nama AS nama_rombel', 't.nama AS nama_tingkat', 'm.id_mhs AS murid_id', 'm.nama AS nama_murid', 'm.nis', 'm.nisn', 'm.foto', 'm.email'])
+                ->columns(['a.anggota_rombel_id', 'r.nama AS nama_rombel', 'r.semester_id', 't.nama AS nama_tingkat', 'm.id_mhs AS murid_id', 'm.nama AS nama_murid', 'm.nis', 'm.nisn', 'm.foto', 'm.email'])
                 ->where('a.rombongan_belajar_id = ' . $rombel_id)
                 ->orderBy('m.nama ASC')
                 ->getQuery()
@@ -64,8 +64,9 @@ class PresensiController extends \Phalcon\Mvc\Controller
         $this->view->setVars([
             "data" => $data,
             "hadir" => $hadir,
+            "tanggal" => $date,
             "rombel_id" => $rombel_id,
-            "tanggal" => $date
+            "semester_id" => $data[0]->semester_id
         ]);
 
         $this->view->pick('presensi/index');
@@ -99,7 +100,7 @@ class PresensiController extends \Phalcon\Mvc\Controller
             'waktu' => $_POST['waktu'],
             'tipe' => $_POST['tipe'],
             'peserta_didik_id' => $murid_id,
-            'semester_id' => '20171',
+            'semester_id' => $_POST['semester_id'],
             'presensi' => $_POST['presensi'],
             'status_email' => 'T',
             'keterangan' => $_POST['keterangan'],
