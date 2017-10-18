@@ -87,7 +87,7 @@
                                 <!-- <td><?= $this->helper->dateBahasaIndo(date('Y-m-d')) ?></td> -->
                                 <!-- <td>{{ hadir[v.murid_id]['masuk']['tanggal'] != '' ? hadir[v.murid_id]['masuk']['tanggal'] : '' }}</td> -->
                                 <td>
-                                    <img src="img/mhs/{{v.foto}}" alt="{{v.nama_murid}}" style="height: 3em; float: left; margin-right: 10px; border-radius: 50px">
+                                    <img src="img/mhs/{{v.foto}}" alt="{{v.nama_murid}}" style="height: 3em; float: left; margin-right: 10px; border-radius: 50px" class="img-murid">
                                     <a href="#" style="font-weight: 600;" onclick="edit_murid('{{v.murid_id}}', '{{rombel_id}}')" id="nama_murid">{{v.nama_murid}}</a> <br/> 
                                     <span class="label label-default">NIS</span> 
                                     <span class="label label-primary">{{v.nis}}</span>

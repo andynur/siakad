@@ -69,7 +69,7 @@
                             {% set no=1 %} {% for v in data %}
                             <tr id="data_{{v.murid_id}}" class="middle-row">
                                 <td align="center">{{no}}</td>
-                                <td align="center"><img src="img/mhs/{{v.foto}}" alt="{{v.nama_murid}}" style="height: 3em; border-radius: 100%;"></td>
+                                <td align="center"><img src="img/mhs/{{v.foto}}" alt="{{v.nama_murid}}" style="height: 3em; border-radius: 100%;" class="img-murid"></td>
                                 <td>
                                     <span style="font-weight: 600;">{{v.nama_murid}}</span> <br/> 
                                     <span class="label label-default">NIS</span> 
@@ -128,6 +128,11 @@
                 "url": "js/Indonesian.json"
             }
         });
+
+        // change image when error
+        $(".img-murid").on("error", function() {
+            $(this).attr('src', 'img/user.png');
+        });        
     });
 
     function add_new(id) {

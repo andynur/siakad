@@ -18,6 +18,11 @@ $(function () {
         }
     });
 
+    // change image when error
+    $(".img-murid").on("error", function() {
+        $(this).attr('src', 'img/user.png');
+    });
+
     // timepicker config
     $(".timepicker").timepicker({
         showInputs: false,
