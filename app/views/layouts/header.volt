@@ -44,7 +44,7 @@
 
   </head>
   <!-- <body onload="StartTimers();" onmousemove="ResetTimers();" class=" skin-purple hold-transition skin-blue sidebar-mini"> -->
-  <body class=" skin-red hold-transition sidebar-mini">
+  <body class=" skin-red hold-transition fixed sidebar-mini">
 
     <!-- Site wrapper -->
     <div class="wrapper">
