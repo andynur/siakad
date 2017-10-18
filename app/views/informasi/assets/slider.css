@@ -1,0 +1,18 @@
+.img-preview {
+    width: 100%; 
+    border-radius: 6px;
+}
+
+.margin-upload {
+    margin-top: 2em;
+}    
+
+.line-top {
+    border-top: 1px solid #eee; 
+    padding-top: 1em;
+}
+
+.img-show {
+    height: 3em; 
+    border-radius: 3px;
+}

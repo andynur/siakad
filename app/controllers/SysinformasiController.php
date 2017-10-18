@@ -2,11 +2,17 @@
 
 use Phalcon\Mvc\View;
 use Phalcon\Validation;
-use  Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Mvc\Url;
+use Phalcon\Mvc\Model\Query\Builder;
+use Phalcon\Image\Adapter\Imagick;
 
 class SysinformasiController extends \Phalcon\Mvc\Controller
 {
+    protected $messages;
+    protected $title;
+    protected $type;
+    protected $text;
 
     public function initialize()
     {
@@ -14,14 +20,6 @@ class SysinformasiController extends \Phalcon\Mvc\Controller
             $this->response->redirect('account/loginEnd');
         }
     	$this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
-    }
-
-    public function sliderAction($value='')
-    {
-        $phql = "SELECT id,nama,aktif from RefSlider";
-        $slider = $this->modelsManager->executeQuery($phql);
-        $this->view->slider = $slider;
-        $this->view->pick('informasi/slider');
     }
 
     private function imageCheck($extension)
@@ -36,286 +34,305 @@ class SysinformasiController extends \Phalcon\Mvc\Controller
         return in_array($extension, $allowedTypes);
     }
 
-    public function delSliderImageAction()
+    public function presenceOf($validation, $column, $name) 
     {
-        $id = $_POST['id'];
-        $nama_file = $_POST['nama'];
-        $urel =  DOCUMENT_ROOT.'slider/'.$nama_file;
-        //delete image gan
-        unlink($urel);
-
-        $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
-        $del=RefSlider::findById($id);
-        $del->delete();
-        echo json_encode(array("status" => true));
+        $validation->add($column, new PresenceOf([
+            'message' => '<b>'.$name.'</b> tidak boleh kosong'
+        ]));
     }
 
-    public function uploadSliderAction($value='')
+    // -------------------------------------------------
+    // MODUL SLIDER
+    // -------------------------------------------------
+
+    public function sliderAction()
     {
-        $urel =  DOCUMENT_ROOT.'slider/';
-        // Check if the user has uploaded files
-        if ($this->request->hasFiles()) {
-            $files = $this->request->getUploadedFiles();
+        $data = RefSlider::find(['order' => 'id DESC']);
 
-            // Print the real file names and sizes
-            foreach ($files as $file) {
+        $this->view->data = $data;
+        $this->view->pick('informasi/slider');
+    }
 
-                //validasi men
-                if ($this->imageCheck($file->getRealType())) {
-                    if ($file->moveTo( $urel.$file->getName())) {
-                        $slider = new RefSlider();
-                        $slider->assign(array(
-                                    'nama' => $file->getName(),
-                                    'aktif' => "Y"
-                                    )
-                                );
+    public function deleteSliderAction($id)
+    {
+        $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);        
+        $data = RefSlider::findFirst($id);
+        $img = $data->nama;
+        $path = DOCUMENT_ROOT. 'img/galeri/' . $img;
+        $thumb_path = DOCUMENT_ROOT. 'img/galeri/thumb/' . $img;
+        $message = ["status" => false];
+        
+        if ($data->delete()) {
+            unlink($path);
+            unlink($thumb_path);
+            $message = ["status" => true];
+        }
+        
+        echo json_encode($message);
+    }
 
-                        $slider->save();
-                        $notif = array(
-                            'title' => 'success',
-                            'text' => 'Data berhasil di Upload',
-                            'type' => 'success',
-                        );
-                    } else {
-                        $notif = array(
-                            'title' => 'warning',
-                            'text' => "Gagal Upload",
-                            'type' => 'warning',
-                        );
+    public function addSliderAction()
+    {
+        $this->sliderValidation();    
+
+        if (count($this->messages) == 0) {        
+            $path =  DOCUMENT_ROOT . 'img/galeri/';
+            
+            if ($this->request->hasFiles()) {
+                $files = $this->request->getUploadedFiles();
+
+                foreach ($files as $file) {
+                    $ext = $file->getExtension();
+                    $nama_file = md5(uniqid(rand(), true)) . '.' . $ext;
+                    $path_file = $path . $nama_file;   
+
+                    if ($this->imageCheck($file->getRealType())) {
+                        if ($file->moveTo($path_file)) {
+                            // resize image to 1000px
+                            $image = new Imagick($path_file);
+                            $image->resize(
+                                1000,
+                                null,
+                                \Phalcon\Image::WIDTH
+                            )->save();                            
+                            // resize for thumbnail image
+                            $thumbnail = new Imagick($path_file);
+                            $new_thumbnail = $path . '/thumb/' . $nama_file;
+                            $thumbnail->resize(
+                                150,
+                                null,
+                                \Phalcon\Image::WIDTH
+                            )->save($new_thumbnail);
+
+                            $foto = $nama_file;
+                        } else {                    
+                            die('gagal masuk bro!');
+                        }
                     }
-                    echo json_encode($notif);
+                }
+
+                $data = new RefSlider();
+                $data->assign([
+                    'nama' => $foto, 
+                    'judul' => $_POST['judul'], 
+                    'deskripsi' => $_POST['deskripsi'], 
+                    'aktif' => $_POST['aktif']
+                ]);
+        
+                if ($data->save()) {
+                    $this->title = 'Sukses';
+                    $this->text = 'Data berhasil diupload';
+                    $this->type = 'success';
                 } else {
-                    $notif = array(
-                        'title' => 'warning',
-                        'text' => "Gagal Upload. File harus Image",
-                        'type' => 'warning',
-                    );
-                    echo json_encode($notif);
-                }                
-                
+                    $errors = $data->getMessages();
+                    foreach ($errors as $error) {
+                        $this->text .= "$error"."</br>";
+                    }
+                    $this->title = 'Error!';
+                    $this->type = 'warning';
+                }  
             }
         }
+
+        $notif = ['title' => $this->title, 'text' => $this->text, 'type' => $this->type];
+        echo json_encode($notif);             
     }
 
+    public function sliderValidation() 
+    {
+        $check = new Validation();
+
+        $this->presenceOf($check, 'judul', 'Judul Foto');        
+        $this->presenceOf($check, 'deskripsi', 'Deskripsi foto');
+
+        $this->messages = $check->validate($_POST);
+
+        foreach ($this->messages as $message) {
+            $this->text .= "$message"."</br>";
+        }
+        $this->title = 'Gagal';
+        $this->type = 'warning';  
+    }
+    
     public function editSliderAction($id)
     {
-        $berita = RefSlider::findFirstById($id);
-        $berita->assign(array(
-                    'aktif' => $_POST['aktif']
-                    )
-                );
+        $this->sliderValidation();  
 
-        $berita->save();
-        $notif = array(
-            'title' => 'success',
-            'text' => 'Data berhasil di input',
-            'type' => 'success',
-        );
+        if (count($this->messages) == 0) {        
+            $path = DOCUMENT_ROOT. 'img/galeri/';
+            $thumb_path = DOCUMENT_ROOT. 'img/galeri/thumb/';       
+            $foto_lama = $_POST['foto_lama'];     
+            
+            if ($this->request->hasFiles()) {
+                foreach ($this->request->getUploadedFiles() as $file) {
+                    // check if file updated
+                    if ($file->getSize() > 0) {
+                        // remove old image                      
+                        unlink($path . $foto_lama);
+                        unlink($thumb_path . $foto_lama);
+                        
+                        // add new image
+                        $ext = $file->getExtension();
+                        $nama_file = md5(uniqid(rand(), true)) . '.' . $ext;
+                        $path_file = $path . $nama_file;   
 
-        echo json_encode($notif);
-    }
-
-    ////////////////////////////////
-    ///////////BERITA////////
-    ///////////////////////////////
-
-
-    public function beritaAction($value='')
-    {
-        $phql = "SELECT id,judul,berita,tampil from RefBerita where jenis = 'pengumuman' ";
-        $berita = $this->modelsManager->executeQuery($phql);
-        $this->view->berita = $berita;
-        $this->view->pick('informasi/berita');
-        // $data_user = LogAktifitasUser::find();
-        // foreach ($data_user as $key => $value) {
-        //     echo "<pre>".print_r($value->nama,1)."</pre>";
-        // }die();
-        // $exp = explode('/', $_SERVER['REQUEST_URI']);
-        // array_shift($exp);
-        // array_shift($exp);
-        // $action = implode('/', $exp);
-
-    }
-
-    public function editBeritaAction($id)
-    {
-
-        $validation = new Phalcon\Validation(); 
-        $validation->add('berita', new PresenceOf(array(
-            'message' => 'Berita tidak boleh kosong'
-        )));
-        $validation->add('judul', new PresenceOf(array(
-            'message' => 'Judul tidak boleh kosong'
-        )));
-         
-        $messages = $validation->validate($_POST);
-        $pesan = '';
-        if (count($messages)) {
-            foreach ($messages as $message) {
-                $pesan .= "$message"."</br>";
+                        if ($this->imageCheck($file->getRealType())) {
+                            if ($file->moveTo($path_file)) {
+                                // resize image to 1000px
+                                $image = new Imagick($path_file);
+                                $image->resize(
+                                    1000,
+                                    null,
+                                    \Phalcon\Image::WIDTH
+                                )->save();                               
+                                // resize for thumbnail image
+                                $thumbnail = new Imagick($path_file);
+                                $new_thumbnail = $path . '/thumb/' . $nama_file;
+                                $thumbnail->resize(
+                                    150,
+                                    null,
+                                    \Phalcon\Image::WIDTH
+                                )->save($new_thumbnail);
+                                // foto name for database
+                                $foto = $nama_file;
+                            } else {                    
+                                die('gagal masuk bro!');
+                            }
+                        }
+                    } else {
+                        $foto = $foto_lama;
+                    }
+                }
             }
-            $notif = array(
-                'title' => 'warning',
-                'text' => $pesan,
-                'type' => 'warning',
-            );
-        }else{
-            $berita = RefBerita::findFirstById($id);
-            $berita->assign(array(
-                        'judul' => $_POST['judul'],
-                        'berita' => $_POST['berita'],
-                        'tampil' => $_POST['tampil']
-                        )
-                    );
-
-            $berita->save();
-            $notif = array(
-                'title' => 'success',
-                'text' => 'Data berhasil di input',
-                'type' => 'success',
-            );
+            
+            $data = RefSlider::findFirst($id);            
+            $data->assign([
+                'nama' => $foto, 
+                'judul' => $_POST['judul'], 
+                'deskripsi' => $_POST['deskripsi'], 
+                'aktif' => $_POST['aktif']
+            ]);
+    
+            if ($data->save()) {
+                $this->title = 'Sukses';
+                $this->text = 'Data berhasil diupdate';
+                $this->type = 'success';
+            } else {
+                $errors = $data->getMessages();
+                foreach ($errors as $error) {
+                    $this->text .= "$error"."</br>";
+                }
+                $this->title = 'Error!';
+                $this->type = 'warning';
+            }              
         }
 
-        echo json_encode($notif);
+        $notif = ['title' => $this->title, 'text' => $this->text, 'type' => $this->type];
+        echo json_encode($notif); 
     }
 
-    public function addBeritaAction($value='')
-    {
-        $validation = new Phalcon\Validation(); 
-        $validation->add('judul', new PresenceOf(array(
-            'message' => 'Judul tidak boleh kosong'
-        )));
-        $validation->add('berita', new PresenceOf(array(
-            'message' => 'Berita tidak boleh kosong'
-        )));
-         
-        $messages = $validation->validate($_POST);
-        $pesan = '';
-        if (count($messages)) {
-            foreach ($messages as $message) {
-                $pesan .= "$message"."</br>";
-            }
-            $notif = array(
-                'title' => 'warning',
-                'text' => $pesan,
-                'type' => 'warning',
-            );
-        }else{
-            $berita = new RefBerita();
-            $berita->assign(array(
-                        'judul' => $_POST['judul'],
-                        'berita' => $_POST['berita'],
-                        'jenis' => 'pengumuman',
-                        'tampil' => 'Y'
-                        )
-                    );
+    // -------------------------------------------------
+    // MODUL BERITA
+    // -------------------------------------------------
 
-            $berita->save();
-            $notif = array(
-                'title' => 'success',
-                'text' => 'Data berhasil di input',
-                'type' => 'success',
-            );
+    public function beritaAction($jenis)
+    {
+        $data = RefBerita::find([
+            "conditions" => "jenis = '$jenis'",
+            "order" => "id DESC"
+        ]);
+        
+        $this->view->data = $data;
+        $this->view->jenis = $jenis;
+        
+        $pickWiew = 'informasi/berita';
+        
+        if ($jenis == 'teks_berjalan') {
+            $pickWiew = 'informasi/text_berjalan';
+        } 
+
+        $this->view->pick($pickWiew);
+    }
+
+    public function addBeritaAction($jenis)
+    {        
+        $this->beritaValidation();
+        
+        if (count($this->messages) == 0) {
+            $data = new RefBerita();
+            $this->saveBerita($data, $jenis, 'tambah');        
+        }
+        
+        $notif = ['title' => $this->title, 'text' => $this->text, 'type' => $this->type];
+        echo json_encode($notif);        
+    }
+
+    public function editBeritaAction($id, $jenis)
+    {
+        $this->beritaValidation();
+        
+        if (count($this->messages) == 0) {
+            $data = RefBerita::findFirst($id);
+            $this->saveBerita($data, $jenis, 'ubah');
         }
 
-        echo json_encode($notif);
-    }
+        $notif = ['title' => $this->title, 'text' => $this->text, 'type' => $this->type];
+        echo json_encode($notif);     
+    }    
 
-    ////////////////////////////////
-    ///////////TEXT BERJALAN////////
-    ///////////////////////////////
-
-    public function textBerjalanAction($value='')
-    {
-        $phql = "SELECT id,berita,tampil from RefBerita where jenis = 'teks_berjalan' ";
-        $berita = $this->modelsManager->executeQuery($phql);
-        $this->view->berita = $berita;
-        $this->view->pick('informasi/text_berjalan');
-    }
-    public function delBeritaBerjalanAction($id)
+    public function deleteBeritaAction($id)
     {
         $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
-        $del=RefBerita::findById($id);
-        $del->delete();
-        echo json_encode(array("status" => true));
+
+        $data = RefBerita::findFirst($id);
+        $data->delete();
+
+        echo json_encode(["status" => true]);
     }
 
-
-    public function editBeritaBerjalanAction($id)
+    public function saveBerita($data, $jenis, $message) 
     {
-
-        $validation = new Phalcon\Validation(); 
-        $validation->add('berita', new PresenceOf(array(
-            'message' => 'Berita tidak boleh kosong'
-        )));
-         
-        $messages = $validation->validate($_POST);
-        $pesan = '';
-        if (count($messages)) {
-            foreach ($messages as $message) {
-                $pesan .= "$message"."</br>";
-            }
-            $notif = array(
-                'title' => 'warning',
-                'text' => $pesan,
-                'type' => 'warning',
-            );
-        }else{
-            $berita = RefBerita::findFirstById($id);
-            $berita->assign(array(
-                        'berita' => $_POST['berita'],
-                        'tampil' => $_POST['tampil']
-                        )
-                    );
-
-            $berita->save();
-            $notif = array(
-                'title' => 'success',
-                'text' => 'Data berhasil di input',
-                'type' => 'success',
-            );
+        if ($_POST['tgl_publikasi']) {
+            $publikasi = $_POST['tgl_publikasi'];
+        } else {
+            $publikasi = date('Y-m-d');
         }
 
-        echo json_encode($notif);
-    }
-
-    public function addBeritaBerjalanAction($value='')
-    {
-        $validation = new Phalcon\Validation(); 
-        $validation->add('berita', new PresenceOf(array(
-            'message' => 'Berita tidak boleh kosong'
-        )));
-         
-        $messages = $validation->validate($_POST);
-        $pesan = '';
-        if (count($messages)) {
-            foreach ($messages as $message) {
-                $pesan .= "$message"."</br>";
+        $data->assign(array(
+            'berita' => $_POST['berita'],
+            'jenis' => $jenis,
+            'tgl_publikasi' => $publikasi,
+            'tampil' => $_POST['aktif']
+        ));
+        
+        if ($data->save()) {
+            $this->title = 'Sukses';
+            $this->text = 'Data berhasil di' . $message;
+            $this->type = 'success';
+        } else {
+            $errors = $data->getMessages();
+            foreach ($errors as $error) {
+                $this->text .= "$error"."</br>";
             }
-            $notif = array(
-                'title' => 'warning',
-                'text' => $pesan,
-                'type' => 'warning',
-            );
-        }else{
-            $berita = new RefBerita();
-            $berita->assign(array(
-                        'berita' => $_POST['berita'],
-                        'jenis' => 'teks_berjalan',
-                        'tampil' => 'Y'
-                        )
-                    );
+            $this->title = 'Error!';
+            $this->type = 'warning';
+        }         
+    }   
+    
+    public function beritaValidation() 
+    {
+        $check = new Validation();
+ 
+        $this->presenceOf($check, 'berita', 'Isi Berita');        
 
-            $berita->save();
-            $notif = array(
-                'title' => 'success',
-                'text' => 'Data berhasil di input',
-                'type' => 'success',
-            );
+        $this->messages = $check->validate($_POST);
+
+        foreach ($this->messages as $message) {
+            $this->text .= "$message"."</br>";
         }
-
-        echo json_encode($notif);
-    }
+        $this->title = 'Gagal';
+        $this->type = 'warning';  
+    } 
 
 }
 
