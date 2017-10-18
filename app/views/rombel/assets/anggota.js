@@ -105,6 +105,10 @@
     $('.select2').select2({
         placeholder: '-- Pilih Murid --',
         minimumInputLength: 3
-    })    
+    }); 
+
+    $(".img-murid").on("error", function() {
+        $(this).attr('src', 'img/user.png');
+    });
 
 }(document, window, jQuery));
