@@ -36,14 +36,17 @@ class RombonganBelajarController extends \Phalcon\Mvc\Controller
                 ->getQuery()
                 ->execute();
                     
-        $semester = RefSemester::find(["columns" => "semester_id, nama"]);
+        $tahun = RefTahunAjaran::find(["columns" => "tahun_ajaran_id, nama"]);
         $kurikulum = RefKurikulum::find(["columns" => "kurikulum_id, nama_kurikulum"]);
         $tingkat = RefTingkatPendidikan::find(["columns" => "tingkat_pendidikan_id, nama"]);
 
-        $this->view->data = $data;
-        $this->view->semester = $semester;
-        $this->view->kurikulum = $kurikulum;
-        $this->view->tingkat = $tingkat;
+        $this->view->setVars([
+            "data" => $data,
+            "tahun" => $tahun,
+            "kurikulum" => $kurikulum,
+            "tingkat" => $tingkat
+        ]);
+
         $this->view->pick('rombel/rombel');
     }
 
