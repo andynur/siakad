@@ -83,9 +83,9 @@
                         <a href="#">
                           <div class="pull-left">
                             <?php if ($this->session->get('id_jenis') == 1): ?>
-                            <img class="img-circle" src="<?= PUBLIC_URL ?>img/sdm/<?= $this->session->get('foto'); ?>" alt="User Avatar">
+                            <img class="img-circle" src="<?= PUBLIC_URL ?>img/sdm/<?= $this->session->get('foto'); ?>" alt="User Avatar" onerror="imageError(this)">
                             <?php else: ?>
-                            <img class="img-circle" src="<?= PUBLIC_URL ?>img/mhs/<?= $this->session->get('foto'); ?>" alt="User Avatar">
+                            <img class="img-circle" src="<?= PUBLIC_URL ?>img/mhs/<?= $this->session->get('foto'); ?>" alt="User Avatar" onerror="imageError(this)">
                             <?php endif ?>
                           </div>
                           <h4>
@@ -156,9 +156,9 @@
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <?php if ($this->session->get('id_jenis') == 1): ?>
-                  <img class="user-image" src="<?= PUBLIC_URL ?>img/sdm/<?= $this->session->get('foto'); ?>" alt="User Avatar">
+                  <img class="user-image" src="<?= PUBLIC_URL ?>img/sdm/<?= $this->session->get('foto'); ?>" alt="User Avatar" onerror="imageError(this)">
                   <?php else: ?>
-                  <img class="user-image" src="<?= PUBLIC_URL ?>img/mhs/<?= $this->session->get('foto'); ?>" alt="User Avatar">
+                  <img class="user-image" src="<?= PUBLIC_URL ?>img/mhs/<?= $this->session->get('foto'); ?>" alt="User Avatar" onerror="imageError(this)">
                   <?php endif ?>
                   <span class="hidden-xs"><?= $this->session->get('nama'); ?></span>
                 </a>
@@ -166,9 +166,9 @@
                   <!-- User image -->
                   <li class="user-header">
                     <?php if ($this->session->get('id_jenis') == 1): ?>
-                    <img class="img-circle" src="<?= PUBLIC_URL ?>img/sdm/<?= $this->session->get('foto'); ?>" alt="User Avatar">
+                    <img class="img-circle" src="<?= PUBLIC_URL ?>img/sdm/<?= $this->session->get('foto'); ?>" alt="User Avatar" onerror="imageError(this)">
                     <?php else: ?>
-                    <img class="img-circle" src="<?= PUBLIC_URL ?>img/mhs/<?= $this->session->get('foto'); ?>" alt="User Avatar">
+                    <img class="img-circle" src="<?= PUBLIC_URL ?>img/mhs/<?= $this->session->get('foto'); ?>" alt="User Avatar" onerror="imageError(this)">
                     <?php endif ?>
                     <p>
                       <?= $this->session->get('nama'); ?> - <?php if ($this->session->get('id_jenis') == 1): ?>
@@ -221,9 +221,9 @@
           <div class="user-panel">
             <div class="pull-left image">
               <?php if ($this->session->get('id_jenis') == 1): ?>
-              <img class="img-circle" src="<?= PUBLIC_URL ?>img/sdm/<?= $this->session->get('foto'); ?>" alt="User Avatar">
+              <img class="img-circle" src="<?= PUBLIC_URL ?>img/sdm/<?= $this->session->get('foto'); ?>" alt="User Avatar" onerror="imageError(this)">
               <?php else: ?>
-              <img class="img-circle" src="<?= PUBLIC_URL ?>img/mhs/<?= $this->session->get('foto'); ?>" alt="User Avatar">
+              <img class="img-circle" src="<?= PUBLIC_URL ?>img/mhs/<?= $this->session->get('foto'); ?>" alt="User Avatar" onerror="imageError(this)">
               <?php endif ?>
             </div>
             <div class="pull-left info">
