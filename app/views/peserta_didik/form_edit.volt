@@ -73,7 +73,7 @@
                                             <div class="form-group">
                                                 <label>Tanggal Masuk / Diterima</label>
                                                 <input type="text" id="tgl_masuk_input" placeholder="Tanggal Masuk" value="{{ helper.dateBahasaIndo(data[0].tgl_masuk) }}" class="form-control">
-                                                <input type="hidden" name="tgl_masuk" id="tgl_masuk">
+                                                <input type="hidden" name="tgl_masuk" value="{{ data[0].tgl_masuk }}" id="tgl_masuk">
                                             </div>
                                         </div>
 
@@ -83,11 +83,11 @@
                                                 <div class="input-group"> 
                                                     <input type="text" id="tgl_lahir_input" placeholder="Tanggal Lahir" value="{{ helper.dateBahasaIndo(data[0].tgl_lahir) }}" class="form-control">
                                                     <div class="input-group-btn"> 
-                                                        <button type="button" class="btn btn-primary" id="reset_pass">
+                                                        <button type="button" class="btn btn-primary btn-flat" id="reset_pass">
                                                             <i class="fa fa-refresh"></i>&nbsp; Ubah Password
                                                         </button>
                                                     </div> 
-                                                    <input type="hidden" name="tgl_lahir" id="tgl_lahir">
+                                                    <input type="hidden" name="tgl_lahir" id="tgl_lahir" value="{{ data[0].tgl_lahir }}">
                                                 </div>                                                
                                             </div>
                                         </div>
