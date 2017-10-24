@@ -167,26 +167,29 @@ class ApiController extends Controller {
     }
 
     public function getPengumumanAction($rombel_id){
-    	$result = [[
-			"pengirim" => "Ibu Mardiyah"
-			, "isi" => "Selasa depan tugas matematika bab trigonometri dikumpulkan. Harap diperhatikan!!"
-			, "tanggal" => "Rabu, 2 Februari 2018"
-			, "lampiran" => "soal.jpg"
-			, "kepada" => "Murid Kelas IX"
-			],[
-				"pengirim" => "Ibu Mardiyah"
-				, "isi" => "Kerja bakti akan dilaksanankan jumat sore. mohon dipersiapkan"
-				, "tanggal" => "Kamis, 3 Februari 2018"
-				, "lampiran" => "suratedaran.jpg"
-				, "kepada" => "Murid Kelas IX"
-			],[
-				"pengirim" => "Ibu Mardiyah"
-				, "isi" => "Bagi yang remidi ulangan harian fisika, hari senin akan di adakan ulangan remidi fisika. Selamat belajar."
-				, "tanggal" => "Kamis, 3 Februari 2018"
-				, "lampiran" => "materi.jpg"
-				, "kepada" => "Murid Kelas IX"
-			]
-		];
+		$data = $this->modelsManager->createBuilder()
+			->addFrom('RefPengumuman', 'p')
+			->join('RefUser', 'p.pengirim_uid = u.uid', 'u')
+			->join('RefRombonganBelajar', 'p.tujuan = r.rombongan_belajar_id', 'r')
+			->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
+			->columns(['u.nama AS sdm', 'p.isi', 'p.tanggal', 'p.lampiran', 'r.nama AS rombel', 't.nama AS tingkat'])
+			->where("p.tujuan = '$rombel_id'")
+			->andWhere("p.status = 'publish'")
+			->getQuery()
+			->execute()
+			->toArray();
+
+		$result = [];
+		foreach ($data as $v) {
+			$result[] = [
+				"pengirim" => $v["sdm"],
+				"isi" => $v["isi"],
+				"tanggal" => $this->helper->konversi_tgl($v["tanggal"]),
+				"lampiran" => $v["lampiran"],
+				"kepada" => "Murid " . $v["tingkat"] . ' '. $v["rombel"]
+			];
+		}
+
 		echo json_encode($result);	
     }
 
