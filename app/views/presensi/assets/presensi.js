@@ -71,7 +71,6 @@ $(function () {
         }
 
         $("#select_count").html(checked_murid.length);
-        console.log(checked_murid);
     });
 
     // pilih checkbox satuan
@@ -90,8 +89,6 @@ $(function () {
                 return e.murid_id != id;
             });
         }
-
-        console.log(checked_murid);
     });
 });
 
@@ -138,6 +135,9 @@ function change_date(type = '-') {
 
 function presensi_modal(jenis, single = '') {
     $('#presensiModal').modal('show');
+    $('#presensi_tipe option[value=masuk]').show();
+    $('#presensi_tipe option[value=keluar]').show();
+
     $('#presensi_nama').closest('.form-group').show();
     $('#presensi_jenis').html(jenis);
 
@@ -146,6 +146,16 @@ function presensi_modal(jenis, single = '') {
         var id = data_id.split('_')[1];
         var nama = $('#' + data_id + ' #nama_murid').html();
         var email = $('#' + data_id + ' #email_wali').html();
+        var statusMasuk = $('#' + data_id + ' span[data-masuk]').attr('data-masuk');
+        var statusKeluar = $('#' + data_id + ' span[data-keluar]').attr('data-keluar');
+
+        if (statusMasuk != undefined) {
+            $('#presensi_tipe option[value=masuk]').hide();
+        }
+
+        if (statusKeluar != undefined) {
+            $('#presensi_tipe option[value=keluar]').hide();
+        }        
 
         $('#presensi_nama').val(nama);
 
@@ -155,7 +165,8 @@ function presensi_modal(jenis, single = '') {
             nama: nama,
             email: email
         });
-    } else {
+    } else {        
+        // if not single hide input name
         $('#presensi_nama').closest('.form-group').hide();
     }
 

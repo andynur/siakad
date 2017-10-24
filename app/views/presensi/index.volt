@@ -1,3 +1,6 @@
+{# Custom css #}
+<style>{% include "presensi/assets/presensi.css" %}</style>
+
 <section class="content-header">
     <h1>
         Presensi {{data[0].nama_tingkat}} - {{data[0].nama_rombel}} &nbsp; 
@@ -48,16 +51,8 @@
                                 </div>
                             </div>      
                             <div class="col-sm-5">
-                                <div class="form-group dropdown" style="margin-right: 10px">
-                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-sign-in"></i>&nbsp; Presensi: &nbsp; 
-                                    <span class="caret"></span></button>
-
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#" onclick="presensi_modal('hadir')">&raquo; Hadir</a></li>
-                                        <li><a href="#" onclick="presensi_modal('absen')">&raquo; Absen</a></li>              
-                                        <li><a href="#" onclick="presensi_modal('sakit')">&raquo; Sakit</a></li>
-                                        <li><a href="#" onclick="presensi_modal('izin')">&raquo; Izin</a></li>
-                                    </ul>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-flat bg-orange" onclick="presensi_modal('hadir')"><i class="fa fa-sign-in"></i>&nbsp; Presensi                                
                                 </div>                              
                             </div>
                         </div>
@@ -66,14 +61,16 @@
                     <table id="data_table" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th style="width: 5px"><input type="checkbox" id="select_all" style="margin: 0;"></th> 
+                                <th style="width: 5px">
+                                    <input type="checkbox" id="select_all" style="margin: 0; vertical-align: middle;" data-toggle="tooltip" title="pilih semua">
+                                </th> 
                                 <th style="width: 5px">No</th>
                                 <!-- <th style="width: 80px">Tanggal</th> -->
                                 <th style="width: 200px">Murid</th>
                                 <th style="width: 120px">Masuk</th>
                                 <th style="width: 120px">Keluar</th>
                                 <th style="width: 60px">Email Orangtua</th>
-                                <th style="width: 60px">Aksi</th>
+                                <th style="width: 80px">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -82,7 +79,14 @@
                             foreach($data as $a => $v) {                                
                             ?>
                             <tr id="data_{{v.murid_id}}" class="middle-row">
-                                <td><input type="checkbox" class="check" data-id="{{v.murid_id}}"></td>
+                                {% set masuk = hadir[v.murid_id]['masuk']['presensi'] %}
+                                {% set keluar = hadir[v.murid_id]['keluar']['presensi'] %}
+
+                                <td>
+                                    {% if (masuk == '') %}
+                                    <input type="checkbox" class="check" data-id="{{v.murid_id}}" data-toggle="tooltip" title="pilih">
+                                    {% endif  %}
+                                </td>
                                 <td align="center">{{no}}</td>
                                 <!-- <td><?= $this->helper->dateBahasaIndo(date('Y-m-d')) ?></td> -->
                                 <!-- <td>{{ hadir[v.murid_id]['masuk']['tanggal'] != '' ? hadir[v.murid_id]['masuk']['tanggal'] : '' }}</td> -->
@@ -93,13 +97,13 @@
                                     <span class="label label-primary">{{v.nis}}</span>
                                 </td>  
                                 
-                                {% set masuk = hadir[v.murid_id]['masuk']['presensi'] %}
                                 {% if (masuk == 'hadir') %}
                                     {% set masuk_tipe = 'success' %}
                                     {% set masuk_icon = 'fa-check' %}
                                 {% elseif (masuk == 'absen') %}
                                     {% set masuk_tipe = 'danger' %}
                                     {% set masuk_icon = 'fa-times' %}
+                                    {% set masuk = 'Tidak Hadir' %}
                                 {% elseif (masuk == 'sakit') %}
                                     {% set masuk_tipe = 'primary' %}
                                     {% set masuk_icon = 'fa-medkit' %}    
@@ -119,7 +123,7 @@
 
                                 <td style="text-transform: uppercase">
                                     {% if (masuk != '') %}
-                                    <span class="label label-{{masuk_tipe}}">
+                                    <span class="label label-{{masuk_tipe}}" data-masuk="{{masuk}}">
                                         <i class="fa {{masuk_icon}}"></i>&nbsp; {{masuk}}
                                     </span>
                                     {% endif %}
@@ -133,18 +137,20 @@
                                     {% if (masuk_ket != '') %}
                                         <span class="label label-default" data-toggle="tooltip" title="{{masuk_ket}}"><i class="fa fa-info-circle"></i></span>
                                     {% endif %}
-                                    <br/>
+                                    {#<br/>
                                     {% if (masuk_email != '') %}
                                         <span class="label label-default"><i class="fa fa-envelope"></i>&nbsp; {{masuk_status}}</span>           
-                                    {% endif %}
-                                </td>                                                                
-                                {% set keluar = hadir[v.murid_id]['keluar']['presensi'] %}
+                                    {% endif %} #}
+                                    <!-- edit keluar 
+                                    <a class="btn btn-primary btn-xs" onclick="edit_presensi('{{v.murid_id}}', '{{rombel_id}}')"><i class="glyphicon glyphicon-edit"></i></a> -->
+                                </td>
                                 {% if (keluar == 'hadir') %}
                                     {% set keluar_tipe = 'success' %}
                                     {% set keluar_icon = 'fa-check' %}
                                 {% elseif (keluar == 'absen') %}
                                     {% set keluar_tipe = 'danger' %}
                                     {% set keluar_icon = 'fa-times' %}
+                                    {% set keluar = 'Tidak Hadir' %}
                                 {% elseif (keluar == 'sakit') %}
                                     {% set keluar_tipe = 'primary' %}
                                     {% set keluar_icon = 'fa-medkit' %}    
@@ -164,7 +170,7 @@
 
                                 <td style="text-transform: uppercase">
                                     {% if (keluar != '') %}
-                                    <span class="label label-{{keluar_tipe}}">
+                                    <span class="label label-{{keluar_tipe}}" data-keluar="{{keluar}}">
                                         <i class="fa {{keluar_icon}}"></i>&nbsp; {{keluar}}
                                     </span>
                                     {% endif %}
@@ -178,13 +184,13 @@
                                     {% if (keluar_ket != '') %}
                                         <span class="label label-default" data-toggle="tooltip" title="{{keluar_ket}}"><i class="fa fa-info"></i></span>
                                     {% endif %}
-                                    <br/>
+                                    {# <br/>
                                     {% if (keluar_email != '') %}
                                         <span class="label label-default"><i class="fa fa-envelope"></i>&nbsp; {{keluar_status}}</span>           
-                                    {% endif %}
+                                    {% endif %} #}
                                 </td>                             
                                 <td>
-                                    {% if (masuk_email != '' OR keluar_email != '') %}
+                                    <!--{% if (masuk_email != '' OR keluar_email != '') %}
                                     <div class="dropdown">
                                         <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-envelope-o"></i>&nbsp; Kirim Email
                                         <span class="caret"></span></button>
@@ -198,17 +204,17 @@
                                             {% endif %}
                                         </ul>
                                     </div>      
-                                    {% endif %}                               
+                                    {% endif %} -->
                                     <span class="label label-default" id="email_wali">{{v.email}}</span>
                                 </td>
-                                <td>                        
+                                <td>
                                     {% if (masuk == '' OR keluar == '') %}        
-                                    <div class="dropdown">
-                                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-sign-in"></i>&nbsp; Presensi: &nbsp; 
+                                    <div class="dropdown" style="display: inline">
+                                        <button class="btn btn-xs btn-flat bg-orange dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-sign-in"></i>&nbsp; Presensi: &nbsp; 
                                         <span class="caret"></span></button>
                                         <ul class="dropdown-menu">
                                             <li><a href="#" onclick="presensi_modal('hadir', this)">&raquo; Hadir</a></li>
-                                            <li><a href="#" onclick="presensi_modal('absen', this)">&raquo; Absen</a></li>                  
+                                            <li><a href="#" onclick="presensi_modal('absen', this)">&raquo; Tidak Hadir</a></li>                  
                                             <li><a href="#" onclick="presensi_modal('sakit', this)">&raquo; Sakit</a></li>
                                             <li><a href="#" onclick="presensi_modal('izin', this)">&raquo; Izin</a></li>
                                         </ul>
@@ -229,17 +235,7 @@
                                         <span class="rows_selected" id="select_count">0</span> Data Terpilih
                                     </p>
                                     <div class="pull-right">
-                                        <div class="form-group dropdown" style="margin-right: 10px">
-                                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-sign-in"></i>&nbsp; Presensi: &nbsp; 
-                                            <span class="caret"></span></button>
-
-                                            <ul class="dropdown-menu">
-                                                <li><a href="#" onclick="presensi_modal('hadir')">&raquo; Hadir</a></li>
-                                                <li><a href="#" onclick="presensi_modal('absen')">&raquo; Absen</a></li>              
-                                                <li><a href="#" onclick="presensi_modal('sakit')">&raquo; Sakit</a></li>
-                                                <li><a href="#" onclick="presensi_modal('izin')">&raquo; Izin</a></li>
-                                            </ul>
-                                        </div>                                        
+                                        <button type="button" class="btn btn-flat bg-orange" onclick="presensi_modal('hadir')"><i class="fa fa-sign-in"></i>&nbsp; Presensi                                       
                                         <!-- <div class="form-group dropdown" style="margin-right: 10px">
                                             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-envelope-o"></i>&nbsp; Kirim Email:
                                             <span class="caret"></span></button>
@@ -288,6 +284,7 @@
                         <div class="form-group">                                
                             <label for="presensi_tipe"><i class="fa fa-tasks"></i>&nbsp; Tipe</label>
                             <select id="presensi_tipe" class="form-control">
+                                <option value="">Pilih:</option>
                                 <option value="masuk">Masuk</option>
                                 <option value="keluar">Keluar</option>
                             </select>    
