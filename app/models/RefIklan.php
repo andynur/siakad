@@ -43,11 +43,11 @@ class RefIklan extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
-        $this->setSchema("sisko");
-        $this->setSource("ref_iklan");
-    }
+    // public function initialize()
+    // {
+    //     $this->setSchema("sisko");
+    //     $this->setSource("ref_iklan");
+    // }
 
     /**
      * Allows to query a set of records that match the specified conditions
