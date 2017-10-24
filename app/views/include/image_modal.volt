@@ -6,8 +6,8 @@
                 <h4 class="modal-title" id="imageModalLabel"></h4>
             </div>
             <div class="modal-body">
-                <img src="img/user.png" width="100%" id="imageModalSource" />
-                <h4 id="imageModalDescription" style="font-style: italic"></h4>
+                <img src="img/user.png" id="imageModalSource" />
+                <h4 id="imageModalDescription"></h4>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
