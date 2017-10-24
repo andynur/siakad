@@ -146,27 +146,27 @@ class ApiController extends Controller {
 		echo json_encode($result);
 	}
 
-    public function getIklanLoginAction($jml){
-    	$result = [[
-    		"line1"=>"Selamat Datang di Al Azhar Apps", 
-    		"line2"=>"Uji coba aplikasi Al-Azhar versi Demo"
-    	],[
-    		"line1"=>"Untuk Cek Tagihan di menu tagihan", 
-    		"line2"=>"mengingatkan agar tagihan yang ada tidak lewat jatuh tempo"
-    	],[
-    		"line1"=>"Istighfar untuk masa yang lalumu", 
-    		"line2"=>"agar dihapuskan dosa-dosamu"
-    	],[
-    		"line1"=>"Syukuri apa yang ada saat ini", 
-    		"line2"=>"agar ditambah nikmat oleh Allah"
-    	],[
-    		"line1"=>"Berdoalah untuk masa depan", 
-    		"line2"=>"agar kita senantiasa terjaga dalam kebaikan"
-    	]];
-    	echo json_encode($result);	
+	public function getIklanLoginAction($jml = 1)
+	{
+		$data = RefIklan::find([
+			"conditions" => "aktif = 'Y'",
+			"order" => "id DESC",
+			"limit" => $jml,
+		]);
+
+		$result = [];
+		foreach ($data->toArray() as $v) {
+			$result[] = [
+				"line1" => $v["line1"],
+				"line2" => $v["line2"]
+			];
+		}
+
+		echo json_encode($result);		
     }
 
-    public function getPengumumanAction($rombel_id){
+	public function getPengumumanAction($rombel_id)
+	{
 		$data = $this->modelsManager->createBuilder()
 			->addFrom('RefPengumuman', 'p')
 			->join('RefUser', 'p.pengirim_uid = u.uid', 'u')
