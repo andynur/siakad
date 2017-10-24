@@ -329,4 +329,25 @@ class Helpers
         return $output;
     }
 
+    function getBerita($jenis)
+    {
+        $berita = RefBerita::find([
+            "conditions" => "jenis = '$jenis' AND tampil = 'Y'",
+            "order" => "id DESC"
+        ]);
+
+        return $berita;
+    }
+
+    function getSlider()
+    {
+        $slider = RefSlider::find([
+            "columns" => "id, nama, judul, deskripsi",
+            "conditions" => "aktif = 'Y'",
+            "order" => "id DESC",
+            "limit" => 5
+        ]);
+
+        return $slider;
+    }    
 }

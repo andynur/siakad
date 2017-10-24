@@ -43,9 +43,12 @@
       <div class="pull-left tab-selected">Pengumuman</div>
       <div class="pull-left cells">
         <p style="color: #555;text-align: center;margin-top: 0.7em;">
+          {% set teks_berjalan = helper.getBerita('teks_berjalan') %}            
           <marquee>
-            Aplikasi SISKO Al Azhar 29 & 16 BSB City Semarang telah diluncurkan. |
-            Kunjungsi website portal untuk mendownload APK aplikasi SISKO di <a href="http://portal.al-azharbsbcity.or.id/">al-azharbsbcity.or.id</a>
+            {% for v in teks_berjalan %}
+              <?php $teks .= strip_tags($v->berita, '<a><strong><em>') . ' | '; ?>
+            {% endfor %}
+            {{ teks|right_trim('| ') }}
           </marquee>
         </p>
       </div>
@@ -54,58 +57,35 @@
     <div class="col-md-8">
       <div id="myCarousel" class="carousel slide">
         <ol class="carousel-indicators">
-          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-          <li data-target="#myCarousel" data-slide-to="1"></li>
-          <li data-target="#myCarousel" data-slide-to="2"></li>
-          <li data-target="#myCarousel" data-slide-to="3"></li>
-          <li data-target="#myCarousel" data-slide-to="4"></li>
+          {% set slider = helper.getSlider() %}            
+          {% set no = 1 %}
+          {% for v in slider %}
+            {% if (no == 1) %}
+              <li data-target="#myCarousel" data-slide-to="{{ no }}" class="active"></li>
+            {% else %}
+              <li data-target="#myCarousel" data-slide-to="{{ no }}"></li>
+            {% endif %}
+          {% set no += 1 %}
+          {% endfor %} 
         </ol>
         <div class="carousel-inner">
-          <div class="item active">
-            <img src="../img/galeri/1da5ef665095718224b5c77e156b97da.jpg" class="img-responsive">
+          {% set no = 1 %}
+          {% for v in slider %}
+            {% if (no == 1) %}
+              <div class="item active">
+            {% else %}
+              <div class="item">
+            {% endif %}
+            <img src="../img/galeri/{{ v.nama }}" class="img-responsive">
             <div class="container">
               <div class="carousel-caption">
-                <h2>Milad Yayasan Al Hisyam</h2> 
-                <p>Pembukaan acara Milad Yayasan Al Hisyam ke 16</p>
+                <h2>{{ v.judul }}</h2> 
+                <p>{{ v.deskripsi }}</p>
               </div>
             </div>
           </div>
-          <div class="item">
-            <img src="../img/galeri/981c267b005954c4b16abdc982ca625f.jpeg" class="img-responsive">
-            <div class="container">
-              <div class="carousel-caption">
-                <h2>Milad Yayasan Al Hisyam</h2>                
-                <p>Puncak acara Milad Yayasan Al Hisyam ke 16</p>                
-              </div>
-            </div>
-          </div>  
-          <div class="item">
-            <img src="../img/galeri/18289e7f9413c48120d30558b9165146.jpg" class="img-responsive">
-            <div class="container">
-              <div class="carousel-caption">
-                <h2>SD Islam Al Azhar 29</h2>
-                <p>Prestasi SD Islam Al Azhar 29 BSB Semarang</p> 
-              </div>
-            </div>
-          </div>                  
-          <div class="item">
-            <img src="../img/galeri/97d59cf3bf45bd7baecdac6f848b5ad4.jpg" class="img-responsive">
-            <div class="container">
-              <div class="carousel-caption">
-                <h2>SMP Islam Al Azhar 29</h2>
-                <p>Pelantikan OSIS SMP Islam Al Azhar 29 BSB Semarang</p> 
-              </div>
-            </div>
-          </div>                  
-          <div class="item">
-            <img src="../img/galeri/901de8a07ae3d1d1c7aaeb0838092e77.jpeg" class="img-responsive">
-            <div class="container">
-              <div class="carousel-caption">
-                <h2>SMA Islam Al Azhar 16</h2>
-                <p>Prestasi SMA Islam Al Azhar 16 BSB Semarang</p> 
-              </div>
-            </div>
-          </div>                  
+          {% set no += 1 %}
+          {% endfor %}         
         </div>
         <!-- Controls -->
         <a class="left carousel-control" href="#myCarousel" data-slide="prev">
