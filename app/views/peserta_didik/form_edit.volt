@@ -72,44 +72,64 @@
                                         <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label>Tanggal Masuk / Diterima</label>
-                                                <input name="tgl_masuk" type="text" id="tgl_masuk" placeholder="Tanggal Masuk" value="{{ data[0].tgl_masuk }}" class="form-control">
+                                                <input type="text" id="tgl_masuk_input" placeholder="Tanggal Masuk" value="{{ helper.dateBahasaIndo(data[0].tgl_masuk) }}" class="form-control">
+                                                <input type="hidden" name="tgl_masuk" id="tgl_masuk">
                                             </div>
                                         </div>
 
                                         <div class="col-lg-7">
+                                            <div class="form-group">
+                                                <label>Tanggal Lahir <span style="color:red">*</span></label>
+                                                <div class="input-group"> 
+                                                    <input type="text" id="tgl_lahir_input" placeholder="Tanggal Lahir" value="{{ helper.dateBahasaIndo(data[0].tgl_lahir) }}" class="form-control">
+                                                    <div class="input-group-btn"> 
+                                                        <button type="button" class="btn btn-primary" id="reset_pass">
+                                                            <i class="fa fa-refresh"></i>&nbsp; Ubah Password
+                                                        </button>
+                                                    </div> 
+                                                    <input type="hidden" name="tgl_lahir" id="tgl_lahir">
+                                                </div>                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label>Tempat Lahir <span style="color:red">*</span></label>
                                                 <input name="tempat_lahir" type="text" id="tempat_lahir" placeholder="Tempat Lahir" value="{{ data[0].tempat_lahir }}" class="form-control">
                                             </div>
-                                        </div>
-                                        <div class="col-lg-5">
-                                            <div class="form-group">
-                                                <label>Tanggal Lahir <span style="color:red">*</span></label>
-                                                <input name="tgl_lahir" type="text" id="tgl_lahir" placeholder="Tanggal Lahir" value="{{ data[0].tgl_lahir }}" class="form-control">
-                                            </div>
-                                        </div>
+                                        </div>                                        
 
                                         <div class="col-lg-7">
                                             <div class="form-group">
-                                                <label>Jenis Kelamin <span style="color:red">*</span></label>
-                                                <div class="jk">
-                                                    <input name="gender" type="radio" value="L" {{data[0].gender == 'L' ? 'checked="checked"' : ''}} id="gender_l"> Laki-Laki &nbsp; &nbsp;
-                                                    <input name="gender" type="radio" value="P" {{data[0].gender == 'P' ? 'checked="checked"' : ''}} id="gender_p"> Perempuan
+                                                <label>Golongan Darah </label>
+                                                <div class="gol">
+                                                    <label class="radio-inline">
+                                                        <input name="gol_darah" type="radio" id="gol_darah_a" value="A" {{data[0].gol_darah == 'A' ? 'checked="checked"' : ''}}> A &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input name="gol_darah" type="radio" id="gol_darah_b" value="B" {{data[0].gol_darah == 'B' ? 'checked="checked"' : ''}}> B &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input name="gol_darah" type="radio" id="gol_darah_o" value="O" {{data[0].gol_darah == 'O' ? 'checked="checked"' : ''}}> O &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input name="gol_darah" type="radio" id="gol_darah_ab" value="AB" {{data[0].gol_darah == 'AB' ? 'checked="checked"' : ''}}> AB
+                                                    </label>                                                    
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-5">
                                             <div class="form-group">
-                                                <label>Golongan Darah </label>
-                                                <div class="form-control" style="border:0">
-                                                    <input name="gol_darah" type="radio" id="gol_darah_a" value="A" {{data[0].gol_darah == 'A' ? 'checked="checked"' : ''}}> A &nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <input name="gol_darah" type="radio" id="gol_darah_b" value="B" {{data[0].gol_darah == 'B' ? 'checked="checked"' : ''}}> B &nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <input name="gol_darah" type="radio" id="gol_darah_o" value="O" {{data[0].gol_darah == 'O' ? 'checked="checked"' : ''}}> O &nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <input name="gol_darah" type="radio" id="gol_darah_ab" value="AB" {{data[0].gol_darah == 'AB' ? 'checked="checked"' : ''}}> AB
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                <label>Jenis Kelamin <span style="color:red">*</span></label>
+                                                <div class="jk">
+                                                    <label class="radio-inline">
+                                                        <input name="gender" type="radio" value="L" {{data[0].gender == 'L' ? 'checked="checked"' : ''}} id="gender_l"> Laki-Laki &nbsp; &nbsp;
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input name="gender" type="radio" value="P" {{data[0].gender == 'P' ? 'checked="checked"' : ''}} id="gender_p"> Perempuan
+                                                    </label>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>                                        
                                         <!-- /.col-lg-12 -->
 
                                     </div>
@@ -145,8 +165,8 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Semester</label>
-                                        <input type="text" class="form-control" id="semester" value="{{data[0].semester}}" readonly>
+                                        <label>Tahun Ajaran</label>
+                                        <input type="text" class="form-control" id="semester" value="{{data[0].semester|right_trim()}}" readonly>
                                         <input type="hidden" name="semester_id" id="semester_id" value="{{data[0].semester_id}}">
                                     </div>
                                 </div>
@@ -457,16 +477,34 @@
 <script type="text/javascript">
     $(function () {
         // datepicker config
-        $('#tgl_lahir').datepicker({
-            format: 'yyyy-mm-dd',
+        $('#tgl_lahir_input').datepicker({
+            language: 'id',
+            format: 'dd-MM-yyyy',
+            autoclose: true,
             startDate: `-50y`,
             endDate: '+1d',
-        });
-        $('#tgl_masuk').datepicker({
-            format: 'yyyy-mm-dd',
-            startDate: '-8y',
+            todayBtn: true,
+            todayHighlight: true,
+            title: "Pilih Tanggal"
+        }).on('changeDate', function (ev) {
+            var selectedDate = ev.format(0, "yyyy-mm-dd");
+            $('#tgl_lahir').val(selectedDate);
+            $("#reset_pass").attr("onclick", "reset_password('"+selectedDate+"')");
+        });        
+        
+        $('#tgl_masuk_input').datepicker({
+            language: 'id',
+            format: 'dd-MM-yyyy',
+            autoclose: true,
+            startDate: `-8y`,
             endDate: '+1d',
-        });    
+            todayBtn: true,
+            todayHighlight: true,
+            title: "Pilih Tanggal"
+        }).on('changeDate', function (ev) {
+            var selectedDate = ev.format(0, "yyyy-mm-dd");
+            $('#tgl_masuk').val(selectedDate);
+        });        
 
         // filestyle config
         $(":file").filestyle({
@@ -604,5 +642,24 @@
             document.getElementById("uploadPreview"+id).src = oFREvent.target.result;
         };
     };
+
+    function reset_password(date) {
+        var nis = '{{ data[0].nis }}';
+        var dataStore = "nis="+nis+"&tgl_lahir="+date;
+
+        $.ajax({
+            type     : 'POST',
+            url      : "{{ url('pesertadidik/resetPassword') }}",
+            data     : dataStore,
+            dataType : 'json',
+            success  : function(res){            
+                new PNotify({
+                    title: 'Berhasil',
+                    text: res.status,
+                    type: 'success'
+                });
+            }
+        });        
+    }
 
 </script>

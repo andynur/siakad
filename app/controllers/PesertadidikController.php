@@ -37,13 +37,8 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
                 ->getQuery()
                 ->execute();
 
-        $semester = RefSemester::find(["columns" => "semester_id, nama"]);
-        $kurikulum = RefKurikulum::find(["columns" => "kurikulum_id, nama_kurikulum"]);
-
         $this->view->data = $data;
         $this->view->rombel_id = $rombel_id;
-        $this->view->semester = $semester;
-        $this->view->kurikulum = $kurikulum;
         $this->view->pick('peserta_didik/kelas');
     }
 
@@ -174,7 +169,6 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
         $explode        = explode('-', $get_session);
         $ps_id          = $explode[1];
         $rombel_id      = $_POST['rombel'];        
-        $rombel_id      = $_POST['rombel'];        
         $foto           = $_POST['foto_lama'];
         $path           = DOCUMENT_ROOT . 'img/mhs/';
 
@@ -249,6 +243,7 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
   
             'alamat_ortu' => $_POST['alamat_ortu'],
             'soft_delete' => 0,
+            'last_sync' => '2000-01-01 10:10:10',
             'updater_id' => 0            
         ));                              
 
@@ -405,9 +400,37 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
         $anggota = RefRombelAnggota::find([
             "conditions" => "peserta_didik_id = $id"
         ]);   
+        unlink(DOCUMENT_ROOT . 'img/mhs/' . $data->foto);
         $data->delete();
         $anggota->delete();
         echo json_encode(array("status" => true));
     }
-}
 
+    public function resetPasswordAction()
+    {
+        $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
+
+        $nis = $_POST['nis'];
+        $tgl_lahir = $_POST['tgl_lahir'];
+        $exp_tgl = explode('-', $tgl_lahir);
+
+        $data = RefUser::findFirst(["conditions" => "uid = '$nis'"]);
+        
+        $new_pass = $exp_tgl[2] . $exp_tgl[1] . $exp_tgl[0];
+
+        $data->assign(['nip' => $nis, 'passwd' => md5($new_pass)]);
+        
+        if ($data->save()) {
+            $status = "Password berhasil diubah <b>($new_pass)</b>";
+        } else {
+            $errors = $data->getMessages();
+            $m = '';
+            foreach ($errors as $error) {
+                $m .= "$error"."</br>";
+            }
+            $status = $m;
+        }
+
+        echo json_encode(["status" => $status]);
+    }
+}

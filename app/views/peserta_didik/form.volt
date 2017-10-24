@@ -476,15 +476,32 @@
     $(function () {
         // datepicker config
         $('#tgl_lahir').datepicker({
-            format: 'yyyy-mm-dd',
+            language: 'id',
+            format: 'dd-MM-yyyy',
+            autoclose: true,
             startDate: `-50y`,
             endDate: '+1d',
-        });
+            todayBtn: true,
+            todayHighlight: true,
+            title: "Pilih Tanggal"
+        }).on('changeDate', function (ev) {
+            var selectedDate = ev.format(0, "yyyy-mm-dd");
+            $tglKirim.val(selectedDate);
+        });        
+        
         $('#tgl_masuk').datepicker({
-            format: 'yyyy-mm-dd',
-            startDate: '-8y',
+            language: 'id',
+            format: 'dd-MM-yyyy',
+            autoclose: true,
+            startDate: `-8y`,
             endDate: '+1d',
-        });    
+            todayBtn: true,
+            todayHighlight: true,
+            title: "Pilih Tanggal"
+        }).on('changeDate', function (ev) {
+            var selectedDate = ev.format(0, "yyyy-mm-dd");
+            $tglKirim.val(selectedDate);
+        });      
 
         // filestyle config
         $(":file").filestyle({

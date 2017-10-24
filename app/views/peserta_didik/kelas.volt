@@ -19,39 +19,9 @@
                     <h3 class="box-title">Data Murid Per-Kelas </h3>
                 </div>
                 <div class="box-body">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <div class="col-sm-4">
-                                <a href="#" onclick="go_page('pesertadidik/addMurid/{{rombel_id}}')" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp; Tambah Data</a>
-                            </div>
-
-                            <label for="semester" class="col-sm-2 control-label"><i class="fa fa-arrow-circle-o-right"></i> &nbsp; Semester/Kurikulum</label>
-                            <div class="col-sm-3">
-                                <select class="form-control" id="semester">
-                                    <option value="">-- Pilih Semester --</option>
-                                    {% for opt in semester %}
-                                    {% if (opt.semester_id == data[0].semester_id) %}
-                                    <option value="{{ opt.semester_id }}" selected="selected">{{ opt.nama }}</option>
-                                    {% else %}
-                                    <option value="{{ opt.semester_id }}">{{ opt.nama }}</option>
-                                    {% endif %}
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <select class="form-control" id="kurikulum">
-                                    <option value="">-- Pilih kurikulum --</option>
-                                    {% for opt in kurikulum %}
-                                        {% if (opt.kurikulum_id == data[0].kurikulum_id) %}
-                                            <option value="{{ opt.kurikulum_id }}" selected="selected">{{ opt.nama_kurikulum }}</option>
-                                        {% else %}
-                                            <option value="{{ opt.kurikulum_id }}">{{ opt.nama_kurikulum }}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                    </form>
+                    <div class="form-group">
+                        <a href="#" onclick="go_page('pesertadidik/addMurid/{{rombel_id}}')" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp; Tambah Data</a>
+                    </div>
                                         
                     <table id="data_table" class="table table-bordered table-striped">
                         <thead>
