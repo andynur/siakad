@@ -92,6 +92,7 @@ class PengumumanController extends \Phalcon\Mvc\Controller
         $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
 
         $data = RefPengumuman::findFirst($id);
+        unlink(DOCUMENT_ROOT . 'img/pengumuman/' . $data->lampiran);
         $data->delete();
 
         echo json_encode(["status" => true]);
