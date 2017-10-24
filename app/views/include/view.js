@@ -220,3 +220,50 @@ function tanggalIndonesia(date){
     
     return _hari + '-' + bulan + '-' + tahun;
 }
+
+/**
+* Set refresh page in float button
+* @param {String} page
+*/
+function setRefreshPage(page) {
+    $('.float-button').attr('onclick', 'return reload_page2(\''+page+'\')');
+}
+
+/**
+* Change indonesian location option
+* @param {String} kode
+* @param {String} level
+* @param {String} url
+*/
+function changeWilayah(kode, level, url) {        
+    if (level !== '') {        
+        $.ajax({
+            url       : url + '/' + kode,
+            type      : "POST",
+            dataType  : "json",
+            data      : {'name' : 'value'},
+            cache     : false,
+            success   : function(data){
+                var i,
+                    makeOption = "",
+                    dataLength = data.length;
+
+                for (i = 0; i < dataLength; i++) {
+                    makeOption += '<option value='+data[i]["kode_wilayah"]+'>'
+                                +data[i]["nama"]+'</option>';
+                }
+
+                $("select[name="+level+"]")
+                    .find('option')
+                    .remove()
+                    .end()
+                    .append('<option value="">-- Pilih '+level+': --</option>' + makeOption);
+            }
+        });
+    } else {
+        var getText = $("select[name=kelurahan]").find("option:selected").text();
+        $('input[name=desa_kelurahan]').val(getText);
+    }
+
+    $('input[name=kode_wilayah]').val(kode);
+}
