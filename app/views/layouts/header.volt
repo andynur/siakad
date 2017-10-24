@@ -227,7 +227,7 @@
               <?php endif ?>
             </div>
             <div class="pull-left info">
-              <p><?= $this->session->get('nama'); ?></p>
+              <p class="user-overflow" title="<?= $this->session->get('nama'); ?>"><?= $this->session->get('nama'); ?></p>
               <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
           </div>
