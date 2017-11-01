@@ -331,26 +331,34 @@ class UserController extends \Phalcon\Mvc\Controller
     {
         if ($id_jenis != '' || $id_jenis != 0) {
             // ambil list yg sdh terdaftar
-            $user = ViewUser::find([
-                "columns" => "nip"
-            ])->toArray();
+            if ($id_jenis == 1) {
+                $user = ViewUser::find([
+                    "columns" => "nip",
+                    "conditions" => "id_jenis = 1"
+                ])->toArray();
+            } else {
+                $user = ViewUser::find([
+                    "columns" => "nip",
+                    "conditions" => "id_jenis = 2"
+                ])->toArray();
+            }
 
             $list = '';
             for ($i = 0; $i < count($user); $i++) {
-                $list .= $user[$i]['nip'] . ',';
+                $list .= "'".$user[$i]['nip'] . "',";
             }
             $list = substr($list, 0, -1);                      
 
             if ($id_jenis == 1) {
                 $data = RefAkdSdm::find([
                     "columns" => "nip AS id, nama AS text, foto",
-                    "conditions" => "nip NOT IN ('$list')",
+                    "conditions" => "nip NOT IN ($list)",
                     "order" => "nama"
                 ]);
             } else {
                 $data = RefAkdMhs::find([
                     "columns" => "nis AS id, nama AS text, foto",
-                    "conditions" => "nis NOT IN ('$list')",
+                    "conditions" => "nis NOT IN ($list)",
                     "order" => "nama"
                 ]);
             }
