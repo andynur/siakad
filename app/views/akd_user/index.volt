@@ -41,7 +41,7 @@
                             </div>
                             <div class="form-group col-md-5">
                                 <label for="id_jenis">Jenis User</label>
-                                <select class="form-control" name="id_jenis" onchange="changeJenis(this)">
+                                <select class="form-control" name="id_jenis" onchange="changeJenis(this)" id="jenis">
                                     <option value="">Pilih:</option>
                                     {% for opt in jenis %}
                                         {% if (opt.nama == 'SDM') %}
