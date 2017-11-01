@@ -49,6 +49,26 @@ $(function () {
         $("#reset").html('<i class="fa fa-refresh"></i>&nbsp; Reset');
         $("#submit").attr('onclick', 'save_data(\'addUser\')');
     });
+
+    $('#filter_jenis').on("change", function() {
+        if (this.value == '2') {
+            $('#filter_tingkat').removeAttr('disabled');
+        } else {
+            $('#filter_tingkat').attr('disabled', 'disabled');
+        }
+    });
+
+    $('#proses').on("click", function() {
+        var jenis = $('#filter_jenis').val();
+            tingkat = $('#filter_tingkat').val();
+            url = "{{ url('user/index') }}";
+
+        if (jenis == '2') {
+            url = "{{ url('user/index/') }}" + jenis + '/' + tingkat;
+        }
+
+        go_page(url);
+    });
 });
 
 function changeJenis(element) {

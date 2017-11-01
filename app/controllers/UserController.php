@@ -20,18 +20,53 @@ class UserController extends \Phalcon\Mvc\Controller
         $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
     }
 
-    public function indexAction()
+    public function indexAction($jenis = '1', $tingkat = '')
     {
-        $data = ViewUser::find();
-        $jenis = RefUserJenis::find(["conditions" => "id_aktif = 'Y'"]);
+        if ($jenis == '1') {
+            $data = ViewUser::find(["conditions" => "id_jenis = '1'"]);
+        } else if ($jenis != '') {
+            if ($tingkat != '0') {
+                $get_id = $this->modelsManager->createBuilder()
+                    ->addFrom('RefRombelAnggota', 'a')
+                    ->join('RefAkdMhs', 'a.peserta_didik_id = m.id_mhs', 'm')
+                    ->join('RefRombonganBelajar', 'a.rombongan_belajar_id = r.rombongan_belajar_id', 'r')
+                    ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
+                    ->columns(['m.nis'])
+                    ->where('t.tingkat_pendidikan_id = "'.$tingkat.'"')
+                    ->getQuery()
+                    ->execute()
+                    ->toArray();
+                    
+                $list_id = '';
+                foreach ($get_id as $v) {
+                    $list_id .= "'".$v['nis'] . "',";
+                }
+                $list_id = substr($list_id, 0, -1);
+                
+                $data = ViewUser::find(["conditions" => "login IN ($list_id)"]);
+            } else {
+                $data = ViewUser::find(["conditions" => "id_jenis = '2'"]);
+            }
+        } else {
+            $data = '';
+        }
+
+        $getTingkat = RefTingkatPendidikan::find([
+            "columns" => "tingkat_pendidikan_id AS id, nama",
+            "order" => "nama",
+        ]);
+        $getJenis = RefUserJenis::find(["conditions" => "id_aktif = 'Y'"]);
         $usergroup = RefUsergroup::find(["conditions" => "aktif = 'Y'"]);
         $area = RefArea::find(["conditions" => "aktif = 'Y'"]);
 
         $this->view->setVars([
             "data" => $data,
-            "jenis" => $jenis,
+            "jenis" => $getJenis,
             "usergroup" => $usergroup,
-            "area" => $area
+            "area" => $area,
+            "tingkat" => $getTingkat,
+            "set_tingkat" => $tingkat,
+            "set_jenis" => $jenis
         ]);
 
         $this->view->pick('akd_user/index');        
@@ -309,13 +344,13 @@ class UserController extends \Phalcon\Mvc\Controller
             if ($id_jenis == 1) {
                 $data = RefAkdSdm::find([
                     "columns" => "nip AS id, nama AS text, foto",
-                    "conditions" => "nip NOT IN ($list)",
+                    "conditions" => "nip NOT IN ('$list')",
                     "order" => "nama"
                 ]);
             } else {
                 $data = RefAkdMhs::find([
                     "columns" => "nis AS id, nama AS text, foto",
-                    "conditions" => "nis NOT IN ($list)",
+                    "conditions" => "nis NOT IN ('$list')",
                     "order" => "nama"
                 ]);
             }

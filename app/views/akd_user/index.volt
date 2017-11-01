@@ -41,7 +41,7 @@
                             </div>
                             <div class="form-group col-md-5">
                                 <label for="id_jenis">Jenis User</label>
-                                <select class="form-control" name="id_jenis">
+                                <select class="form-control" name="id_jenis" onchange="changeJenis(this)">
                                     <option value="">Pilih:</option>
                                     {% for opt in jenis %}
                                         {% if (opt.nama == 'SDM') %}
@@ -107,6 +107,49 @@
                     <h3 class="box-title">Data User</h3>
                 </div>
                 <div class="box-body">
+                    <!-- Filter section -->
+                    <form class="form-horizontal" id="form_filter">
+                        <div class="row form-group">
+                            <div class="col-sm-2">
+                                <label for="filter_jenis" class="control-label">
+                                    <i class="fa fa-arrow-circle-o-right"></i> Filter Data:
+                                </label>
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="form-control" id="filter_jenis">
+                                    <option value="">-- Pilih Jenis --</option>
+                                    {% if (set_jenis == '1') %}
+                                        {% set selected_guru = 'selected="selected"' %}
+                                        {% set disable = 'disabled' %}
+                                    {% endif %}
+                                    {% if (set_jenis == '2') %}
+                                        {% set selected_murid = 'selected="selected"' %}
+                                    {% endif %}                                    
+                                    <option value="1" {{ selected_guru }}>Guru/Sdm</option>
+                                    <option value="2" {{ selected_murid }}>Murid</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <select class="form-control" id="filter_tingkat" {{ disable }}>
+                                    <option value="0">-- Pilih Tingkat --</option>
+                                    {% for opt in tingkat %}
+                                        {% if (opt.id == set_tingkat) %}
+                                        <option value="{{ opt.id }}" selected="selected">{{ opt.nama }}</option>
+                                        {% elseif (opt.id == '7') %}
+                                            
+                                        {% else %}
+                                        <option value="{{ opt.id }}">{{ opt.nama }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-success btn-flat" id="proses"><i class="fa fa-send"></i> Proses</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- ./Filter section -->
+
                     <table id="data_table" class="table table-bordered table-striped">
                         <thead>
                             <tr>
