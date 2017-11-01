@@ -514,6 +514,11 @@
             iconName: "fa fa-cloud-upload"
         });
 
+        // replace image when error
+        $('#uploadPreview1').on("error", function() {
+            $(this).attr('src', 'img/user.png');
+        });
+
     });
 
     (function() {
