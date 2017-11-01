@@ -107,7 +107,7 @@
                                     <div class="form-group">
                                         <label>Jenjang <span class="red">*</span></label>
                                         <select class="form-control" name="jenjang">
-                                            <option value="">-- Pilih Jenjang --</option>
+                                            <option value="0">-- Pilih Jenjang --</option>
                                             <option value="KB-TK" {{ (data.jenjang == 'KB-TK') ? 'selected' : '' }}>KB-TK</option>
                                             <option value="SD" {{ (data.jenjang == 'SD') ? 'selected' : '' }}>SD</option>
                                             <option value="SMP" {{ (data.jenjang == 'SMP') ? 'selected' : '' }}>SMP</option>
@@ -119,7 +119,7 @@
                                     <div class="form-group">
                                         <label>Agama </label>
                                         <select class="form-control" name="agama">
-                                            <option value="">-- Pilih Agama --</option>
+                                            <option value="0">-- Pilih Agama --</option>
                                             {% for a in agama %}
                                             {% if (a.agama_id == data.kode_agama) %}
                                             <option value="{{ a.agama_id }}" selected="selected">{{ a.nama }}</option>
@@ -179,7 +179,7 @@
                                     <div class="form-group">
                                         <label>Provinsi</label>
                                         <select class="form-control" name="provinsi">
-                                            <option value="">-- Pilih provinsi --</option>
+                                            <option value="0">-- Pilih provinsi --</option>
                                             {% for a in provinsi_list %}
                                             {% if (a.kode_wilayah == provinsi.id) %}
                                             <option value="{{ a.kode_wilayah }}" selected>{{ a.nama }}</option>
@@ -250,7 +250,7 @@
                                     <div class="form-group">
                                         <label>Status Kepegawaian</label>
                                         <select class="form-control" name="status_kepegawaian_id">
-                                            <option value="">-- Pilih Status Pegawai --</option>
+                                            <option value="0">-- Pilih Status Pegawai --</option>
                                             {% for a in status_kepegawaian %}
                                             {% if (a.status_kepegawaian_id == data.status_kepegawaian_id)%}
                                             <option value="{{ a.status_kepegawaian_id }}" selected>{{ a.nama }}</option>
@@ -267,7 +267,7 @@
                                     <div class="form-group">
                                         <label>Jenis SDM</label>
                                         <select class="form-control" name="jenis_ptk_id">
-                                            <option value="">-- Pilih Jenis SDM --</option>
+                                            <option value="0">-- Pilih Jenis SDM --</option>
                                             {% for a in jenis_ptk %}
                                             {% if (a.jenis_ptk_id == data.jenis_ptk_id)%}
                                             <option value="{{ a.jenis_ptk_id }}" selected>{{ a.jenis_ptk }}</option>
@@ -294,7 +294,7 @@
                                     <div class="form-group">
                                         <label>Lembaga Pengangkat</label>
                                         <select class="form-control" name="lembaga_pengangkat_id">
-                                            <option value="">-- Pilih Lembaga Pengangkat --</option>
+                                            <option value="0">-- Pilih Lembaga Pengangkat --</option>
                                             {% for a in lembaga_pengangkat %}
                                             {% if (a.lembaga_pengangkat_id == data.lembaga_pengangkat_id)%}
                                             <option value="{{ a.lembaga_pengangkat_id }}" selected>{{ a.nama }}</option>
@@ -310,7 +310,7 @@
                                     <div class="form-group">
                                         <label>Pangkat Golongan</label>
                                         <select class="form-control" name="pangkat_golongan_id">
-                                            <option value="">-- Pilih Pangkat Golongan --</option>
+                                            <option value="0">-- Pilih Pangkat Golongan --</option>
                                             {% for a in pangkat_golongan %}
                                             {% if (a.pangkat_golongan_id == data.pangkat_golongan_id)%}
                                             <option value="{{ a.pangkat_golongan_id }}" selected>{{ a.nama }}</option>
@@ -326,7 +326,7 @@
                                     <div class="form-group">
                                         <label>Keahlian Laboratorium</label>
                                         <select class="form-control" name="keahlian_laboratorium_id">
-                                            <option value="">-- Pilih Keahlian --</option>
+                                            <option value="0">-- Pilih Keahlian --</option>
                                             {% for a in keahlian_laboratorium %}
                                             {% if (a.keahlian_laboratorium_id == data.keahlian_laboratorium_id)%}
                                             <option value="{{ a.keahlian_laboratorium_id }}" selected>{{ a.nama }}</option>
@@ -342,7 +342,7 @@
                                     <div class="form-group">
                                         <label>Sumber Gaji</label>
                                         <select class="form-control" name="sumber_gaji_id">
-                                            <option value="">-- Pilih Sumber Gaji --</option>
+                                            <option value="0">-- Pilih Sumber Gaji --</option>
                                             {% for a in sumber_gaji %}
                                             {% if (a.sumber_gaji_id == data.sumber_gaji_id)%}
                                             <option value="{{ a.sumber_gaji_id }}" selected>{{ a.nama }}</option>
