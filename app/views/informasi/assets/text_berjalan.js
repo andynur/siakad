@@ -42,7 +42,7 @@
     });
 
     // Input elements object            
-    var $berita         = CKEDITOR.instances['editor'],
+    var $berita         = CKEDITOR.instances.editor,
         $aktif          = $('select[name=aktif]');
     
     // Save data when submit
@@ -50,9 +50,9 @@
         var saveUrl     = $(this).prop('action'),   
             _berita     = $berita.getData(),
             _aktif      = $aktif.val(),
-            storeData   = "berita="+_berita+"&aktif="+_aktif;        
-           
-        saveData(storeData, saveUrl, pageReload);
+            storeData   = {berita: _berita, aktif: _aktif}
+                    
+        saveData(storeData, saveUrl, pageReload, 'Y');
         e.preventDefault();            
     });
 
@@ -63,7 +63,7 @@
             row         = $('#data_' + editId),
             _no         = row.find('td').eq(0).html(),
             _berita     = row.find('td').eq(1).html(),
-            _aktif      = row.find('td').eq(2).find('span').html();
+            _aktif      = row.find('td').eq(3).find('span').html();
 
         $berita.setData(_berita);
         $aktif.val(_aktif);
