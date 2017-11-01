@@ -29,12 +29,12 @@
                     </div> 
                     <div class="col-md-8 form-group">
                         <label>Tujuan</label>
-                        <select class="form-control" name="tujuan">
-                            <option value="">-- Pilih Kelas --</option>
+                        <select class="form-control select2" multiple="multiple" name="tujuan" style="width: 100%">
                             {% for opt in rombel %}
                             <option value="{{ opt.id }}">{{ opt.tingkat }} - {{ opt.nama }}</option>
                             {% endfor %}
                         </select>
+                        <input type="hidden" name="tujuan_hidden">                        
                     </div>
                     <div class="col-md-4 form-group">
                         <label>Status</label>

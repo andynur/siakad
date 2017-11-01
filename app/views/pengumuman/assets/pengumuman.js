@@ -26,6 +26,7 @@
         $foto           = $('input[name=foto]'),
         $fotoLama       = $('input[name=foto_lama]'),
         $tujuan         = $('select[name=tujuan]'),
+        $tujuanHidden   = $('input[name=tujuan_hidden]'),
         $draft          = $('input[name=status][value=draft]'),
         $publish        = $('input[name=status][value=publish]');
 
@@ -44,6 +45,11 @@
         $('#imageModalLabel').html(judul);
         $('#imageModalSource').attr('src', imgPath + imgSource);
     });
+
+    // Add select2 value to hidden input when change
+    $tujuan.on("change", function(e) { 
+        $tujuanHidden.val(',' + $tujuan.val() + ',');
+    });    
 
     // Save data when submit
     $form.on("submit", function(e) {
@@ -68,17 +74,17 @@
             data: dataSend
         });
     
-        getData.done(function(response) {            
-            $judul.val(response.judul).focus();
-            $isi.val(response.isi);
-            $tujuan.val(response.tujuan);
-            $tanggal.val( tanggalIndonesia(response.tanggal) );
-            $tglKirim.val(response.tanggal);
-            checkedRadio(response.status, 'draft', $draft, $publish);
-            $fotoLama.val(response.lampiran);
+        getData.done(function(res) {            
+            $judul.val(res.judul).focus();
+            $isi.val(res.isi);            
+            $tanggal.val( tanggalIndonesia(res.tanggal) );
+            $tglKirim.val(res.tanggal);
+            checkedRadio(res.status, 'draft', $draft, $publish);
+            multipleSelect2($tujuan, res.tujuan);
+            $fotoLama.val(res.lampiran);
             
-            if (response.lampiran != '') {
-                $imagePreview.attr('src', imgPath + response.lampiran);
+            if (res.lampiran != '') {
+                $imagePreview.attr('src', imgPath + res.lampiran);
             } else {
                 $imagePreview.attr('src', 'img/user.png');
             }
@@ -107,6 +113,8 @@
         $form.attr('action', pageUrl + '/addPengumuman');
         $title.text('Tambah Data');
         $imagePreview.attr('src', 'img/user.png');
+        $tujuan.val(null).trigger("change");
+        $tujuanHidden.val('');
         $fotoLama.val('');
         $reset
             .removeClass('btn-danger').addClass('btn-default')
@@ -116,10 +124,15 @@
             .html('<i class="fa fa-send"></i>&nbsp; Simpan');
     });        
 
-    // Intialize datatable
+    // Initialize datatable
     dataTableConfig();
 
-    // Intialize filestyle
+    // Initialize select2
+    $('.select2').select2({
+        placeholder: '-- Pilih Kelas --'
+    }); 
+
+    // Initialize filestyle
     $(":file").filestyle({
         input: false,
         buttonText: "Upload Lampiran",
@@ -127,7 +140,7 @@
         iconName: "fa fa-cloud-upload"
     });    
 
-    // Intialize datepicker
+    // Initialize datepicker
     $tanggal.datepicker({
         language: 'id',
         format: 'dd-MM-yyyy',

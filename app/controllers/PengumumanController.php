@@ -29,9 +29,7 @@ class PengumumanController extends \Phalcon\Mvc\Controller
         $data = $this->modelsManager->createBuilder()
                 ->addFrom('RefPengumuman', 'p')
                 ->join('ViewUser', 'p.pengirim_uid = u.login', 'u')
-                ->join('RefRombonganBelajar', 'p.tujuan = r.rombongan_belajar_id', 'r')
-                ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
-                ->columns(['p.pengumuman_id', 'p.judul', 'p.isi', 'p.tanggal', 'u.login', 'u.nama', 'u.foto', 'p.tujuan', 'p.lampiran', 'p.status', 'r.nama AS nama_rombel', 't.nama AS nama_tingkat'])
+                ->columns(['p.pengumuman_id', 'p.judul', 'p.isi', 'p.tanggal', 'u.login', 'u.nama', 'u.foto', 'p.tujuan', 'p.lampiran', 'p.status'])
                 ->orderBy('p.pengumuman_id DESC')
                 ->getQuery()
                 ->execute();
@@ -40,6 +38,7 @@ class PengumumanController extends \Phalcon\Mvc\Controller
                 ->addFrom('RefRombonganBelajar', 'r')
                 ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
                 ->columns(['r.rombongan_belajar_id AS id', 'r.nama', 't.nama AS tingkat'])
+                ->where('r.tipe = "umum"')
                 ->orderBy('t.nama ASC')
                 ->getQuery()
                 ->execute();                
@@ -142,7 +141,7 @@ class PengumumanController extends \Phalcon\Mvc\Controller
             'isi' => $_POST['isi'],
             'tanggal' => $_POST['tgl_kirim'],
             'pengirim_uid' => $this->session->get('uid'),
-            'tujuan' => $_POST['tujuan'],
+            'tujuan' => $_POST['tujuan_hidden'],
             'lampiran' => $foto,
             'status' => $_POST['status'],
         ]);

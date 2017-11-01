@@ -41,7 +41,7 @@
                                 <th class="width-10">No</th>
                                 <th>Judul</th>
                                 <th>Tanggal Kirim</th>
-                                <th>Tujuan</th>
+                                <th>Kelas Tujuan ID</th>
                                 <th>Pengirim</th>
                                 <th>Status</th>
                                 <th>Lampiran</th>
@@ -55,6 +55,7 @@
                             {% set judul = row.judul %} 
                             {% set tanggal = row.tanggal %} 
                             {% set pengirim = row.nama %}
+                            {% set tujuan = row.tujuan|left_trim(',')|right_trim(',') %}
                             {% set lampiran = row.lampiran %}
                             {% set status = row.status %}
                             {% set nama_tingkat = row.nama_tingkat %}
@@ -76,7 +77,7 @@
                                 <td>{{ no }}</td>
                                 <td>{{ judul }}</td>
                                 <td>{{ helper.dateBahasaIndo(tanggal) }}</td>
-                                <td>{{ nama_tingkat }} - {{ nama_rombel }}</td>
+                                <td>{{ tujuan }}</td>
                                 <td>{{ pengirim }}</td>
                                 <td><span class="label label-{{ color }}">{{ status }}</span></td>
                                 <td>
