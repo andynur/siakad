@@ -5,7 +5,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="imageModalLabel"></h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-center">
                 <img src="img/user.png" id="imageModalSource" />
                 <h4 id="imageModalDescription"></h4>
             </div>
