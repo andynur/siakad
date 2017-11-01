@@ -67,11 +67,12 @@ function dataTableConfig(length = 5) {
 * @param {Mix} formData
 * @param {String} url
 * @param {String} reload
+* @param {String} except
 */
-function saveData(formData, url, reload) {
+function saveData(formData, url, reload, except = '') {
     var request;
 
-    if (typeof formData === 'object') {
+    if (typeof formData === 'object' && except === '') {
         request = $.ajax({
             type: 'POST',
             url: url,
@@ -80,7 +81,7 @@ function saveData(formData, url, reload) {
             contentType: false,
             cache: false,
             processData: false
-        });            
+        });
     } else {
         request = $.ajax({
             type: 'POST',
@@ -151,6 +152,16 @@ function selectedSelect2(element, id, text) {
 
     element.val('').trigger('change').append(newOption).trigger('change');
 }
+
+/**
+* Multiple selected select2 by id list
+* @param {Object} element
+* @param {String} listId
+*/
+function multipleSelect2(element, listId) {
+    var setElement = (listId).slice(1, -1).split(',');
+    element.select2().val(setElement).trigger("change");
+}                
 
 /**
 * Selected selectbox by text
@@ -254,6 +265,7 @@ function changeWilayah(kode, level, url) {
                 }
 
                 $("select[name="+level+"]")
+                    .removeAttr('readonly')
                     .find('option')
                     .remove()
                     .end()
