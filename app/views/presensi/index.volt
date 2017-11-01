@@ -61,14 +61,17 @@
                     <table id="data_table" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th style="width: 5px">
-                                    <input type="checkbox" id="select_all" style="margin: 0; vertical-align: middle;" data-toggle="tooltip" title="pilih semua">
-                                </th> 
                                 <th style="width: 5px">No</th>
                                 <!-- <th style="width: 80px">Tanggal</th> -->
                                 <th style="width: 200px">Murid</th>
-                                <th style="width: 120px">Masuk</th>
-                                <th style="width: 120px">Keluar</th>
+                                <th style="width: 120px">                                    
+                                    <input type="checkbox" class="select_all" data-tipe="masuk" style="margin: 0; vertical-align: middle;" data-toggle="tooltip" title="pilih semua masuk"> 
+                                    &nbsp; Masuk
+                                </th>
+                                <th style="width: 120px">
+                                    <input type="checkbox" class="select_all" data-tipe="keluar" style="margin: 0; vertical-align: middle;" data-toggle="tooltip" title="pilih semua keluar"> 
+                                    &nbsp; Keluar                                
+                                </th>
                                 <th style="width: 60px">Email Orangtua</th>
                                 <th style="width: 80px">Aksi</th>
                             </tr>
@@ -82,11 +85,6 @@
                                 {% set masuk = hadir[v.murid_id]['masuk']['presensi'] %}
                                 {% set keluar = hadir[v.murid_id]['keluar']['presensi'] %}
 
-                                <td>
-                                    {% if (masuk == '') %}
-                                    <input type="checkbox" class="check" data-id="{{v.murid_id}}" data-toggle="tooltip" title="pilih">
-                                    {% endif  %}
-                                </td>
                                 <td align="center">{{no}}</td>
                                 <!-- <td><?= $this->helper->dateBahasaIndo(date('Y-m-d')) ?></td> -->
                                 <!-- <td>{{ hadir[v.murid_id]['masuk']['tanggal'] != '' ? hadir[v.murid_id]['masuk']['tanggal'] : '' }}</td> -->
@@ -122,7 +120,9 @@
                                 {% endif %}
 
                                 <td style="text-transform: uppercase">
-                                    {% if (masuk != '') %}
+                                    {% if (masuk == '') %}
+                                    <input type="checkbox" class="check" data-tipe="masuk" data-id="{{v.murid_id}}" data-toggle="tooltip" title="pilih">
+                                    {% else  %}
                                     <span class="label label-{{masuk_tipe}}" data-masuk="{{masuk}}">
                                         <i class="fa {{masuk_icon}}"></i>&nbsp; {{masuk}}
                                     </span>
@@ -169,7 +169,9 @@
                                 {% endif %}
 
                                 <td style="text-transform: uppercase">
-                                    {% if (keluar != '') %}
+                                    {% if (keluar == '') %}
+                                    <input type="checkbox" class="check" data-tipe="keluar" data-id="{{v.murid_id}}" data-toggle="tooltip" title="pilih">
+                                    {% else  %}
                                     <span class="label label-{{keluar_tipe}}" data-keluar="{{keluar}}">
                                         <i class="fa {{keluar_icon}}"></i>&nbsp; {{keluar}}
                                     </span>

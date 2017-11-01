@@ -48,21 +48,25 @@ $(function () {
     });
 
     // pilih semua checkbox
-    $('#select_all').on('change', function (e) {
+    $('.select_all').on('change', function (e) {
+        var tipe = $(this).attr('data-tipe');
+        var $checkTarget = $('.check[data-tipe='+tipe+']');
+
         if ($(this).is(':checked', true)) {
-            $(".check").prop('checked', true);
-            $('.check').map(function () {
+            $checkTarget.prop('checked', true);
+            $checkTarget.map(function () {
                 var id = $(this).data('id');
                 checked_murid.push({
                     murid_id: id,
                     nama: $('#data_' + id + ' #nama_murid').html(),
-                    email: $('#data_' + id + ' #email_wali').html()
+                    email: $('#data_' + id + ' #email_wali').html(),
+                    tipe: tipe,
                 });
             });
         } else {
-            $(".check").prop('checked', false);
+            $checkTarget.prop('checked', false);
             // hapus semua uncheckedbox array
-            $('.check').map(function () {
+            $checkTarget.map(function () {
                 var id = $(this).data('id');
                 checked_murid = $.grep(checked_murid, function (e) {
                     return e.murid_id != id;
@@ -70,17 +74,21 @@ $(function () {
             });
         }
 
+        console.log(checked_murid);        
         $("#select_count").html(checked_murid.length);
     });
 
     // pilih checkbox satuan
     $(".check").on('change', function (e) {
+        var tipe = $(this).attr('data-tipe');
         var id = $(this).data('id');
+
         if ($(this).is(':checked', true)) {
             checked_murid.push({
                 murid_id: id,
                 nama: $('#data_' + id + ' #nama_murid').html(),
-                email: $('#data_' + id + ' #email_wali').html()
+                email: $('#data_' + id + ' #email_wali').html(),
+                tipe: tipe,
             });
             $("#select_count").html(checked_murid.length);
         } else {
@@ -89,6 +97,8 @@ $(function () {
                 return e.murid_id != id;
             });
         }
+        
+        console.log(checked_murid);
     });
 });
 
