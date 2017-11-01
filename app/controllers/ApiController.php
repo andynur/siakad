@@ -174,11 +174,11 @@ class ApiController extends Controller {
 	{
 		$data = $this->modelsManager->createBuilder()
 			->addFrom('RefPengumuman', 'p')
-			->join('RefUser', 'p.pengirim_uid = u.uid', 'u')
-			->join('RefRombonganBelajar', 'p.tujuan = r.rombongan_belajar_id', 'r')
-			->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
+			->leftJoin('RefUser', 'p.pengirim_uid = u.uid', 'u')
+			->leftJoin('RefRombonganBelajar', 'r.rombongan_belajar_id = ' . $rombel_id, 'r')
+			->leftJoin('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
 			->columns(['u.nama AS sdm', 'p.isi', 'p.tanggal', 'p.lampiran', 'r.nama AS rombel', 't.nama AS tingkat'])
-			->where("p.tujuan = '$rombel_id'")
+			->where("p.tujuan LIKE '%,{$rombel_id},%'")
 			->andWhere("p.status = 'publish'")
 			->getQuery()
 			->execute()
@@ -195,7 +195,7 @@ class ApiController extends Controller {
 			];
 		}
 
-		echo json_encode($result);	
+		echo json_encode($result);
     }
 
     public function getPresensiAction($nis, $semester)
