@@ -106,7 +106,7 @@
                                     <div class="form-group">
                                         <label>Jenjang <span class="red">*</span></label>
                                         <select class="form-control" name="jenjang">
-                                            <option value="">-- Pilih Jenjang --</option>
+                                            <option value="0">-- Pilih Jenjang --</option>
                                             <option value="KB-TK">KB-TK</option>
                                             <option value="SD">SD</option>
                                             <option value="SMP">SMP</option>
@@ -118,7 +118,7 @@
                                     <div class="form-group">
                                         <label>Agama </label>
                                         <select class="form-control" name="agama">
-                                            <option value="">-- Pilih Agama --</option>
+                                            <option value="0">-- Pilih Agama --</option>
                                             {% for a in agama %}
                                             <option value="{{ a.agama_id }}">{{ a.nama }}</option>
                                             {% endfor %}
@@ -129,10 +129,10 @@
                                     <div class="form-group">
                                         <label>Jenis Kelamin <span class="red">*</span></label>
                                         <div class="jk">
-                                            <input name="jenis_kelamin" type="radio" value="L">
-                                            <label for="L" style="font-weight: normal;"> Laki-Laki</label>  &nbsp; &nbsp;
-                                            <input name="jenis_kelamin" type="radio" value="P">
-                                            <label for="P" style="font-weight: normal;"> Perempuan</label>  
+                                            <input name="jenis_kelamin" type="radio" id="jkl" value="l">
+                                            <label for="jkl" style="font-weight: normal;"> Laki-Laki</label>  &nbsp; &nbsp;
+                                            <input name="jenis_kelamin" type="radio" id="jkp" value="p">
+                                            <label for="jkp" style="font-weight: normal;"> Perempuan</label>  
                                         </div>
                                     </div>
                                 </div>                                        
@@ -174,7 +174,7 @@
                                     <div class="form-group">
                                         <label>Provinsi</label>
                                         <select class="form-control" name="provinsi">
-                                            <option value="">-- Pilih provinsi --</option>
+                                            <option value="0">-- Pilih provinsi --</option>
                                             {% for a in provinsi %}
                                             <option value="{{ a.kode_wilayah }}">{{ a.nama }}</option>
                                             {% endfor %}
@@ -185,7 +185,7 @@
                                     <div class="form-group">
                                         <label>Kabupaten / Kota</label>
                                         <select class="form-control" name="kabupaten">
-                                            <option value="">-- Pilih kabupaten --</option>
+                                            <option value="0">-- Pilih kabupaten --</option>
                                         </select>
                                     </div>
                                 </div>                            
@@ -195,7 +195,7 @@
                                     <div class="form-group">
                                         <label>Kecamatan</label>
                                         <select class="form-control" name="kecamatan">
-                                            <option value="">-- Pilih kecamatan --</option>
+                                            <option value="0">-- Pilih kecamatan --</option>
                                         </select>
                                     </div>
                                 </div>  
@@ -203,7 +203,7 @@
                                     <div class="form-group">
                                         <label>Kelurahan</label>
                                         <select class="form-control" name="kelurahan">
-                                            <option value="">-- Pilih kelurahan --</option>
+                                            <option value="0">-- Pilih kelurahan --</option>
                                         </select>
                                         <input type="hidden" name="kode_wilayah">
                                         <input type="hidden" name="desa_kelurahan">
@@ -241,7 +241,7 @@
                                     <div class="form-group">
                                         <label>Status Kepegawaian</label>
                                         <select class="form-control" name="status_kepegawaian_id">
-                                            <option value="">-- Pilih Status Pegawai --</option>
+                                            <option value="0">-- Pilih Status Pegawai --</option>
                                             {% for a in status_kepegawaian %}
                                             <option value="{{ a.status_kepegawaian_id }}">{{ a.nama }}</option>
                                             {% endfor %}
@@ -254,7 +254,7 @@
                                     <div class="form-group">
                                         <label>Jenis SDM</label>
                                         <select class="form-control" name="jenis_ptk_id">
-                                            <option value="">-- Pilih Jenis SDM --</option>
+                                            <option value="0">-- Pilih Jenis SDM --</option>
                                             {% for a in jenis_ptk %}
                                             <option value="{{ a.jenis_ptk_id }}">{{ a.jenis_ptk }}</option>
                                             {% endfor %}
@@ -277,7 +277,7 @@
                                     <div class="form-group">
                                         <label>Lembaga Pengangkat</label>
                                         <select class="form-control" name="lembaga_pengangkat_id">
-                                            <option value="">-- Pilih Lembaga Pengangkat --</option>
+                                            <option value="0">-- Pilih Lembaga Pengangkat --</option>
                                             {% for a in lembaga_pengangkat %}
                                             <option value="{{ a.lembaga_pengangkat_id }}">{{ a.nama }}</option>
                                             {% endfor %}
@@ -289,7 +289,7 @@
                                     <div class="form-group">
                                         <label>Pangkat Golongan</label>
                                         <select class="form-control" name="pangkat_golongan_id">
-                                            <option value="">-- Pilih Pangkat Golongan --</option>
+                                            <option value="0">-- Pilih Pangkat Golongan --</option>
                                             {% for a in pangkat_golongan %}
                                             <option value="{{ a.pangkat_golongan_id }}">{{ a.nama }}</option>
                                             {% endfor %}
@@ -301,7 +301,7 @@
                                     <div class="form-group">
                                         <label>Keahlian Laboratorium</label>
                                         <select class="form-control" name="keahlian_laboratorium_id">
-                                            <option value="">-- Pilih Keahlian --</option>
+                                            <option value="0">-- Pilih Keahlian --</option>
                                             {% for a in keahlian_laboratorium %}
                                             <option value="{{ a.keahlian_laboratorium_id }}">{{ a.nama }}</option>
                                             {% endfor %}
@@ -313,7 +313,7 @@
                                     <div class="form-group">
                                         <label>Sumber Gaji</label>
                                         <select class="form-control" name="sumber_gaji_id">
-                                            <option value="">-- Pilih Sumber Gaji --</option>
+                                            <option value="0">-- Pilih Sumber Gaji --</option>
                                             {% for a in sumber_gaji %}
                                             <option value="{{ a.sumber_gaji_id }}">{{ a.nama }}</option>
                                             {% endfor %}

@@ -5,7 +5,7 @@
     var pageUrl         = "{{ url('sdm') }}",
         wilayahUrl      = "{{ url('sdm/searchWilayah') }}",
         imgPath         = "{{ url('img/sdm/') }}",
-        pageReload      = "sdm/formSdm";
+        pageReload      = "sdm/index";
 
     // Form elements object
     var $form           = $("#form_input"),   
@@ -39,6 +39,11 @@
         e.preventDefault();            
     });        
 
+    // replace image when error
+    $imagePreview.on("error", function() {
+        $(this).attr('src', 'img/user.png');
+    });
+        
     // Reset form
     $reset.on("click", function() {
         $imagePreview.attr('src', 'img/user.png');

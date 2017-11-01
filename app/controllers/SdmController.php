@@ -71,11 +71,30 @@ class SdmController extends \Phalcon\Mvc\Controller
     public function formEditSdmAction($id)
     {        
         $data = RefAkdSdm::findFirst($id);
-        $provinsi = RefWilayah::find([
+        // 040110AA / 040110 / 040100 / 040000 / 040000
+        $kelurahan = RefWilayah::findFirst([
+            "columns" => "kode_wilayah AS id, mst_kode_wilayah, nama",
+            "conditions" => "kode_wilayah = '$data->kode_wilayah'"
+        ]);   
+        $kecamatan = RefWilayah::findFirst([
+            "columns" => "kode_wilayah AS id, mst_kode_wilayah, nama",
+            "conditions" => "kode_wilayah = '$kelurahan->mst_kode_wilayah'"
+            ]);        
+        $kabupaten = RefWilayah::findFirst([
+            "columns" => "kode_wilayah AS id, mst_kode_wilayah, nama",
+            "conditions" => "kode_wilayah = '$kecamatan->mst_kode_wilayah'"
+        ]);    
+        $provinsi = RefWilayah::findFirst([
+            "columns" => "kode_wilayah AS id, nama",
+            "conditions" => "kode_wilayah = '$kabupaten->mst_kode_wilayah'"
+        ]);            
+
+        $provinsi_list = RefWilayah::find([
             "columns" => "kode_wilayah, nama",
             "conditions" => "id_level_wilayah = 1",
             "order" => "nama"
-        ]);
+        ]);                    
+
         $agama = RefAgama::find();
         $jenis_ptk = RefJenisPtk::find();
         $status_kepegawaian = RefStatusKepegawaian::find();
@@ -87,7 +106,10 @@ class SdmController extends \Phalcon\Mvc\Controller
         $this->view->setVars([
             "data" => $data,
             "agama" => $agama,
+            "provinsi_list" => $provinsi_list,
             "provinsi" => $provinsi,
+            "kabupaten" => $kabupaten,
+            "kecamatan" => $kecamatan,
             "jenis_ptk" => $jenis_ptk,
             "status_kepegawaian" => $status_kepegawaian,
             "lembaga_pengangkat" => $lembaga_pengangkat,
