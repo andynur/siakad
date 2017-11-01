@@ -60,7 +60,9 @@ class ApiController extends Controller {
 		$akun_db = $this->modelsManager->createBuilder()
             ->addFrom('RefUser', 'u')
             ->join('RefAkdMhs', 'u.uid = m.nis', 'm')
-            ->columns(['m.nama','u.passwd', 'u.uid','m.email', 'm.rombel_sekarang','m.foto'])
+            ->join('RefRombonganBelajar', 'm.rombel_sekarang = r.rombongan_belajar_id ', 'r')
+            ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id ', 't')
+            ->columns(['m.nama','u.passwd', 'u.uid','m.email', 'm.rombel_sekarang','m.foto','r.nama as nama_rombel','t.nama as nama_kelas']) 
             ->where("u.uid = '" . $userLogin."'")
             ->orWhere("m.email = '" . $userLogin."'")
             ->getQuery()
@@ -112,7 +114,10 @@ class ApiController extends Controller {
 				, 'detail' => 'Signed  In. have a nice day.'
 				, 'user' => $user
 				, 'rombel_id' => $akun1['rombel_sekarang']
+				, 'nama_rombel' => $akun1['nama_kelas'].' '.$akun1['nama_rombel']
 				, 'foto' => $foto
+				, 'nama' => $akun1['nama']
+				, 'email' => $akun1['email']
 			];
 		}
 		echo json_encode($result);
@@ -195,7 +200,7 @@ class ApiController extends Controller {
 
     public function getPresensiAction($nis, $semester)
     {
-		$this->authAction();
+		// $this->authAction();//sementara dimatikan
 		$user = $this->session->get('user');		
                 
         $data = $this->modelsManager->createBuilder()
@@ -208,6 +213,7 @@ class ApiController extends Controller {
             ->orderBy('p.tanggal DESC')
             ->getQuery()
             ->execute();
+            
 
         foreach($data->toArray() as $p => $v){
             foreach($v as $field => $v2){
@@ -217,34 +223,54 @@ class ApiController extends Controller {
         
         $result = [];
         foreach($data as $a => $v) {         
-			if ($a % 2 == 1) {               
-				$masuk = $hadir[$v->tanggal]['masuk'];
-				$keluar = $hadir[$v->tanggal]['keluar'];
-				if ($masuk['waktu']) {
-					$m=substr($masuk['waktu'], 0, -3);
-				}else{
-					$m='';
-				}
-				if ($keluar['waktu']) {
-					$k=substr($keluar['waktu'], 0, -3);
-				}else{
-					$k='';
-				}
-				$result[] = [
-					"semester" => $masuk['semester_id'],
-					"nis" => $masuk['nis'],
-					"tanggal" => $this->helper->konversi_tgl($masuk['tanggal']),
-					"masuk" => $m,
-					"masuk_presensi" => $masuk['presensi'],
-					"keluar" => $k,
-					"keluar_presensi" => $keluar['presensi'],
-					"kelas" => $masuk['kelas']
-				];
+			$masuk = $hadir[$v->tanggal]['masuk'];
+			$keluar = $hadir[$v->tanggal]['keluar'];
+
+			if ($masuk['waktu']) {
+				$m = substr($masuk['waktu'], 0, -3);
+			} else {
+				$m = '';
+			} 
+			
+			if ($masuk['presensi'] == 'absen') {
+				$m = 'Tidak Hadir';
+			} else if ($masuk['presensi'] == 'izin') {
+				$m = 'Izin';
+			} else if ($masuk['presensi'] == 'sakit') {
+				$m = 'Sakit';
 			}
+			
+			if ($keluar['waktu']) {
+				$k = substr($keluar['waktu'], 0, -3);
+			} else {
+				$k = '';
+			}
+
+			if ($keluar['presensi'] == 'absen') {
+				$k = 'Tidak Hadir';
+			} else if ($keluar['presensi'] == 'izin') {
+				$k = 'Izin';
+			} else if ($keluar['presensi'] == 'sakit') {
+				$k = 'Sakit';
+			}			
+
+			$result[$this->helper->konversi_tgl($masuk['tanggal'])] = [
+				"semester" => $masuk['semester_id'],
+				"nis" => $masuk['nis'],
+				"tanggal" => $this->helper->konversi_tgl($masuk['tanggal']),
+				"masuk" => $m,
+				"masuk_presensi" => $masuk['presensi'],
+				"keluar" => $k,
+				"keluar_presensi" => $keluar['presensi'],
+				"kelas" => $masuk['kelas']
+			];
+        }
+        foreach ($result as $k1 => $v1) {
+        	$result1[]=$v1;
         }
 
         // array_shift($result);
-        echo json_encode($result);
+        echo json_encode($result1);
         die();
     }	
 
