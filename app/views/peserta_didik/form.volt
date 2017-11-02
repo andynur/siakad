@@ -79,7 +79,8 @@
                                         <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label>Tanggal Masuk / Diterima</label>
-                                                <input name="tgl_masuk" type="text" id="tgl_masuk" placeholder=" Tanggal Masuk" class="form-control">
+                                                <input name="tgl_masuk_input" type="text" id="tgl_masuk_input" placeholder=" Tanggal Masuk" class="form-control">
+                                                <input name="tgl_masuk" type="hidden" id="tgl_masuk">
                                             </div>
                                         </div>
 
@@ -92,7 +93,8 @@
                                         <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label>Tanggal Lahir <span style="color:red">*</span></label>
-                                                <input name="tgl_lahir" type="text" id="tgl_lahir" placeholder=" Tanggal Lahir" class="form-control">
+                                                <input name="tgl_lahir_input" type="text" id="tgl_lahir_input" placeholder=" Tanggal Lahir" class="form-control">
+                                                <input name="tgl_lahir" type="hidden" id="tgl_lahir">
                                             </div>
                                         </div>
 
@@ -475,7 +477,7 @@
 <script type="text/javascript">
     $(function () {
         // datepicker config
-        $('#tgl_lahir').datepicker({
+        $('#tgl_lahir_input').datepicker({
             language: 'id',
             format: 'dd-MM-yyyy',
             autoclose: true,
@@ -486,10 +488,10 @@
             title: "Pilih Tanggal"
         }).on('changeDate', function (ev) {
             var selectedDate = ev.format(0, "yyyy-mm-dd");
-            $tglKirim.val(selectedDate);
+            $('#tgl_lahir').val(selectedDate);
         });        
         
-        $('#tgl_masuk').datepicker({
+        $('#tgl_masuk_input').datepicker({
             language: 'id',
             format: 'dd-MM-yyyy',
             autoclose: true,
@@ -500,7 +502,7 @@
             title: "Pilih Tanggal"
         }).on('changeDate', function (ev) {
             var selectedDate = ev.format(0, "yyyy-mm-dd");
-            $tglKirim.val(selectedDate);
+            $('#tgl_masuk').val(selectedDate);
         });      
 
         // filestyle config
