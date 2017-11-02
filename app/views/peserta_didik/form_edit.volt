@@ -152,7 +152,7 @@
                                     <div class="form-group">
                                         <label>Rombel<span style="color:red">*</span></label>
                                         <select class="form-control" name="rombel" id="rombel">
-                                            <option value="">-- Pilih Rombel --</option>
+                                            <option value="0">-- Pilih Rombel --</option>
                                             {% for opt in rombel %}
                                                 {% if (opt.rombongan_belajar_id == rombel_id) %}
                                                 <option value="{{ opt.rombongan_belajar_id }}" selected="selected">{{ opt.nama_tingkat }} - {{ opt.nama_rombel }}</option>
@@ -214,7 +214,7 @@
                                     <div class="form-group">
                                         <label>Provinsi</label>
                                         <select class="form-control" name="provinsi" id="provinsi">
-                                            <option value="">-- Pilih Provinsi --</option>
+                                            <option value="0">-- Pilih Provinsi --</option>
                                             {% for a in provinsi %}
                                                 {% if (a.id == data[0].kode_prop) %}
                                                 <option value="{{ a.id }}" selected="selected">{{ a.name }}</option>
@@ -388,7 +388,7 @@
                                     <div class="form-group">
                                         <label>Penghasilan Ayah</label>
                                         <select class="form-control" name="penghasilan_ayah">
-                                            <option value="">-- Pilih Penghasilan --</option>
+                                            <option value="0">-- Pilih Penghasilan --</option>
                                             {% for a in penghasilan %}
                                                 {% if (a.penghasilan_orangtua_wali_id == data[0].penghasilan_ortu) %}
                                                     <option value="{{ a.penghasilan_orangtua_wali_id }}" selected="selected">{{ a.nama }}</option>
@@ -403,7 +403,7 @@
                                     <div class="form-group">
                                         <label>Penghasilan Ibu</label>
                                         <select class="form-control" name="penghasilan_ibu">
-                                            <option value="">-- Pilih Penghasilan --</option>
+                                            <option value="0">-- Pilih Penghasilan --</option>
                                             {% for a in penghasilan %}
                                                 {% if (a.penghasilan_orangtua_wali_id == data[0].penghasilan_id_ibu) %}
                                                     <option value="{{ a.penghasilan_orangtua_wali_id }}" selected="selected">{{ a.nama }}</option>
@@ -590,7 +590,7 @@
                 }
 
                 $('#kota').removeAttr('readonly');
-                $('#kota').find('option').remove().end().append('<option value="">-- Pilih Kota --</option>' + buatOption);
+                $('#kota').find('option').remove().end().append('<option value="0">-- Pilih Kota --</option>' + buatOption);
             }
         });
     });
@@ -612,7 +612,7 @@
                 }
 
                 $('#kecamatan').removeAttr('readonly');
-                $('#kecamatan').find('option').remove().end().append('<option value="">-- Pilih Kecamatan --</option>' + buatOption);
+                $('#kecamatan').find('option').remove().end().append('<option value="0">-- Pilih Kecamatan --</option>' + buatOption);
             }
         });
     });
@@ -634,7 +634,7 @@
                 }
 
                 $('#kelurahan').removeAttr('readonly');
-                $('#kelurahan').find('option').remove().end().append('<option value="">-- Pilih Kelurahan --</option>' + buatOption);
+                $('#kelurahan').find('option').remove().end().append('<option value="0">-- Pilih Kelurahan --</option>' + buatOption);
             }
         });
     });

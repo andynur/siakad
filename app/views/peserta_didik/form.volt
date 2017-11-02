@@ -141,7 +141,7 @@
                                     <div class="form-group">
                                         <label>Rombel<span style="color:red">*</span></label>
                                         <select class="form-control" name="rombel" id="rombel">
-                                            <option value="">-- Pilih Rombel --</option>
+                                            <option value="0">-- Pilih Rombel --</option>
                                             {% for opt in rombel %}
                                             <option value="{{ opt.rombongan_belajar_id }}">{{ opt.nama_tingkat }} - {{ opt.nama_rombel }}</option>
                                             {% endfor %}
@@ -199,7 +199,7 @@
                                     <div class="form-group">
                                         <label>Provinsi</label>
                                         <select class="form-control" name="provinsi" id="provinsi">
-                                            <option value="">-- Pilih Provinsi --</option>
+                                            <option value="0">-- Pilih Provinsi --</option>
                                             {% for a in provinsi %}
                                             <option value="{{ a.id }}">{{ a.name }}</option>
                                             {% endfor %}
@@ -221,7 +221,7 @@
                                     <div class="form-group">
                                         <label>Kecamatan</label>
                                         <select class="form-control" name="kecamatan" id="kecamatan">
-                                            <option value="">-- Pilih Kecamatan --</option>
+                                            <option value="0">-- Pilih Kecamatan --</option>
                                         </select>
                                     </div>
                                 </div>  
@@ -229,7 +229,7 @@
                                     <div class="form-group">
                                         <label>Kelurahan</label>
                                         <select class="form-control" name="kelurahan" id="kelurahan">
-                                            <option value="">-- Pilih Kelurahan --</option>
+                                            <option value="0">-- Pilih Kelurahan --</option>
                                         </select>
                                     </div>
                                 </div>                                   
@@ -396,7 +396,7 @@
                                     <div class="form-group">
                                         <label>Penghasilan Ayah</label>
                                         <select class="form-control" name="penghasilan_ayah">
-                                            <option value="">-- Pilih Penghasilan --</option>
+                                            <option value="0">-- Pilih Penghasilan --</option>
                                             {% for a in penghasilan %}
                                             <option value="{{ a.penghasilan_orangtua_wali_id }}">{{ a.nama }}</option>
                                                 {% endfor %}
@@ -407,7 +407,7 @@
                                     <div class="form-group">
                                         <label>Penghasilan Ibu</label>
                                         <select class="form-control" name="penghasilan_ibu">
-                                            <option value="">-- Pilih Penghasilan --</option>
+                                            <option value="0">-- Pilih Penghasilan --</option>
                                             {% for a in penghasilan %}
                                             <option value="{{ a.penghasilan_orangtua_wali_id }}">{{ a.nama }}</option>
                                             {% endfor %}
@@ -585,7 +585,7 @@
                     buatOption += '<option value='+data[a]["id"]+'>'+data[a]["name"]+'</option>';
                 }
 
-                $('#kota').find('option').remove().end().append('<option value="">-- Pilih Kota --</option>' + buatOption);
+                $('#kota').find('option').remove().end().append('<option value="0">-- Pilih Kota --</option>' + buatOption);
             }
         });
     });
@@ -606,7 +606,7 @@
                     buatOption += '<option value='+data[a]["id"]+'>'+data[a]["name"]+'</option>';
                 }
 
-                $('#kecamatan').find('option').remove().end().append('<option value="">-- Pilih Kecamatan --</option>' + buatOption);
+                $('#kecamatan').find('option').remove().end().append('<option value="0">-- Pilih Kecamatan --</option>' + buatOption);
             }
         });
     });
@@ -627,7 +627,7 @@
                     buatOption += '<option value='+data[a]["id"]+'>'+data[a]["name"]+'</option>';
                 }
 
-                $('#kelurahan').find('option').remove().end().append('<option value="">-- Pilih Kelurahan --</option>' + buatOption);
+                $('#kelurahan').find('option').remove().end().append('<option value="0">-- Pilih Kelurahan --</option>' + buatOption);
             }
         });
     });
