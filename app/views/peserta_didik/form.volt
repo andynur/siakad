@@ -80,7 +80,7 @@
                                             <div class="form-group">
                                                 <label>Tanggal Masuk / Diterima</label>
                                                 <input name="tgl_masuk_input" type="text" id="tgl_masuk_input" placeholder=" Tanggal Masuk" class="form-control">
-                                                <input name="tgl_masuk" type="hidden" id="tgl_masuk">
+                                                <input name="tgl_masuk" type="hidden" value="1945-01-01" id="tgl_masuk">
                                             </div>
                                         </div>
 
