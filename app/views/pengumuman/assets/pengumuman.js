@@ -90,6 +90,9 @@
             }
         });            
     
+        // smooth scroll
+        $('html,body').animate({scrollTop: $("#scroll_target").offset().top}, 'slow');        
+
         $form.attr('action', editUrl);
         $title.text('Ubah Data #' + _no);
         $reset

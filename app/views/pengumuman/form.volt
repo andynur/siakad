@@ -1,4 +1,4 @@
-<div class="col-md-offset-2 col-md-8">
+<div class="col-md-offset-2 col-md-8" id="scroll_target">
     <div class="box">
         <div class="box-header">
             <h3 class="box-title" id="form_title">Tambah Data</h3>
