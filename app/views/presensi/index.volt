@@ -52,13 +52,13 @@
                             </div>      
                             <div class="col-sm-5">
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-flat bg-orange" onclick="presensi_modal('hadir')"><i class="fa fa-sign-in"></i>&nbsp; Presensi                                
+                                    <button type="button" class="btn btn-flat bg-orange presensi_all" onclick="presensi_modal('hadir')"><i class="fa fa-sign-in"></i>&nbsp; Presensi                                
                                 </div>                              
                             </div>
                         </div>
                     </form>
 
-                    <table id="data_table" class="table table-bordered table-striped">
+                    <table id="data_table" class="table table-bordered table-responsive table-striped">
                         <thead>
                             <tr>
                                 <th style="width: 5px">No</th>
@@ -130,19 +130,21 @@
                                 
                                     {% set masuk_waktu = hadir[v.murid_id]['masuk']['waktu'] %}
                                     {% if (masuk_waktu != '') %}               
-                                        <span class="label label-default"><i class="fa fa-clock-o"></i>&nbsp; {{masuk_waktu}}</span>            
+                                        <span class="label label-default masuk_waktu">{{masuk_waktu}}</span>
                                     {% endif %}
                                     
                                     {% set masuk_ket = hadir[v.murid_id]['masuk']['keterangan'] %} 
                                     {% if (masuk_ket != '') %}
-                                        <span class="label label-default" data-toggle="tooltip" title="{{masuk_ket}}"><i class="fa fa-info-circle"></i></span>
+                                        <span class="label label-default masuk_info" data-toggle="tooltip" title="{{masuk_ket}}"><i class="fa fa-info-circle"></i></span>
                                     {% endif %}
                                     {#<br/>
                                     {% if (masuk_email != '') %}
                                         <span class="label label-default"><i class="fa fa-envelope"></i>&nbsp; {{masuk_status}}</span>           
                                     {% endif %} #}
-                                    <!-- edit keluar 
-                                    <a class="btn btn-primary btn-xs" onclick="edit_presensi('{{v.murid_id}}', '{{rombel_id}}')"><i class="glyphicon glyphicon-edit"></i></a> -->
+
+                                    {% if (masuk != '') %}
+                                    <span class="label label-primary edit-presensi" data-toggle="tooltip" title="edit presensi" onclick="edit_presensi('masuk', '{{ masuk }}', '{{v.murid_id}}')"><i class="fa fa-pencil"></i></span>
+                                    {% endif %}      
                                 </td>
                                 {% if (keluar == 'hadir') %}
                                     {% set keluar_tipe = 'success' %}
@@ -179,17 +181,20 @@
                                 
                                     {% set keluar_waktu = hadir[v.murid_id]['keluar']['waktu'] %}
                                     {% if (keluar_waktu != '') %}             
-                                        <span class="label label-default"><i class="fa fa-clock-o"></i>&nbsp; {{keluar_waktu}}</span>            
+                                        <span class="label label-default keluar_waktu">{{keluar_waktu}}</span>
                                     {% endif %}
                                     
                                     {% set keluar_ket = hadir[v.murid_id]['keluar']['keterangan'] %}
                                     {% if (keluar_ket != '') %}
-                                        <span class="label label-default" data-toggle="tooltip" title="{{keluar_ket}}"><i class="fa fa-info"></i></span>
+                                        <span class="label label-default keluar_info" data-toggle="tooltip" title="{{keluar_ket}}"><i class="fa fa-info"></i></span>
                                     {% endif %}
                                     {# <br/>
                                     {% if (keluar_email != '') %}
                                         <span class="label label-default"><i class="fa fa-envelope"></i>&nbsp; {{keluar_status}}</span>           
                                     {% endif %} #}
+                                    {% if (keluar != '') %}
+                                    <span class="label label-primary edit presens" data-toggle="tooltip" title="edit presensi" onclick="edit_presensi('keluar', '{{ keluar }}', '{{v.murid_id}}')"><i class="fa fa-pencil"></i></span>
+                                    {% endif %}
                                 </td>                             
                                 <td>
                                     <!--{% if (masuk_email != '' OR keluar_email != '') %}
@@ -210,17 +215,8 @@
                                     <span class="label label-default" id="email_wali">{{v.email}}</span>
                                 </td>
                                 <td>
-                                    {% if (masuk == '' OR keluar == '') %}        
-                                    <div class="dropdown" style="display: inline">
-                                        <button class="btn btn-xs btn-flat bg-orange dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-sign-in"></i>&nbsp; Presensi: &nbsp; 
-                                        <span class="caret"></span></button>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="#" onclick="presensi_modal('hadir', this)">&raquo; Hadir</a></li>
-                                            <li><a href="#" onclick="presensi_modal('absen', this)">&raquo; Tidak Hadir</a></li>                  
-                                            <li><a href="#" onclick="presensi_modal('sakit', this)">&raquo; Sakit</a></li>
-                                            <li><a href="#" onclick="presensi_modal('izin', this)">&raquo; Izin</a></li>
-                                        </ul>
-                                    </div>
+                                    {% if (masuk == '' OR keluar == '') %}      
+                                    <button type="button" class="btn btn-xs btn-flat bg-orange" onclick="presensi_modal('hadir', this)"><i class="fa fa-sign-in"></i>&nbsp; Presensi  
                                     {% endif %}
                                 </td>                                
                             </tr>
@@ -237,7 +233,8 @@
                                         <span class="rows_selected" id="select_count">0</span> Data Terpilih
                                     </p>
                                     <div class="pull-right">
-                                        <button type="button" class="btn btn-flat bg-orange" onclick="presensi_modal('hadir')"><i class="fa fa-sign-in"></i>&nbsp; Presensi                                       
+                                        <button type="button" class="btn btn-flat bg-orange presensi_all" onclick="presensi_modal('hadir')"><i class="fa fa-sign-in"></i>&nbsp; Presensi
+
                                         <!-- <div class="form-group dropdown" style="margin-right: 10px">
                                             <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-envelope-o"></i>&nbsp; Kirim Email:
                                             <span class="caret"></span></button>
@@ -271,7 +268,17 @@
                     <div class="form-group">
                         <label for="presensi_nama"><i class="fa fa-user"></i>&nbsp; Nama</label>
                         <input type="text" id="presensi_nama" class="form-control" readonly>
-                    </div>               
+                    </div>    
+                    <div class="form-group">                                
+                        <label for="presensi_jenis"><i class="fa fa-check-square-o"></i>&nbsp; Presensi</label>
+                        <select id="presensi_jenis" class="form-control">
+                            <option value="">Pilih:</option>
+                            <option value="hadir">Hadir</option>
+                            <option value="absen">Tidak Hadir</option>
+                            <option value="sakit">Sakit</option>
+                            <option value="izin">Izin</option>
+                        </select>    
+                    </div>                        
                     <div class="col-md-6" style="padding-left: 0;">
                         <div class="form-group">
                             <label for="presensi_waktu"><i class="fa fa-clock-o"></i>&nbsp; Waktu</label>
@@ -293,7 +300,7 @@
                         </div>                        
                     </div>
                     <div class="form-group">
-                        <label for="presensi_keterangan"><i class="fa fa-edit"></i>&nbsp; Keterangan (<span style="color: red;" id="presensi_jenis">sakit</span>)</label>
+                        <label for="presensi_keterangan"><i class="fa fa-edit"></i>&nbsp; Keterangan</label>
                         <textarea id="presensi_keterangan" class="form-control" placeholder="opsional"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary" id="presensi_simpan"><i class="fa fa-send"></i>&nbsp; Simpan</button>

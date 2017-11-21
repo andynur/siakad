@@ -2,6 +2,7 @@ var checked_murid = [];
 
 $(function () {
     $('#data_table').DataTable({
+        "scrollX": true,
         "paging": true,
         "lengthChange": true,
         "searching": true,
@@ -73,9 +74,9 @@ $(function () {
                 });
             });
         }
-
-        console.log(checked_murid);        
+ 
         $("#select_count").html(checked_murid.length);
+        $('.presensi_all').attr('onclick', 'presensi_modal(\'hadir\', \'\', \''+tipe+'\')');
     });
 
     // pilih checkbox satuan
@@ -90,7 +91,6 @@ $(function () {
                 email: $('#data_' + id + ' #email_wali').html(),
                 tipe: tipe,
             });
-            $("#select_count").html(checked_murid.length);
         } else {
             // hapus uncheckedbox array
             checked_murid = $.grep(checked_murid, function (e) {
@@ -98,7 +98,8 @@ $(function () {
             });
         }
         
-        console.log(checked_murid);
+        $("#select_count").html(checked_murid.length);
+        $('.presensi_all').attr('onclick', 'presensi_modal(\'hadir\', \'\', \''+tipe+'\')');
     });
 });
 
@@ -143,13 +144,14 @@ function change_date(type = '-') {
     return false;
 }
 
-function presensi_modal(jenis, single = '') {
+function presensi_modal(jenis, single = '', tipe = '') {
     $('#presensiModal').modal('show');
     $('#presensi_tipe option[value=masuk]').show();
     $('#presensi_tipe option[value=keluar]').show();
 
+    $('#loadingLabel').html('Tambah Data');
     $('#presensi_nama').closest('.form-group').show();
-    $('#presensi_jenis').html(jenis);
+    $('#presensi_jenis').val(jenis);
 
     if (single !== '') {
         var data_id = $(single).closest('tr').attr('id');
@@ -178,36 +180,64 @@ function presensi_modal(jenis, single = '') {
     } else {        
         // if not single hide input name
         $('#presensi_nama').closest('.form-group').hide();
+        $('#presensi_tipe').val(tipe);
     }
 
-    $('#presensi_simpan').attr('onclick', 'save_data(\'' + jenis + '\')');
+    $('#presensi_simpan')
+        .attr('class', 'btn btn-primary')
+        .attr("onclick", "save_data('presensi/status')")
+        .html('<i class="fa fa-send"></i>&nbsp; Simpan');
 }
 
 
-function edit_data(id, rombel_id) {
-    var link = '{{ url("presensi/editMurid/") }}' + id + '/' + rombel_id;
-    go_page(link);
+function edit_presensi(tipe, jenis, id) {    
+    var no = $('#data_' + id + ' > td').eq(0).html();      
+    var nama = $('#data_' + id + ' #nama_murid').html();       
+    var info = $('#data_' + id + ' .' + tipe + '_info').html();
+    var waktu = $('#data_' + id + ' .' + tipe + '_waktu').html();
+    console.log(waktu);
+    
+    $('#presensiModal').modal('show');
+    $('#loadingLabel').html('Ubah Data #' + no);  
+    $('#presensi_nama').closest('.form-group').show();
+    $('#presensi_nama').val(nama);
+    $('#presensi_waktu').val(waktu.slice(0, -3));
+    $('#presensi_keterangan').html(info);
+    $('#presensi_tipe').val(tipe);
+    
+    if (jenis == 'Tidak Hadir') {
+        jenis = 'absen';
+    }
+    $('#presensi_jenis').val(jenis);
+
+    checked_murid = [];
+    checked_murid.push({murid_id: id});    
+
+    $('#presensi_simpan')
+        .attr('class', 'btn btn-success')
+        .attr("onclick", "save_data('presensi/statusEdit')")
+        .html('<i class="fa fa-refresh"></i>&nbsp; Ubah'); 
 }
 
-function save_data(presensi) {
+function save_data(url) {
     if (checked_murid.length <= 0) {
         alert("Silahkan pilih data.");
     } else {
         var data_murid = JSON.stringify(checked_murid);
-        var url_target = '{{ url("presensi/status") }}';
         var rombel_id = '{{rombel_id}}';
         var semester_id = '{{semester_id}}';
         var tanggal = '{{tanggal}}';
         var tipe = $('#presensi_tipe').val();
         var waktu = $('#presensi_waktu').val();
         var keterangan = $('#presensi_keterangan').val();
+        var presensi = $('#presensi_jenis').val();
 
         var data_send = 'rombel_id=' + rombel_id + '&tanggal=' + tanggal + '&waktu=' + waktu + '&data_murid=' + data_murid + '&presensi=' + presensi + '&tipe=' + tipe + '&keterangan=' + keterangan + '&semester_id=' + semester_id;
 
         $.ajax({
             method: "POST",
             dataType: "json",
-            url: url_target,
+            url: '{{ url("") }}/' + url,
             cache: false,
             data: data_send,
             complete: function () {

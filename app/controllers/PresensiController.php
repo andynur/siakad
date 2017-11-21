@@ -77,64 +77,46 @@ class PresensiController extends \Phalcon\Mvc\Controller
         $this->checkValidation();
         
         if (count($this->messages) == 0) {
-            $data_murid = json_decode($_POST['data_murid'], true);
-            $rombel_id = $_POST['rombel_id'];
-            $tipe = $_POST['tipe'];
-            $tanggal = $_POST['tanggal'];
-                    
-            // multiple insert hadir & absen
-            $get_presensi = RefPresensi::find([
-                "columns" => "peserta_didik_id",
-                "conditions" => "rombongan_belajar_id = '$rombel_id' AND tipe = '$tipe' AND tanggal = '$tanggal'"
-            ])->toArray();
+            $murid = json_decode($_POST['data_murid'], true);
+            $count = count($murid);
 
-            $get_murid = RefRombelAnggota::find([
-                "columns" => "peserta_didik_id",
-                "conditions" => "rombongan_belajar_id = '$rombel_id'"
-            ])->toArray();
-
-            $kirim = [];
-            foreach ($data_murid as $data) {
-                $kirim[] = $data["murid_id"];
-            }
-
-            $murid = [];
-            foreach ($get_murid as $data) {
-                $murid[] = intval($data["peserta_didik_id"]);
-            }
-
-            $presensi = [];
-            foreach ($get_presensi as $data) {
-                $presensi[] = intval($data["peserta_didik_id"]);
-            }            
-
-            $count = count($kirim);
-            $hadir_id = array_diff($murid, array_diff($murid, $kirim));
-            $absen_id = array_diff($murid, $kirim, $presensi);
-            $merge_id = array_merge($hadir_id, $absen_id);
-                        
             if ($count == 1) {
                 $data = new RefPresensi();
-                $this->save($kirim[0], $data, $_POST['presensi'], 'tambah');
+                $this->save($murid[0]["murid_id"], $data, 'tambah');
             } else {
-                for ($i=0; $i < count($merge_id) ; $i++) { 
-                    $presensi = 'hadir';
-                    
-                    if ($i >= $count) {
-                        $presensi = 'absen';
-                    }
-                    
+                for ($i = 0; $i < $count; $i++) {
                     $data = new RefPresensi();
-                    $this->save($merge_id[$i], $data, $presensi, 'tambah');
-                }            
+                    $this->save($murid[$i]["murid_id"], $data, 'tambah');
+                }
             }
-        }     
+        }
 
         $notif = ['title' => $this->title, 'text' => $this->text, 'type' => $this->type];
-        echo json_encode($notif);        
+        echo json_encode($notif);
     }    
 
-    public function save($murid_id, $data, $presensi, $message) 
+    public function statusEditAction()
+    {
+        $this->checkValidation();
+        
+        if (count($this->messages) == 0) {
+            $murid = json_decode($_POST['data_murid'], true);
+            $id = $murid[0]["murid_id"];
+            $tgl = $_POST['tanggal'];
+            $tipe = $_POST['tipe'];
+
+            $data = RefPresensi::findFirst([
+                "conditions" => "tanggal = '$tgl' AND tipe = '$tipe' AND peserta_didik_id = '$id'"
+            ]);
+
+            $this->save($id, $data, 'ubah');
+        }
+
+        $notif = ['title' => $this->title, 'text' => $this->text, 'type' => $this->type];
+        echo json_encode($notif);
+    }    
+
+    public function save($murid_id, $data, $message) 
     {
         $session = explode('-', $this->session->get('ps_id'));
         $user_id = $session[1];
@@ -146,7 +128,7 @@ class PresensiController extends \Phalcon\Mvc\Controller
             'tipe' => $_POST['tipe'],
             'peserta_didik_id' => $murid_id,
             'semester_id' => $_POST['semester_id'],
-            'presensi' => $presensi,
+            'presensi' => $_POST['presensi'],
             'status_email' => 'T',
             'keterangan' => $_POST['keterangan'],
             'created_by' => $user_id,

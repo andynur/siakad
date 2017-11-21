@@ -2,3 +2,14 @@ input[type="checkbox"] {
     width: 18px;
     height: 18px;
 }
+
+.edit-presensi {
+    cursor: pointer;
+}
+
+/* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+    .presensi_all {
+        margin: 0.5em 0 0 1em;
+    }    
+}
