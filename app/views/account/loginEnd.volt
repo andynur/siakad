@@ -2,10 +2,10 @@
 
     <div class="login-box">
       <div class="login-logo">
-        <a href="../../index2.html"><b>SIAKAD </b>STIE</a>
+        <a href="../../index2.html"><b>SISKO </b>Al Azhar</a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
-        <p class="login-box-msg" style="    color: #605CA8;"><span style="color: red;">Session</span> Habis Silahkan Login Kembali..!</p>
+        <p class="login-box-msg" style="    color: #605CA8;"><span style="color: red;">Sesi</span> Habis Silahkan Login Kembali..!</p>
 
         <form action="{{ url('account/loginProsesAgain') }}" method="post">
           <div class="form-group has-feedback">
