@@ -78,7 +78,8 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
             "penghasilan" => $penghasilan,
             "transportasi" => $transportasi,
             "tinggal" => $tinggal,
-            "id" => $rombel_id
+            "id" => $rombel_id,
+            "back_link" => $_POST['back_link']
         ]);
         
         $this->view->pick('peserta_didik/form');
@@ -222,8 +223,8 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
             'telpon' => $_POST['telpon'],
             'nomor_telepon_seluler' => $_POST['nomor_ayah'],
             'nomor_telepon_seluler_2' => $_POST['nomor_ibu'],
-            'tgl_lahir' => $_POST['tgl_lahir'],
-            'tgl_masuk' => $_POST['tgl_masuk'],
+            'tgl_lahir' => $_POST['tgl_lahir_kirim'],
+            'tgl_masuk' => $_POST['tgl_masuk_kirim'],
             'tempat_lahir' => $_POST['tempat_lahir'],
             'nis' => $_POST['nis'],
             'nisn' => $_POST['nisn'],

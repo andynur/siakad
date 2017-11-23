@@ -20,18 +20,18 @@
                 </div>
                 <div class="box-body">
                     <div class="form-group">
-                        <a href="#" onclick="go_page('pesertadidik/addMurid/{{rombel_id}}')" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp; Tambah Data</a>
+                        <a href="#" onclick="add_data()" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp; Tambah Data</a>
                     </div>
                                         
-                    <table id="data_table" class="table table-bordered table-striped">
+                    <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th style="width: 10px">No</th>
                                 <th>Foto</th>
-                                <th style="width: 12em">Murid</th>
-                                <th style="width: 14em">Orang Tua</th>
-                                <th style="width: 10em">Kontak</th>
-                                <th>Alamat</th>
+                                <th style="min-width: 12em">Murid</th>
+                                <th style="min-width: 14em">Orang Tua</th>
+                                <th style="min-width: 10em">Kontak</th>
+                                <th style="min-width: 10em">Alamat</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -59,7 +59,7 @@
                                     <span class="label label-primary"><i class="fa fa-phone"></i>&nbsp; No Ibu &nbsp;&nbsp;</span>
                                     {{v.nomor_ibu}}<br/>
                                 </td>
-                                <td>{{v.alamat}}</td>
+                                <td>{{ v.alamat }}</td>
                                 <td align="center">
                                     <a class="btn btn-primary btn-xs btn-flat" onclick="edit_data('{{v.murid_id}}', '{{rombel_id}}')"><i class="glyphicon glyphicon-edit"></i> Ubah &nbsp;</a>
 
@@ -83,6 +83,7 @@
 <script type="text/javascript">
     $(function () {
         $('#data_table').DataTable({
+            "scrollX": true,
             "paging": true,
             "lengthChange": true,
             "searching": true,
@@ -149,6 +150,14 @@
         });
 
         return false;
+    }
+
+    function add_data() {
+        var url = '{{ url("pesertadidik/addMurid/") }}' + '{{ rombel_id }}';
+        var back_link = '{{ url("pesertadidik/kelas/") }}' + '{{ rombel_id }}';
+        var data = 'back_link='+back_link;
+
+        go_page_data(url, data);
     }
 
     function edit_data(id, rombel_id) {

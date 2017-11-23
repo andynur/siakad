@@ -6,7 +6,7 @@
 </style>
 <section class="content-header">
     <h1>
-        <button type="button" onclick="back({{rombel_id}})" class="btn bg-navy btn-flat"><i class="fa fa-arrow-circle-left"></i> &nbsp; Kembali</button>
+        <button type="button" onclick="go_page('{{ back_link }}')" class="btn bg-navy btn-flat"><i class="fa fa-arrow-circle-left"></i> &nbsp; Kembali</button>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i>Kelas</a></li>
@@ -547,12 +547,6 @@
             e.preventDefault();
         });
     })();
-
-    // set back button
-    function back(id) {
-        var url_target = '{{ url("pesertadidik/kelas/") }}' + id;
-        go_page(url_target);
-    }
 
     // autochange class
     $("#rombel").change(function(){                          

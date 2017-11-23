@@ -7,7 +7,7 @@
 
 <section class="content-header">
     <h1>
-        <button type="button" onclick="back({{id}})" class="btn bg-navy btn-flat"><i class="fa fa-arrow-circle-left"></i> &nbsp; Kembali</button>
+        <button type="button" onclick="go_page('{{ back_link }}')" class="btn bg-navy btn-flat"><i class="fa fa-arrow-circle-left"></i> &nbsp; Kembali</button>
     </h1>
     {% for opt in rombel %}
         {% if (opt.rombongan_belajar_id == id) %}
@@ -543,11 +543,6 @@
         });
     })();
 
-    // set back button
-    function back(id) {
-        var url_target = '{{ url("pesertadidik/kelas/") }}' + id;
-        go_page(url_target);
-    }
     // autochange class
     $("#rombel").change(function(){
         rombel = $("#rombel").val();
