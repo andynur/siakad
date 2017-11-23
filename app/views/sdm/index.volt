@@ -8,7 +8,7 @@
 <!-- Header content -->
 <section class="content-header">
     <h1>
-        SDM
+        GURU / SDM
         <small>
             <i class="fa fa-calendar-o"></i> {{ tanggalIndo }} 
             <i class="fa fa-clock-o"></i> <span id="waktu">00:00:00</span>
@@ -27,18 +27,15 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header">
-                    <h3 class="box-title">Data SDM</h3>
+                    <h3 class="box-title">Data Guru / SDM</h3>
+                    <a href="#" onclick="go_page('sdm/formSdm')" class="btn btn-sm btn-success btn_add_new"><i class="fa fa-plus"></i>&nbsp; Tambah Data</a>
                 </div>
                 <div class="box-body">
-                    <div class="form-group">
-                        <a href="#" onclick="go_page('sdm/formSdm')" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp; Tambah Data</a>
-                    </div>
-
                     <table id="data_table" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th class="width-10">No</th>
-                                <th>SDM</th>
+                                <th class="min-260">SDM</th>
                                 <th>NUPTK</th>
                                 <th>Jenjang</th>
                                 <th>Jenis Kelamin</th>

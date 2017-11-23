@@ -24,17 +24,21 @@ class SdmController extends \Phalcon\Mvc\Controller
         $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
     }
 
-    public function indexAction()
+    public function indexAction($jenjang = '')
     {
+        if ($jenjang == '') {
+            $conditions = "";
+        } else {
+            $conditions = "jenjang = '$jenjang'";
+        }
+
         $data = RefAkdSdm::find([
             "columns" => "id_sdm, nip, jenjang, nama, kelamin, foto, status_keaktifan_id, nuptk",
-            "order" => "id_sdm DESC"
+            "conditions" => $conditions,
+            "order" => "nama"
         ]);           
 
-        $this->view->setVars([
-            "data" => $data
-        ]);
-
+        $this->view->setVars(["data" => $data]);
         $this->view->pick('sdm/index');
     }
 
