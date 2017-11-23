@@ -39,9 +39,9 @@
                         <thead>
                             <tr>
                                 <th class="width-10">No</th>
-                                <th>Judul</th>
+                                <th class="min-260">Judul</th>
                                 <th>Tanggal Kirim</th>
-                                <th>Kelas Tujuan ID</th>
+                                <th>Kelas Tujuan</th>
                                 <th>Pengirim</th>
                                 <th>Status</th>
                                 <th>Lampiran</th>
@@ -54,8 +54,9 @@
                             {% set id = row.pengumuman_id %} 
                             {% set judul = row.judul %} 
                             {% set tanggal = row.tanggal %} 
+                            {% set uid = row.login %}
                             {% set pengirim = row.nama %}
-                            {% set tujuan = row.tujuan|left_trim(',')|right_trim(',') %}
+                            {% set tujuan = list_tujuan[id] %}
                             {% set lampiran = row.lampiran %}
                             {% set status = row.status %}
                             {% set nama_tingkat = row.nama_tingkat %}
@@ -72,12 +73,23 @@
                             {% else %} 
                                 {% set color = 'default' %} 
                             {% endif %}
-
+                                    
                             <tr id="data_{{ id }}">
                                 <td>{{ no }}</td>
                                 <td>{{ judul }}</td>
                                 <td>{{ helper.dateBahasaIndo(tanggal) }}</td>
-                                <td>{{ tujuan }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-flat btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list-ul"></i>&nbsp; Lihat Tujuan &nbsp; 
+                                        <span class="caret"></span></button>
+                                        
+                                        <ul class="dropdown-menu">
+                                            {% for list in tujuan %}
+                                                <li>&nbsp; &raquo; {{ list }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </td>
                                 <td>{{ pengirim }}</td>
                                 <td><span class="label label-{{ color }}">{{ status }}</span></td>
                                 <td>
@@ -86,9 +98,19 @@
                                     {% endif %}                                
                                 </td>
                                 <td>
+                                    {% for val in usergroup %}
+                                        {% if (val == '1' OR val == '4') %}
+                                            {% set check = true %}
+                                        {% else %}
+                                            {% set check = false %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if (this.session.get('uid') == uid OR check == true) %}
                                     <a data-id="{{ id }}" class="btn btn-primary btn-xs btn-flat edit"><i class="glyphicon glyphicon-edit"></i> </a>
 
                                     <a data-id="{{ id }}" class="btn btn-danger btn-xs btn-flat delete"><i class="glyphicon glyphicon-trash"></i></a>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% set no += 1 %} 

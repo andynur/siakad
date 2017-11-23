@@ -26,26 +26,82 @@ class PengumumanController extends \Phalcon\Mvc\Controller
 
     public function indexAction()
     {
-        $data = $this->modelsManager->createBuilder()
-                ->addFrom('RefPengumuman', 'p')
-                ->join('ViewUser', 'p.pengirim_uid = u.login', 'u')
-                ->columns(['p.pengumuman_id', 'p.judul', 'p.isi', 'p.tanggal', 'u.login', 'u.nama', 'u.foto', 'p.tujuan', 'p.lampiran', 'p.status'])
-                ->orderBy('p.pengumuman_id DESC')
-                ->getQuery()
-                ->execute();
+        $id_ps = $this->session->get('id_ps');
+        $usergroup = explode(',', substr($this->session->get('usergroup'), 1, -1));
+        $list_ps = substr($id_ps, 1, -1);        
 
+        // validasi jika usergroup admin
+        foreach ($usergroup as $val) {
+            if ($val == "1") {
+                $conditions = "p.pengumuman_id != '0'";
+            } else {            
+                $conditions = "u.id_ps = '$id_ps'";
+            }
+        }
+
+        $data = $this->modelsManager->createBuilder()
+            ->addFrom('RefPengumuman', 'p')
+            ->join('ViewUser', 'p.pengirim_uid = u.login', 'u')
+            ->columns(['p.pengumuman_id', 'p.judul', 'p.isi', 'p.tanggal', 'u.login', 'u.nama', 'u.foto', 'p.tujuan', 'p.lampiran', 'p.status'])
+            ->where($conditions)
+            ->orderBy('p.pengumuman_id DESC')
+            ->getQuery()
+            ->execute();
+
+        $data_rombel = $this->modelsManager->createBuilder()
+            ->addFrom('RefRombonganBelajar', 'r')
+            ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
+            ->columns(['r.rombongan_belajar_id AS id', 'r.nama', 't.nama AS tingkat'])
+            ->where("r.tipe = 'umum'")
+            ->orderBy('t.nama ASC')
+            ->getQuery()
+            ->execute()
+            ->toArray();
+
+        // ambil data rombel dan dimasukkan ke array
+        foreach ($data_rombel as $r) {
+            $get_rombel['%'.$r["id"].'%'] = $r["tingkat"] . ' - ' . $r["nama"];
+        }
+
+        $find       = array_keys($get_rombel);
+        $replace    = array_values($get_rombel);
+            
+        // replace list tujuan id dengan data rombel
+        $data_arr = $data->toArray();
+        foreach ($data_arr as $k => $d) {
+            $add_symbol = str_replace(",", "%,%", $d["tujuan"]);
+            $new_string = str_ireplace($find, $replace, substr($add_symbol, 2, -2));
+            
+            $list_tujuan[$d["pengumuman_id"]] = explode(',', $new_string);
+        }
+        
+        // ambil data tingkat berdasar list program studi
+        $data_sdm = RefAkdPs::find([
+            "columns" => "id_tingkat",
+            "conditions" => "id_ps IN ($list_ps)"
+        ]);
+                
+        foreach ($data_sdm as $sdm) {
+            $list_tingkat .= $sdm["id_tingkat"] . ',';
+        }
+
+        $list_tingkat = substr($list_tingkat, 0, -1);
+
+        // ambil data rombel berdasar list tingkat
         $rombel = $this->modelsManager->createBuilder()
-                ->addFrom('RefRombonganBelajar', 'r')
-                ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
-                ->columns(['r.rombongan_belajar_id AS id', 'r.nama', 't.nama AS tingkat'])
-                ->where('r.tipe = "umum"')
-                ->orderBy('t.nama ASC')
-                ->getQuery()
-                ->execute();                
+            ->addFrom('RefRombonganBelajar', 'r')
+            ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
+            ->columns(['r.rombongan_belajar_id AS id', 'r.nama', 't.nama AS tingkat'])
+            ->where("r.tipe = 'umum' AND r.tingkat_pendidikan_id IN ($list_tingkat)")
+            ->orderBy('t.nama ASC')
+            ->getQuery()
+            ->execute();                       
 
         $this->view->setVars([
             "data" => $data,
-            "rombel" => $rombel
+            "list_tujuan" => $list_tujuan,
+            "rombel" => $rombel,
+            "usergroup" => $usergroup
         ]);
 
         $this->view->pick('pengumuman/index');
