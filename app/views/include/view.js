@@ -48,6 +48,7 @@ function dataTableConfig(length = 5) {
     }
 
     $('#data_table').DataTable({
+        "scrollX": true,
         "paging": true,
         "lengthChange": true,
         "searching": true,
