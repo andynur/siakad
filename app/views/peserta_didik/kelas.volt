@@ -1,7 +1,16 @@
+{# Define variables #}
+{% set tanggalIndo = helper.dateBahasaIndo(date('Y-m-d')) %}
+
+{# Global css #}
+<style>{% include "include/view.css" %}</style>
+
 <section class="content-header">
     <h1>
         {{data[0].nama_tingkat}} - {{data[0].nama_rombel}}
-        <small>Pengelolaan data kelas</small>
+        <small>
+            <i class="fa fa-calendar-o"></i> {{ tanggalIndo }} 
+            <i class="fa fa-clock-o"></i> <span id="waktu">00:00:00</span>
+        </small> 
     </h1>    
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> {{data[0].nama_tingkat}}</a></li>
@@ -17,12 +26,9 @@
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">Data Murid Per-Kelas </h3>
+                    <a href="#" onclick="add_data()" class="btn btn-sm btn-success btn_add_new"><i class="fa fa-plus"></i>&nbsp; Tambah Data</a>
                 </div>
-                <div class="box-body">
-                    <div class="form-group">
-                        <a href="#" onclick="add_data()" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp; Tambah Data</a>
-                    </div>
-                                        
+                <div class="box-body">                                        
                     <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -31,7 +37,7 @@
                                 <th style="min-width: 12em">Murid</th>
                                 <th style="min-width: 14em">Orang Tua</th>
                                 <th style="min-width: 10em">Kontak</th>
-                                <th style="min-width: 10em">Alamat</th>
+                                <th style="min-width: 14em">Alamat</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -54,10 +60,14 @@
                                     {{v.nama_ibu}}
                                 </td>
                                 <td>
+                                    {% if (v.nomor_ayah != '') %}
                                     <span class="label label-default"><i class="fa fa-phone"></i>&nbsp; No Ayah</span>
                                     {{v.nomor_ayah}}<br/>
+                                    {% endif %}
+                                    {% if (v.nomor_ibu != '') %}
                                     <span class="label label-primary"><i class="fa fa-phone"></i>&nbsp; No Ibu &nbsp;&nbsp;</span>
                                     {{v.nomor_ibu}}<br/>
+                                    {% endif %}
                                 </td>
                                 <td>{{ v.alamat }}</td>
                                 <td align="center">
