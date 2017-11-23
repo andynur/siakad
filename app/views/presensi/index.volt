@@ -65,11 +65,11 @@
                                 <!-- <th style="width: 80px">Tanggal</th> -->
                                 <th style="width: 200px">Murid</th>
                                 <th style="width: 120px">                                    
-                                    <input type="checkbox" class="select_all" data-tipe="masuk" style="margin: 0; vertical-align: middle;" data-toggle="tooltip" title="pilih semua masuk"> 
+                                    <input type="checkbox" class="select_all" data-tipe="masuk" style="margin: 0; vertical-align: middle;" data-toggle="tooltip" data-placement="right" title="pilih semua masuk"> 
                                     &nbsp; Masuk
                                 </th>
                                 <th style="width: 120px">
-                                    <input type="checkbox" class="select_all" data-tipe="keluar" style="margin: 0; vertical-align: middle;" data-toggle="tooltip" title="pilih semua keluar"> 
+                                    <input type="checkbox" class="select_all" data-tipe="keluar" style="margin: 0; vertical-align: middle;" data-toggle="tooltip" data-placement="right" title="pilih semua keluar"> 
                                     &nbsp; Keluar                                
                                 </th>
                                 <th style="width: 60px">Email Orangtua</th>
