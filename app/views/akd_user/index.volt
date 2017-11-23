@@ -1,3 +1,4 @@
+
 {# Define variables #}
 {% set tanggalIndo = helper.dateBahasaIndo(date('Y-m-d')) %}
 {% set urlPost = url('user/addUser') %}
@@ -6,7 +7,7 @@
 <style>{% include "include/view.css" %}</style>
 
 {# Custom css #}
-<style>{% include "rombel/assets/anggota.css" %}</style>
+<style>{% include "akd_user/assets/user.css" %}</style>
 
 <!-- Header content -->
 <section class="content-header">
@@ -31,6 +32,9 @@
             <div class="box box-primary">
                 <div class="box-header">
                     <h3 class="box-title" id="form_title">Tambah User</h3>
+                    <div class="pull-right box-tools">
+                      <button class="btn btn-primary btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus" style="padding:0"></i></button>
+                    </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body pad">
@@ -153,9 +157,9 @@
                     <table id="data_table" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th style="width: 10px">No</th>
+                                <th class="width-10">No</th>
                                 <th>UID</th>
-                                <th>Nama / No Identitas</th>
+                                <th class="min-260">Nama / No Identitas</th>
                                 <th>Jenis</th>
                                 <th>Aktif</th>
                                 <th>Aksi</th>
@@ -180,7 +184,7 @@
 
                             <tr id="data_{{v.login}}" class="middle-row">
                                 <td>{{no}}</td>
-                                <td><span class="badge bg-dark">{{v.login}}</span></td>
+                                <td><span class="badge bg-navy">{{v.login}}</span></td>
                                 <td>
                                     <img src="img/{{folder}}/{{v.foto}}" alt="{{v.nama}}" style="height: 3em; float: left; margin-right: 10px; border-radius: 50px">
                                     <span style="font-weight: 600">{{v.nama}}</span> <br/> 

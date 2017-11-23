@@ -21,9 +21,16 @@ class UserController extends \Phalcon\Mvc\Controller
     }
 
     public function indexAction($jenis = '1', $tingkat = '')
-    {
+    {        
         if ($jenis == '1') {
-            $data = ViewUser::find(["conditions" => "id_jenis = '1'"]);
+            $conditions = "id_jenis = '1'";
+            $tingkat_conditions = "tingkat_pendidikan_id != ''";            
+
+            if ($tingkat != '') {
+                $conditions = "id_jenis = '1' AND id_ps = '$tingkat'";            
+            }
+
+            $data = ViewUser::find(["conditions" => $conditions]);        
         } else if ($jenis != '') {
             if ($tingkat != '0') {
                 $get_id = $this->modelsManager->createBuilder()
@@ -32,7 +39,7 @@ class UserController extends \Phalcon\Mvc\Controller
                     ->join('RefRombonganBelajar', 'a.rombongan_belajar_id = r.rombongan_belajar_id', 'r')
                     ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
                     ->columns(['m.nis'])
-                    ->where('t.tingkat_pendidikan_id = "'.$tingkat.'"')
+                    ->where('t.tingkat_pendidikan_id IN ('.$tingkat.')')
                     ->getQuery()
                     ->execute()
                     ->toArray();
@@ -43,6 +50,8 @@ class UserController extends \Phalcon\Mvc\Controller
                 }
                 $list_id = substr($list_id, 0, -1);
                 
+                $tingkat_conditions = "tingkat_pendidikan_id IN ($tingkat)";
+
                 $data = ViewUser::find(["conditions" => "login IN ($list_id)"]);
             } else {
                 $data = ViewUser::find(["conditions" => "id_jenis = '2'"]);
@@ -54,6 +63,7 @@ class UserController extends \Phalcon\Mvc\Controller
         $getTingkat = RefTingkatPendidikan::find([
             "columns" => "tingkat_pendidikan_id AS id, nama",
             "order" => "nama",
+            "conditions" => $tingkat_conditions
         ]);
         $getJenis = RefUserJenis::find(["conditions" => "id_aktif = 'Y'"]);
         $usergroup = RefUsergroup::find(["conditions" => "aktif = 'Y'"]);
