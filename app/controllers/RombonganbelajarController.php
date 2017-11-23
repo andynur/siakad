@@ -23,14 +23,23 @@ class RombonganBelajarController extends \Phalcon\Mvc\Controller
         $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
     }
 
-    public function indexAction()
+    public function indexAction($tingkat = '')
     {
+        if ($tingkat == '') {
+            $conditions = "t.tingkat_pendidikan_id != 0";
+            $option_conditions = "tingkat_pendidikan_id != 0";
+        } else {
+            $conditions = "t.tingkat_pendidikan_id IN ($tingkat)";
+            $option_conditions = "tingkat_pendidikan_id IN ($tingkat)";
+        }
+
         $data = $this->modelsManager->createBuilder()
                 ->addFrom('RefRombonganBelajar', 'r')
                 ->join('RefSemester', 'r.semester_id = s.semester_id', 's')
                 ->join('RefKurikulum', 'r.kurikulum_id = k.kurikulum_id', 'k')
                 ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
                 ->columns(['r.rombongan_belajar_id', 'r.nama AS nama_rombel', 'r.tipe', 's.nama AS nama_semester', 't.nama AS nama_tingkat', 'k.nama_kurikulum'])
+                ->where($conditions)
                 ->orderBy('r.rombongan_belajar_id DESC')
                 ->groupBy('r.rombongan_belajar_id')
                 ->getQuery()
@@ -38,7 +47,10 @@ class RombonganBelajarController extends \Phalcon\Mvc\Controller
                     
         $tahun = RefTahunAjaran::find(["columns" => "tahun_ajaran_id, nama"]);
         $kurikulum = RefKurikulum::find(["columns" => "kurikulum_id, nama_kurikulum"]);
-        $tingkat = RefTingkatPendidikan::find(["columns" => "tingkat_pendidikan_id, nama"]);
+        $tingkat = RefTingkatPendidikan::find([
+            "columns" => "tingkat_pendidikan_id, nama",
+            "conditions" => $option_conditions
+        ]);
 
         $this->view->setVars([
             "data" => $data,

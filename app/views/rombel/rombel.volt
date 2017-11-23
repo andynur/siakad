@@ -28,6 +28,9 @@
             <div class="box box-primary">
                 <div class="box-header">
                     <h3 class="box-title" id="form_title">Tambah Data</h3>
+                    <div class="pull-right box-tools">
+                      <button class="btn btn-primary btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus" style="padding:0"></i></button>
+                    </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body pad">
