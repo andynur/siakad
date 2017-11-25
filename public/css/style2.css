@@ -8,11 +8,10 @@
 body,
 html {
   height: 100%;
-  background: url("../img/pattern.png") repeat;
 }
 
 .card-container.card {
-  width: 350px;
+  max-width: 350px;
   padding: 20px 35px;
 }
 
@@ -30,17 +29,26 @@ html {
 
 .card {
   background-color: #fff;
-  /* just in case there no content*/
-  padding: 20px 25px 30px;
+  /*justincasetherenocontent*/padding: 20px 25px 30px;
   margin: 0 auto 25px;
   margin-top: 50px;
-  /* shadows and rounded borders */
-  -moz-border-radius: 2px;
+  /*shadowsandroundedborders*/-moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   border-radius: 2px;
-  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+  -moz-box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+  -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.15);
+  transition: all .2s ease-in-out;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  -moz-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  -webkit-box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
 .profile-img-card {
