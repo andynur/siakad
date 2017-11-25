@@ -52,10 +52,10 @@
             <li><a href="http://portal.al-azharbsbcity.or.id/">Beranda</a></li>
             <li class="active"><a href="#">SISKO</a></li>
             <li><a href="http://pmb.al-azharbsbcity.or.id/" target="_blank">PMB</a></li>
-            <li><a href="" target="_blank">KB-TK</a></li>
-            <li><a href="" target="_blank">SD</a></li>
-            <li><a href="" target="_blank">SMP</a></li>
-            <li><a href="" target="_blank">SMA</a></li>
+            <li><a href="http://tkialazhar29.sch.id/" target="_blank">KB-TK</a></li>
+            <li><a href="http://sd-alazhar29.sch.id/" target="_blank">SD</a></li>
+            <li><a href="http://smpialazhar29.sch.id/" target="_blank">SMP</a></li>
+            <li><a href="http://smaialazhar16.sch.id/" target="_blank">SMA</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="http://portal.al-azharbsbcity.or.id/DownloadApk" target="_blank">Download Apk</a></li>     
