@@ -5,7 +5,7 @@ use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Mvc\Url;
 use Phalcon\Mvc\Model\Query\Builder;
-use Phalcon\Http\Request\File;
+use Phalcon\Image\Adapter\Imagick;
 
 class PesertaDidikController extends \Phalcon\Mvc\Controller
 {
@@ -37,13 +37,8 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
                 ->getQuery()
                 ->execute();
 
-        $semester = RefSemester::find(["columns" => "semester_id, nama"]);
-        $kurikulum = RefKurikulum::find(["columns" => "kurikulum_id, nama_kurikulum"]);
-
         $this->view->data = $data;
         $this->view->rombel_id = $rombel_id;
-        $this->view->semester = $semester;
-        $this->view->kurikulum = $kurikulum;
         $this->view->pick('peserta_didik/kelas');
     }
 
@@ -55,6 +50,8 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
                 ->join('RefKurikulum', 'r.kurikulum_id = k.kurikulum_id', 'k')
                 ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
                 ->columns(['r.rombongan_belajar_id', 'r.nama AS nama_rombel', 's.nama AS nama_semester', 't.nama AS nama_tingkat', 'k.nama_kurikulum'])                
+                ->where('r.tipe = "umum"')                
+                ->orderBy('t.nama')                
                 ->getQuery()
                 ->execute();
 
@@ -81,7 +78,8 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
             "penghasilan" => $penghasilan,
             "transportasi" => $transportasi,
             "tinggal" => $tinggal,
-            "id" => $rombel_id
+            "id" => $rombel_id,
+            "back_link" => $_POST['back_link']
         ]);
         
         $this->view->pick('peserta_didik/form');
@@ -113,10 +111,10 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
 
         $data = $this->modelsManager->createBuilder()
             ->addFrom('RefAkdMhs', 'm')
-            ->join('RefSysProvinsi', 'm.kode_prop = p.id', 'p')
-            ->join('RefSysKabupaten', 'm.kode_kab = k.id', 'k')
-            ->join('RefSysKecamatan', 'm.kode_kec = c.id', 'c')
-            ->join('RefSysKelurahan', 'm.desa_kelurahan = l.id', 'l')
+            ->leftJoin('RefSysProvinsi', 'm.kode_prop = p.id', 'p')
+            ->leftJoin('RefSysKabupaten', 'm.kode_kab = k.id', 'k')
+            ->leftJoin('RefSysKecamatan', 'm.kode_kec = c.id', 'c')
+            ->leftJoin('RefSysKelurahan', 'm.desa_kelurahan = l.id', 'l')
             ->columns(['m.id_mhs, m.nama, m.id_agama, m.foto, m.rombel_sekarang, m.gol_darah, m.gender, m.nik, m.alamat, m.rt, m.rw, m.nama_dusun, m.desa_kelurahan, l.name AS nama_kelurahan, m.kode_kec, c.name AS nama_kecamatan, m.kode_kab, k.name AS nama_kabupaten, m.kode_prop, p.name AS nama_provinsi, m.kode_pos, m.telpon, m.nomor_telepon_seluler, m.nomor_telepon_seluler_2, m.tgl_lahir, m.tgl_masuk, m.tempat_lahir, m.nis, m.nisn, m.email, m.warganegara, m.nama_ayah, m.nama_ibu, m.agama_ayah, m.agama_ibu, m.edu_ayah, m.edu_ibu, m.job_ayah, m.job_ibu, m.penghasilan_ortu, m.penghasilan_id_ibu, m.alamat_ortu'])  
             ->where('m.id_mhs = ' . $id)
             ->getQuery()
@@ -168,23 +166,35 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
 
     public function save($data, $message) 
     {
-        $get_session = $this->session->get('ps_id');
-        $explode = explode('-', $get_session);
-        $ps_id = $explode[1];
-        $rombel_id = $_POST['rombel'];        
-        $foto = $_POST['foto_lama'];
-        $path =  DOCUMENT_ROOT . 'img/mhs/';
+        $get_session    = $this->session->get('ps_id');
+        $explode        = explode('-', $get_session);
+        $ps_id          = $explode[1];
+        $rombel_id      = $_POST['rombel'];        
+        $foto           = $_POST['foto_lama'];
+        $path           = DOCUMENT_ROOT . 'img/mhs/';
 
-        if ($this->request->hasFiles() == true) {
+        if ($this->request->hasFiles()) {
             foreach ($this->request->getUploadedFiles() as $file) {
-                $ext = explode('/', $file->getRealType()) ;
-                $nama_file = md5(uniqid(rand(), true)) . '.' . $ext[1];
-                
-                if ($this->imageCheck($file->getRealType())) {
-                    if ($file->moveTo($path.$nama_file)) {
-                        $foto = $nama_file;
-                    } else {                    
-                        die('gagal masuk bro!');
+                // check if file is uploaded
+                if ($file->getSize() > 0) {                   
+                    $ext = $file->getExtension();
+                    $nama_file = $_POST['nis'] . '.' . $ext;
+                    $path_file = $path . $nama_file;
+                    
+                    if ($this->imageCheck($file->getRealType())) {
+                        if ($file->moveTo($path_file)) {
+                            // resize image to 200px
+                            $image = new Imagick($path_file);
+                            $image->resize(
+                                200,
+                                null,
+                                \Phalcon\Image::WIDTH
+                            )->save();                               
+
+                            $foto = $nama_file;
+                        } else {                    
+                            die('gagal masuk bro!');
+                        }
                     }
                 }
             }
@@ -213,8 +223,8 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
             'telpon' => $_POST['telpon'],
             'nomor_telepon_seluler' => $_POST['nomor_ayah'],
             'nomor_telepon_seluler_2' => $_POST['nomor_ibu'],
-            'tgl_lahir' => $_POST['tgl_lahir'],
-            'tgl_masuk' => $_POST['tgl_masuk'],
+            'tgl_lahir' => $_POST['tgl_lahir_kirim'],
+            'tgl_masuk' => $_POST['tgl_masuk_kirim'],
             'tempat_lahir' => $_POST['tempat_lahir'],
             'nis' => $_POST['nis'],
             'nisn' => $_POST['nisn'],
@@ -234,6 +244,7 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
   
             'alamat_ortu' => $_POST['alamat_ortu'],
             'soft_delete' => 0,
+            'last_sync' => '2000-01-01 10:10:10',
             'updater_id' => 0            
         ));                              
 
@@ -244,6 +255,7 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
                 $anggota->assign([
                     'rombongan_belajar_id' => $rombel_id,
                     'peserta_didik_id' => $new_id,
+                    'semester_id' => $_POST['semester_id'],
                     'jenis_pendaftaran_id' => 1,
                     'soft_delete' => 0,
                     'updater_id' => 0
@@ -306,6 +318,7 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
         $check = new Validation();
 
         $this->validation($check, 'nama', 'Nama Murid');        
+        $this->validation($check, 'nis', 'NIS');        
         $this->validation($check, 'tempat_lahir', 'Tempat lahir');        
         $this->validation($check, 'tgl_lahir', 'Tanggal lahir');        
         $this->validation($check, 'gender', 'Jenis kelamin');        
@@ -371,7 +384,7 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
             ->addFrom('RefRombonganBelajar', 'r')
             ->join('RefSemester', 'r.semester_id = s.semester_id', 's')
             ->join('RefKurikulum', 'r.kurikulum_id = k.kurikulum_id', 'k')
-            ->columns(['s.nama AS nama_semester', 'k.nama_kurikulum'])
+            ->columns(['s.nama AS nama_semester', 's.semester_id', 'k.nama_kurikulum'])
             ->where('r.rombongan_belajar_id = ' . $id)
             ->getQuery()
             ->execute();         
@@ -388,9 +401,37 @@ class PesertaDidikController extends \Phalcon\Mvc\Controller
         $anggota = RefRombelAnggota::find([
             "conditions" => "peserta_didik_id = $id"
         ]);   
+        unlink(DOCUMENT_ROOT . 'img/mhs/' . $data->foto);
         $data->delete();
         $anggota->delete();
         echo json_encode(array("status" => true));
     }
-}
 
+    public function resetPasswordAction()
+    {
+        $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
+
+        $nis = $_POST['nis'];
+        $tgl_lahir = $_POST['tgl_lahir'];
+        $exp_tgl = explode('-', $tgl_lahir);
+
+        $data = RefUser::findFirst(["conditions" => "uid = '$nis'"]);
+        
+        $new_pass = $exp_tgl[2] . $exp_tgl[1] . $exp_tgl[0];
+
+        $data->assign(['nip' => $nis, 'passwd' => md5($new_pass)]);
+        
+        if ($data->save()) {
+            $status = "Password berhasil diubah <b>($new_pass)</b>";
+        } else {
+            $errors = $data->getMessages();
+            $m = '';
+            foreach ($errors as $error) {
+                $m .= "$error"."</br>";
+            }
+            $status = $m;
+        }
+
+        echo json_encode(["status" => $status]);
+    }
+}

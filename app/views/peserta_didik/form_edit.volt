@@ -6,7 +6,7 @@
 </style>
 <section class="content-header">
     <h1>
-        <button type="button" onclick="back({{rombel_id}})" class="btn bg-navy btn-flat"><i class="fa fa-arrow-circle-left"></i> &nbsp; Kembali</button>
+        <button type="button" onclick="go_page('{{ back_link }}')" class="btn bg-navy btn-flat"><i class="fa fa-arrow-circle-left"></i> &nbsp; Kembali</button>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i>Kelas</a></li>
@@ -57,7 +57,7 @@
                                         </div>
                                         <div class="col-lg-5">
                                             <div class="form-group">
-                                                <label>NIS</label>
+                                                <label>NIS <span style="color:red">*</span></label>
                                                 <input type="text" name="nis" id="nis" placeholder="Nomor Induk Murid" value="{{ data[0].nis }}" class="form-control" maxlength="10">
                                             </div>
                                         </div>
@@ -72,44 +72,64 @@
                                         <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label>Tanggal Masuk / Diterima</label>
-                                                <input name="tgl_masuk" type="text" id="tgl_masuk" placeholder="Tanggal Masuk" value="{{ data[0].tgl_masuk }}" class="form-control">
+                                                <input type="text" id="tgl_masuk_input" placeholder="Tanggal Masuk" value="{{ helper.dateBahasaIndo(data[0].tgl_masuk) }}" class="form-control">
+                                                <input type="hidden" name="tgl_masuk" value="{{ data[0].tgl_masuk }}" id="tgl_masuk">
                                             </div>
                                         </div>
 
                                         <div class="col-lg-7">
+                                            <div class="form-group">
+                                                <label>Tanggal Lahir <span style="color:red">*</span></label>
+                                                <div class="input-group"> 
+                                                    <input type="text" id="tgl_lahir_input" placeholder="Tanggal Lahir" value="{{ helper.dateBahasaIndo(data[0].tgl_lahir) }}" class="form-control">
+                                                    <div class="input-group-btn"> 
+                                                        <button type="button" class="btn btn-primary btn-flat" id="reset_pass">
+                                                            <i class="fa fa-refresh"></i>&nbsp; Ubah Password
+                                                        </button>
+                                                    </div> 
+                                                    <input type="hidden" name="tgl_lahir" id="tgl_lahir" value="{{ data[0].tgl_lahir }}">
+                                                </div>                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label>Tempat Lahir <span style="color:red">*</span></label>
                                                 <input name="tempat_lahir" type="text" id="tempat_lahir" placeholder="Tempat Lahir" value="{{ data[0].tempat_lahir }}" class="form-control">
                                             </div>
-                                        </div>
-                                        <div class="col-lg-5">
-                                            <div class="form-group">
-                                                <label>Tanggal Lahir <span style="color:red">*</span></label>
-                                                <input name="tgl_lahir" type="text" id="tgl_lahir" placeholder="Tanggal Lahir" value="{{ data[0].tgl_lahir }}" class="form-control">
-                                            </div>
-                                        </div>
+                                        </div>                                        
 
                                         <div class="col-lg-7">
                                             <div class="form-group">
-                                                <label>Jenis Kelamin <span style="color:red">*</span></label>
-                                                <div class="jk">
-                                                    <input name="gender" type="radio" value="L" {{data[0].gender == 'L' ? 'checked="checked"' : ''}} id="gender_l"> Laki-Laki &nbsp; &nbsp;
-                                                    <input name="gender" type="radio" value="P" {{data[0].gender == 'P' ? 'checked="checked"' : ''}} id="gender_p"> Perempuan
+                                                <label>Golongan Darah </label>
+                                                <div class="gol">
+                                                    <label class="radio-inline">
+                                                        <input name="gol_darah" type="radio" id="gol_darah_a" value="A" {{data[0].gol_darah == 'A' ? 'checked="checked"' : ''}}> A &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input name="gol_darah" type="radio" id="gol_darah_b" value="B" {{data[0].gol_darah == 'B' ? 'checked="checked"' : ''}}> B &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input name="gol_darah" type="radio" id="gol_darah_o" value="O" {{data[0].gol_darah == 'O' ? 'checked="checked"' : ''}}> O &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input name="gol_darah" type="radio" id="gol_darah_ab" value="AB" {{data[0].gol_darah == 'AB' ? 'checked="checked"' : ''}}> AB
+                                                    </label>                                                    
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-5">
                                             <div class="form-group">
-                                                <label>Golongan Darah </label>
-                                                <div class="form-control" style="border:0">
-                                                    <input name="gol_darah" type="radio" id="gol_darah_a" value="A" {{data[0].gol_darah == 'A' ? 'checked="checked"' : ''}}> A &nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <input name="gol_darah" type="radio" id="gol_darah_b" value="B" {{data[0].gol_darah == 'B' ? 'checked="checked"' : ''}}> B &nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <input name="gol_darah" type="radio" id="gol_darah_o" value="O" {{data[0].gol_darah == 'O' ? 'checked="checked"' : ''}}> O &nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <input name="gol_darah" type="radio" id="gol_darah_ab" value="AB" {{data[0].gol_darah == 'AB' ? 'checked="checked"' : ''}}> AB
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                <label>Jenis Kelamin <span style="color:red">*</span></label>
+                                                <div class="jk">
+                                                    <label class="radio-inline">
+                                                        <input name="gender" type="radio" value="L" {{data[0].gender == 'L' ? 'checked="checked"' : ''}} id="gender_l"> Laki-Laki &nbsp; &nbsp;
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input name="gender" type="radio" value="P" {{data[0].gender == 'P' ? 'checked="checked"' : ''}} id="gender_p"> Perempuan
+                                                    </label>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>                                        
                                         <!-- /.col-lg-12 -->
 
                                     </div>
@@ -132,7 +152,7 @@
                                     <div class="form-group">
                                         <label>Rombel<span style="color:red">*</span></label>
                                         <select class="form-control" name="rombel" id="rombel">
-                                            <option value="">-- Pilih Rombel --</option>
+                                            <option value="0">-- Pilih Rombel --</option>
                                             {% for opt in rombel %}
                                                 {% if (opt.rombongan_belajar_id == rombel_id) %}
                                                 <option value="{{ opt.rombongan_belajar_id }}" selected="selected">{{ opt.nama_tingkat }} - {{ opt.nama_rombel }}</option>
@@ -145,8 +165,9 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Semester</label>
-                                        <input type="text" class="form-control" id="semester" value="{{data[0].semester}}" readonly>
+                                        <label>Tahun Ajaran</label>
+                                        <input type="text" class="form-control" id="semester" value="{{data[0].semester|right_trim()}}" readonly>
+                                        <input type="hidden" name="semester_id" id="semester_id" value="{{data[0].semester_id}}">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -193,7 +214,7 @@
                                     <div class="form-group">
                                         <label>Provinsi</label>
                                         <select class="form-control" name="provinsi" id="provinsi">
-                                            <option value="">-- Pilih Provinsi --</option>
+                                            <option value="0">-- Pilih Provinsi --</option>
                                             {% for a in provinsi %}
                                                 {% if (a.id == data[0].kode_prop) %}
                                                 <option value="{{ a.id }}" selected="selected">{{ a.name }}</option>
@@ -367,7 +388,7 @@
                                     <div class="form-group">
                                         <label>Penghasilan Ayah</label>
                                         <select class="form-control" name="penghasilan_ayah">
-                                            <option value="">-- Pilih Penghasilan --</option>
+                                            <option value="0">-- Pilih Penghasilan --</option>
                                             {% for a in penghasilan %}
                                                 {% if (a.penghasilan_orangtua_wali_id == data[0].penghasilan_ortu) %}
                                                     <option value="{{ a.penghasilan_orangtua_wali_id }}" selected="selected">{{ a.nama }}</option>
@@ -382,7 +403,7 @@
                                     <div class="form-group">
                                         <label>Penghasilan Ibu</label>
                                         <select class="form-control" name="penghasilan_ibu">
-                                            <option value="">-- Pilih Penghasilan --</option>
+                                            <option value="0">-- Pilih Penghasilan --</option>
                                             {% for a in penghasilan %}
                                                 {% if (a.penghasilan_orangtua_wali_id == data[0].penghasilan_id_ibu) %}
                                                     <option value="{{ a.penghasilan_orangtua_wali_id }}" selected="selected">{{ a.nama }}</option>
@@ -456,16 +477,34 @@
 <script type="text/javascript">
     $(function () {
         // datepicker config
-        $('#tgl_lahir').datepicker({
-            format: 'yyyy-mm-dd',
+        $('#tgl_lahir_input').datepicker({
+            language: 'id',
+            format: 'dd-MM-yyyy',
+            autoclose: true,
             startDate: `-50y`,
             endDate: '+1d',
-        });
-        $('#tgl_masuk').datepicker({
-            format: 'yyyy-mm-dd',
-            startDate: '-8y',
+            todayBtn: true,
+            todayHighlight: true,
+            title: "Pilih Tanggal"
+        }).on('changeDate', function (ev) {
+            var selectedDate = ev.format(0, "yyyy-mm-dd");
+            $('#tgl_lahir').val(selectedDate);
+            $("#reset_pass").attr("onclick", "reset_password('"+selectedDate+"')");
+        });        
+        
+        $('#tgl_masuk_input').datepicker({
+            language: 'id',
+            format: 'dd-MM-yyyy',
+            autoclose: true,
+            startDate: `-8y`,
             endDate: '+1d',
-        });    
+            todayBtn: true,
+            todayHighlight: true,
+            title: "Pilih Tanggal"
+        }).on('changeDate', function (ev) {
+            var selectedDate = ev.format(0, "yyyy-mm-dd");
+            $('#tgl_masuk').val(selectedDate);
+        });        
 
         // filestyle config
         $(":file").filestyle({
@@ -473,6 +512,11 @@
             buttonText: "Upload",
             buttonName: "btn-danger",            
             iconName: "fa fa-cloud-upload"
+        });
+
+        // replace image when error
+        $('#uploadPreview1').on("error", function() {
+            $(this).attr('src', 'img/user.png');
         });
 
     });
@@ -504,12 +548,6 @@
         });
     })();
 
-    // set back button
-    function back(id) {
-        var url_target = '{{ url("pesertadidik/kelas/") }}' + id;
-        go_page(url_target);
-    }
-
     // autochange class
     $("#rombel").change(function(){                          
         rombel = $("#rombel").val();
@@ -522,6 +560,7 @@
             cache     : false,
             success   : function(data){    
                 $('#semester').val(data[0]["nama_semester"]);
+                $('#semester_id').val(data[0]["semester_id"]);
                 $('#kurikulum').val(data[0]["nama_kurikulum"]);
             }
         });
@@ -545,7 +584,7 @@
                 }
 
                 $('#kota').removeAttr('readonly');
-                $('#kota').find('option').remove().end().append('<option value="">-- Pilih Kota --</option>' + buatOption);
+                $('#kota').find('option').remove().end().append('<option value="0">-- Pilih Kota --</option>' + buatOption);
             }
         });
     });
@@ -567,7 +606,7 @@
                 }
 
                 $('#kecamatan').removeAttr('readonly');
-                $('#kecamatan').find('option').remove().end().append('<option value="">-- Pilih Kecamatan --</option>' + buatOption);
+                $('#kecamatan').find('option').remove().end().append('<option value="0">-- Pilih Kecamatan --</option>' + buatOption);
             }
         });
     });
@@ -589,7 +628,7 @@
                 }
 
                 $('#kelurahan').removeAttr('readonly');
-                $('#kelurahan').find('option').remove().end().append('<option value="">-- Pilih Kelurahan --</option>' + buatOption);
+                $('#kelurahan').find('option').remove().end().append('<option value="0">-- Pilih Kelurahan --</option>' + buatOption);
             }
         });
     });
@@ -602,5 +641,24 @@
             document.getElementById("uploadPreview"+id).src = oFREvent.target.result;
         };
     };
+
+    function reset_password(date) {
+        var nis = '{{ data[0].nis }}';
+        var dataStore = "nis="+nis+"&tgl_lahir="+date;
+
+        $.ajax({
+            type     : 'POST',
+            url      : "{{ url('pesertadidik/resetPassword') }}",
+            data     : dataStore,
+            dataType : 'json',
+            success  : function(res){            
+                new PNotify({
+                    title: 'Berhasil',
+                    text: res.status,
+                    type: 'success'
+                });
+            }
+        });        
+    }
 
 </script>

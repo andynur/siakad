@@ -30,7 +30,7 @@ class PresensiController extends \Phalcon\Mvc\Controller
                 ->join('RefRombonganBelajar', 'a.rombongan_belajar_id = r.rombongan_belajar_id', 'r')
                 ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
                 ->join('RefAkdMhs', 'a.peserta_didik_id = m.id_mhs', 'm')
-                ->columns(['a.anggota_rombel_id', 'r.nama AS nama_rombel', 't.nama AS nama_tingkat', 'm.id_mhs AS murid_id', 'm.nama AS nama_murid', 'm.nis', 'm.nisn', 'm.foto', 'm.email'])
+                ->columns(['a.anggota_rombel_id', 'r.nama AS nama_rombel', 'r.semester_id', 't.nama AS nama_tingkat', 'm.id_mhs AS murid_id', 'm.nama AS nama_murid', 'm.nis', 'm.nisn', 'm.foto', 'm.email'])
                 ->where('a.rombongan_belajar_id = ' . $rombel_id)
                 ->orderBy('m.nama ASC')
                 ->getQuery()
@@ -64,8 +64,9 @@ class PresensiController extends \Phalcon\Mvc\Controller
         $this->view->setVars([
             "data" => $data,
             "hadir" => $hadir,
+            "tanggal" => $date,
             "rombel_id" => $rombel_id,
-            "tanggal" => $date
+            "semester_id" => $data[0]->semester_id+1
         ]);
 
         $this->view->pick('presensi/index');
@@ -76,16 +77,43 @@ class PresensiController extends \Phalcon\Mvc\Controller
         $this->checkValidation();
         
         if (count($this->messages) == 0) {
-            $data_murid = json_decode($_POST['data_murid']);
-                    
-            for ($i=0; $i < count($data_murid); $i++) { 
+            $murid = json_decode($_POST['data_murid'], true);
+            $count = count($murid);
+
+            if ($count == 1) {
                 $data = new RefPresensi();
-                $this->save($data_murid[$i]->murid_id, $data, 'tambah');
-            }            
-        }        
-        
+                $this->save($murid[0]["murid_id"], $data, 'tambah');
+            } else {
+                for ($i = 0; $i < $count; $i++) {
+                    $data = new RefPresensi();
+                    $this->save($murid[$i]["murid_id"], $data, 'tambah');
+                }
+            }
+        }
+
         $notif = ['title' => $this->title, 'text' => $this->text, 'type' => $this->type];
-        echo json_encode($notif);        
+        echo json_encode($notif);
+    }    
+
+    public function statusEditAction()
+    {
+        $this->checkValidation();
+        
+        if (count($this->messages) == 0) {
+            $murid = json_decode($_POST['data_murid'], true);
+            $id = $murid[0]["murid_id"];
+            $tgl = $_POST['tanggal'];
+            $tipe = $_POST['tipe'];
+
+            $data = RefPresensi::findFirst([
+                "conditions" => "tanggal = '$tgl' AND tipe = '$tipe' AND peserta_didik_id = '$id'"
+            ]);
+
+            $this->save($id, $data, 'ubah');
+        }
+
+        $notif = ['title' => $this->title, 'text' => $this->text, 'type' => $this->type];
+        echo json_encode($notif);
     }    
 
     public function save($murid_id, $data, $message) 
@@ -99,10 +127,12 @@ class PresensiController extends \Phalcon\Mvc\Controller
             'waktu' => $_POST['waktu'],
             'tipe' => $_POST['tipe'],
             'peserta_didik_id' => $murid_id,
+            'semester_id' => $_POST['semester_id'],
             'presensi' => $_POST['presensi'],
             'status_email' => 'T',
             'keterangan' => $_POST['keterangan'],
-            'created_by' => $user_id
+            'created_by' => $user_id,
+            'created_at' => date('Y-m-d'),
         ]);
         
         if ($data->save()) {
@@ -153,7 +183,9 @@ class PresensiController extends \Phalcon\Mvc\Controller
         // $mail->SMTPDebug = 3;
         
         $mail->isSMTP();
+        $mail->SMTPDebug    = 1;
         $mail->SMTPAuth     = true;
+        $mail->SMTPSecure   = 'tls';
         $mail->Host         = $config->mail->info->server;
         $mail->Username     = $config->mail->info->username;
         $mail->Password     = $config->mail->info->password;
@@ -230,7 +262,11 @@ class PresensiController extends \Phalcon\Mvc\Controller
             $tanggal_indo_long = $this->helper->dateBahasaIndo($tanggal);            
 
             $subject = "SISKO SD Al-Azhar - Presensi murid $tipe ($tanggal_indo)";                  
-            $content = "Diberitahukan kepada orangtua/wali murid, <br> bahwa murid dengan nama <b>$nama</b> dari $nama_tingkat $nama_rombel telah $tipe dengan status <i>$presensi</i> pada tanggal $tanggal_indo_long pukul $waktu. <br><br> - Admin Al-Azhar BSB City";
+            $content = "Assalaamualaikum. Wr.Wb.<br>
+            Diberitahukan kepada orang tua/wali murid al azhar bsb city. Bahwa ananda <b>$nama</b> $nama_tingkat $nama_rombel sudah $tipe kelas dan dinyatakan $presensi tanggal $tanggal_indo_long pukul $waktu. <br>
+            Terimakasih. <br><br>
+            Wassalamualaikum Wr. Wb. <br><br>            
+            Pemberitahuan ini tidak bisa untuk d balas.";
     
             $send_mail = self::sendMail($email, $subject, $content);
             

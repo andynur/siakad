@@ -5,49 +5,84 @@ class RefUser extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var string
+     * @var integer
+     * @Primary
+     * @Identity
+     * @Column(type="integer", length=11, nullable=false)
      */
-    public $uid;
+    public $Id;
 
     /**
      *
      * @var string
+     * @Column(type="string", length=128, nullable=false)
      */
-    public $usergroup;
- 
-    private $passwd;
-    public $nip;
-
+    public $Uid;
 
     /**
      *
      * @var string
+     * @Column(type="string", length=500, nullable=false)
      */
-    public $nama;
-    public $email;
+    public $Nip;
 
+    /**
+     *
+     * @var integer
+     * @Column(type="integer", length=11, nullable=false)
+     */
+    public $Id_jenis;
 
     /**
      *
      * @var string
+     * @Column(type="string", length=500, nullable=true)
      */
-    public $aktif;
+    public $Area;
 
     /**
      *
      * @var string
+     * @Column(type="string", length=16, nullable=false)
      */
-    public $hapus;
+    public $Usergroup;
 
     /**
-     * Returns table name mapped in the model.
      *
-     * @return string
+     * @var string
+     * @Column(type="string", length=128, nullable=true)
      */
-    public function getSource()
-    {
-        return 'ref_user';
-    }
+    public $Passwd;
+
+    /**
+     *
+     * @var string
+     * @Column(type="string", length=50, nullable=true)
+     */
+    public $Nama;
+
+    /**
+     *
+     * @var string
+     * @Column(type="string", length=64, nullable=true)
+     */
+    public $Email;
+
+    /**
+     *
+     * @var string
+     * @Column(type="string", nullable=false)
+     */
+    public $Aktif;
+
+    /**
+     * Initialize method for model.
+     */
+    // public function initialize()
+    // {
+    //     $this->setSchema("sisko");
+    //     $this->setSource("ref_user");
+    // }
 
     /**
      * Allows to query a set of records that match the specified conditions
@@ -69,6 +104,16 @@ class RefUser extends \Phalcon\Mvc\Model
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'ref_user';
     }
 
 }

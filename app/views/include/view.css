@@ -1,0 +1,57 @@
+#waktu {
+    font-weight: 400;
+}
+
+.weight-600 {
+    font-weight: 600;
+}
+
+.width-10 {
+    width: 10px;
+}
+
+.width-30 {
+    width: 30px;
+}
+
+.min-260 {
+    min-width: 260px;
+}
+
+.margin-top-20 {
+    margin-top: 20px;
+}
+
+.fa {
+    padding-right: 3px;
+}
+
+.img-murid {
+    height: 3em;
+    float: left;
+    margin-right: 10px;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+#imageModalSource {
+    max-width: 75%;
+    display: block;
+    margin: 0 auto;
+}
+
+#imageModalDescription {
+    font-style: italic;
+}
+
+.red {
+    color: red;
+}
+
+.box-header .box-title {
+    vertical-align: middle;
+}
+
+.btn_add_new {
+    margin-left: 1em;
+}

@@ -1,0 +1,9 @@
+.bootstrap-filestyle label {
+    width: 9.3em;
+    font-size: 1.1em;
+}
+
+.preview {
+    width: 100%; 
+    border-radius: 6px;
+}

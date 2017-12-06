@@ -342,3 +342,8 @@ function update_cache(link, storage) {
         return false;
     }
 }
+
+// replace image source onerror
+function imageError(element) {
+    $(element).attr('src', 'img/user.png');
+}

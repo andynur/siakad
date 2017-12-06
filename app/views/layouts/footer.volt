@@ -4,13 +4,12 @@
 	</a>
 	<div class="float-label-container">
 		<div class="float-label-text">Refresh Halaman</div>
-		<i class="fa fa-play float-label-arrow"></i>
 	</div>	
 	<!-- end floating refresh button  -->
 
 	<footer class="main-footer">
 	    <div class="container">
-	      <strong>Copyright &copy; 2017 <a href="#"> SISKO SD Al Azhar</a>.</strong> All rights
+	      <strong>Copyright &copy; 2017 <a href="#"> SISKO Al Azhar 29 & 16 BSB City Semarang</a>.</strong> All rights
 	      reserved.
 	    </div>
 	    <!-- /.container -->

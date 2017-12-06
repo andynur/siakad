@@ -1,0 +1,13 @@
+#form_filter {
+    margin-bottom: 1.5em
+}
+
+table a {
+    font-weight: 600;
+}
+
+@media only screen and (max-width : 768px) {
+    #form_filter .form-control {
+        margin: 0.5em 0;
+    }
+}

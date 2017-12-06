@@ -7,7 +7,7 @@
 
 <section class="content-header">
     <h1>
-        <button type="button" onclick="back({{id}})" class="btn bg-navy btn-flat"><i class="fa fa-arrow-circle-left"></i> &nbsp; Kembali</button>
+        <button type="button" onclick="go_page('{{ back_link }}')" class="btn bg-navy btn-flat"><i class="fa fa-arrow-circle-left"></i> &nbsp; Kembali</button>
     </h1>
     {% for opt in rombel %}
         {% if (opt.rombongan_belajar_id == id) %}
@@ -64,7 +64,7 @@
                                         </div>
                                         <div class="col-lg-5">
                                             <div class="form-group">
-                                                <label>NIS</label>
+                                                <label>NIS <span style="color:red">*</span></label>
                                                 <input type="text" name="nis" id="nis" placeholder="Nomor Induk Murid" class="form-control" maxlength="10">
                                             </div>
                                         </div>
@@ -79,7 +79,8 @@
                                         <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label>Tanggal Masuk / Diterima</label>
-                                                <input name="tgl_masuk" type="text" id="tgl_masuk" placeholder=" Tanggal Masuk" class="form-control">
+                                                <input name="tgl_masuk_input" type="text" id="tgl_masuk_input" placeholder=" Tanggal Masuk" class="form-control">
+                                                <input name="tgl_masuk" type="hidden" value="1945-01-01" id="tgl_masuk">
                                             </div>
                                         </div>
 
@@ -92,7 +93,8 @@
                                         <div class="col-lg-5">
                                             <div class="form-group">
                                                 <label>Tanggal Lahir <span style="color:red">*</span></label>
-                                                <input name="tgl_lahir" type="text" id="tgl_lahir" placeholder=" Tanggal Lahir" class="form-control">
+                                                <input name="tgl_lahir_input" type="text" id="tgl_lahir_input" placeholder=" Tanggal Lahir" class="form-control">
+                                                <input name="tgl_lahir" type="hidden" id="tgl_lahir">
                                             </div>
                                         </div>
 
@@ -139,7 +141,7 @@
                                     <div class="form-group">
                                         <label>Rombel<span style="color:red">*</span></label>
                                         <select class="form-control" name="rombel" id="rombel">
-                                            <option value="">-- Pilih Rombel --</option>
+                                            <option value="0">-- Pilih Rombel --</option>
                                             {% for opt in rombel %}
                                             <option value="{{ opt.rombongan_belajar_id }}">{{ opt.nama_tingkat }} - {{ opt.nama_rombel }}</option>
                                             {% endfor %}
@@ -148,8 +150,9 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Semester</label>
+                                        <label>Tahun Ajaran</label>
                                         <input type="text" class="form-control" id="semester" readonly>
+                                        <input type="hidden" name="semester_id" id="semester_id">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -196,7 +199,7 @@
                                     <div class="form-group">
                                         <label>Provinsi</label>
                                         <select class="form-control" name="provinsi" id="provinsi">
-                                            <option value="">-- Pilih Provinsi --</option>
+                                            <option value="0">-- Pilih Provinsi --</option>
                                             {% for a in provinsi %}
                                             <option value="{{ a.id }}">{{ a.name }}</option>
                                             {% endfor %}
@@ -218,7 +221,7 @@
                                     <div class="form-group">
                                         <label>Kecamatan</label>
                                         <select class="form-control" name="kecamatan" id="kecamatan">
-                                            <option value="">-- Pilih Kecamatan --</option>
+                                            <option value="0">-- Pilih Kecamatan --</option>
                                         </select>
                                     </div>
                                 </div>  
@@ -226,7 +229,7 @@
                                     <div class="form-group">
                                         <label>Kelurahan</label>
                                         <select class="form-control" name="kelurahan" id="kelurahan">
-                                            <option value="">-- Pilih Kelurahan --</option>
+                                            <option value="0">-- Pilih Kelurahan --</option>
                                         </select>
                                     </div>
                                 </div>                                   
@@ -393,7 +396,7 @@
                                     <div class="form-group">
                                         <label>Penghasilan Ayah</label>
                                         <select class="form-control" name="penghasilan_ayah">
-                                            <option value="">-- Pilih Penghasilan --</option>
+                                            <option value="0">-- Pilih Penghasilan --</option>
                                             {% for a in penghasilan %}
                                             <option value="{{ a.penghasilan_orangtua_wali_id }}">{{ a.nama }}</option>
                                                 {% endfor %}
@@ -404,7 +407,7 @@
                                     <div class="form-group">
                                         <label>Penghasilan Ibu</label>
                                         <select class="form-control" name="penghasilan_ibu">
-                                            <option value="">-- Pilih Penghasilan --</option>
+                                            <option value="0">-- Pilih Penghasilan --</option>
                                             {% for a in penghasilan %}
                                             <option value="{{ a.penghasilan_orangtua_wali_id }}">{{ a.nama }}</option>
                                             {% endfor %}
@@ -474,16 +477,33 @@
 <script type="text/javascript">
     $(function () {
         // datepicker config
-        $('#tgl_lahir').datepicker({
-            format: 'yyyy-mm-dd',
+        $('#tgl_lahir_input').datepicker({
+            language: 'id',
+            format: 'dd-MM-yyyy',
+            autoclose: true,
             startDate: `-50y`,
             endDate: '+1d',
-        });
-        $('#tgl_masuk').datepicker({
-            format: 'yyyy-mm-dd',
-            startDate: '-8y',
+            todayBtn: true,
+            todayHighlight: true,
+            title: "Pilih Tanggal"
+        }).on('changeDate', function (ev) {
+            var selectedDate = ev.format(0, "yyyy-mm-dd");
+            $('#tgl_lahir').val(selectedDate);
+        });        
+        
+        $('#tgl_masuk_input').datepicker({
+            language: 'id',
+            format: 'dd-MM-yyyy',
+            autoclose: true,
+            startDate: `-8y`,
             endDate: '+1d',
-        });    
+            todayBtn: true,
+            todayHighlight: true,
+            title: "Pilih Tanggal"
+        }).on('changeDate', function (ev) {
+            var selectedDate = ev.format(0, "yyyy-mm-dd");
+            $('#tgl_masuk').val(selectedDate);
+        });      
 
         // filestyle config
         $(":file").filestyle({
@@ -523,11 +543,6 @@
         });
     })();
 
-    // set back button
-    function back(id) {
-        var url_target = '{{ url("pesertadidik/kelas/") }}' + id;
-        go_page(url_target);
-    }
     // autochange class
     $("#rombel").change(function(){
         rombel = $("#rombel").val();
@@ -540,7 +555,8 @@
             cache     : false,
             success   : function(data){    
                 console.log(data);
-                $('#semester').val(data[0]["nama_semester"]);
+                $('#semester').val(data[0]["nama_semester"].slice(0,-2));
+                $('#semester_id').val(data[0]["semester_id"].slice(0,-1) + '1'); // set default ganjil
                 $('#kurikulum').val(data[0]["nama_kurikulum"]);
             }
         });
@@ -564,7 +580,7 @@
                     buatOption += '<option value='+data[a]["id"]+'>'+data[a]["name"]+'</option>';
                 }
 
-                $('#kota').find('option').remove().end().append('<option value="">-- Pilih Kota --</option>' + buatOption);
+                $('#kota').find('option').remove().end().append('<option value="0">-- Pilih Kota --</option>' + buatOption);
             }
         });
     });
@@ -585,7 +601,7 @@
                     buatOption += '<option value='+data[a]["id"]+'>'+data[a]["name"]+'</option>';
                 }
 
-                $('#kecamatan').find('option').remove().end().append('<option value="">-- Pilih Kecamatan --</option>' + buatOption);
+                $('#kecamatan').find('option').remove().end().append('<option value="0">-- Pilih Kecamatan --</option>' + buatOption);
             }
         });
     });
@@ -606,7 +622,7 @@
                     buatOption += '<option value='+data[a]["id"]+'>'+data[a]["name"]+'</option>';
                 }
 
-                $('#kelurahan').find('option').remove().end().append('<option value="">-- Pilih Kelurahan --</option>' + buatOption);
+                $('#kelurahan').find('option').remove().end().append('<option value="0">-- Pilih Kelurahan --</option>' + buatOption);
             }
         });
     });

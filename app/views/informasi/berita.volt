@@ -1,227 +1,142 @@
+{# Define variables #} 
+{% set tanggalIndo = helper.dateBahasaIndo(date('Y-m-d')) %} 
+{% set urlPost = url('sysinformasi/addBerita/') %} 
+{# Global css #}
+<style>{% include "include/view.css" %}</style>
+
+<!-- Header content -->
 <section class="content-header">
-  <h1>
-    Informasi
-    <small>it all inform here</small>
-  </h1>
-  <ol class="breadcrumb">
-    <li><a href="#"><i class="fa fa-dashboard"></i> Informasi</a></li>
-    <li class="active">Berita / Pengumuman</li>
-  </ol>
+    <h1>
+        Berita Pengumuman
+        <small>
+            <i class="fa fa-calendar-o"></i> {{ tanggalIndo }} 
+            <i class="fa fa-clock-o"></i> <span id="waktu">00:00:00</span>
+        </small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Informasi</a></li>
+        <li class="active">Berita Pengumuman</li>
+    </ol>
 </section>
 
 <!-- Main content -->
 <section class="content">
-  <div class="row">
-    <!-- left column -->
-    <div class="col-md-12">
-      <div class="box box-info">
-        <div class="box-header">
-          <h3 class="box-title">Inform <small>Berita / Pemgumuman</small></h3>
-          <!-- tools box -->
-          <div class="pull-right box-tools">
-            <button class="btn btn-info btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-          </div><!-- /. tools -->
-        </div><!-- /.box-header -->
-        <div class="box-body pad">
-        	<div class="form-group">
-	          <label for="judul">Judul</label>
-	          <input style="    width: 40%;" type="text" class="form-control" id="judul" placeholder="Judul..">
-	        </div>
-          <form id="form_berita">
-            <textarea id="editor" rows="10" cols="80"></textarea>
-            <button style="margin-top: 5px;" type="button" onclick="add_berita()" class="btn btn-info pull-right">Tambah</button>
-          </form>
+    <div class="row">
+        <!-- Table column -->
+        <div class="col-md-offset-2 col-md-8">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Data Berita Pengumuman</h3>
+                    <div class="pull-right box-tools">
+                      <button class="btn btn-primary btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus" style="padding:0"></i></button>
+                    </div>                    
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="data_table" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="width-10">No</th>
+                                <th>Judul Berita</th>
+                                <th>Tanggal Publikasi</th>
+                                <th>Aktif</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% set no = 1 %} 
+                        {% for row in data %} 
+                            {% set id = row.id %} 
+                            {% set judul = row.judul %} 
+                            {% set publikasi = row.tgl_publikasi %} 
+                            {% set aktif = row.tampil %} 
+                            
+                            {% if (aktif == 'Y') %} 
+                                {% set color = 'green' %} 
+                            {% else %} 
+                                {% set color = 'red' %} 
+                            {% endif %}
+
+                            <tr id="data_{{ id }}">
+                                <td>{{ no }}</td>
+                                <td>{{ judul }}</td>
+                                <td>{{ helper.dateBahasaIndo(publikasi) }}</td>
+                                <td><span class="badge bg-{{ color }}">{{ aktif }}</span></td>
+                                <td>
+                                    <a data-id="{{ id }}" class="btn btn-primary btn-xs btn-flat edit"><i class="glyphicon glyphicon-edit"></i> </a>
+
+                                    <a data-id="{{ id }}" data-img="{{ nama }}" class="btn btn-danger btn-xs btn-flat delete"><i class="glyphicon glyphicon-trash"></i></a>
+                                </td>
+                            </tr>
+                        {% set no += 1 %} 
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
         </div>
-      </div><!-- /.box -->
+
+        <!-- Form column -->
+        <div class="col-md-offset-2 col-md-8">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title" id="form_title">Tambah Data</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body pad">
+                    <form id="form_input" method="POST" action="{{ urlPost }}/{{ jenis }}">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="img/user.png" alt="foto galeri" class="img-preview" id="uploadPreview" />
+                                <p class="help-block">File type: <i>jpg, jpeg, gif, png</i></p>
+                                <input type="file" name="foto" id="uploadImage">
+                                <input type="hidden" name="foto_lama">
+                            </div>              
+                            <div class="col-md-8">
+                                <div class="form-group ">
+                                    <label>Judul Berita</label>                        
+                                    <input type="text" name="judul" class="form-control" placeholder="Judul">
+                                </div>
+                                <div class="form-group ">
+                                    <label>Tanggal Publikasi</label>                        
+                                    <input type="text" name="judul" class="form-control" placeholder="Judul">
+                                </div>                                
+                                <div class="form-group">
+                                    <label>Aktif</label>
+                                    <select name="aktif" class="form-control">
+                                        <option value="Y">Ya</option>
+                                        <option value="N">Tidak</option>
+                                    </select>
+                                </div>                                
+                            </div>                            
+                            <div class="form-group col-md-12 margin-top-20">
+                                <label>Isi Berita Pengumuman</label>
+                                <textarea id="editor"></textarea>
+                            </div>
+
+                            <div class="form-group col-md-12">
+                                <div class="pull-right">
+                                    <button type="reset" class="btn btn-default" id="reset"><i class="fa fa-refresh"></i> Reset</button>
+                                    <button type="submit" class="btn btn-primary" id="submit"><i class="fa fa-send"></i> Simpan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
     </div>
 
+</section>
+<!-- /.content -->
 
-    <div class="col-md-12">
-      <div class="box">
-        <div class="box-header">
-          <h3 class="box-title">Data Table With Full Features</h3>
-        </div><!-- /.box-header -->
-        <div class="box-body">
-	        
-          <table id="example2" class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th style="width: 10px">No</th>
-                <th>Judul</th>
-                <th>Berita</th>
-                <th>Aktif</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-            
-            {% set no=1 %}
-            {% for v in berita %}
-            <tr>
-              <td>{{no}}</td>
-              <td>{{v.judul}}</td>
-              <td>{{v.berita}}</td>
-              <td>
-                {% if v.tampil === "Y" %}
-                  <span class="badge bg-green">{{v.tampil}}</span>
-                {% else %}
-                  <span class="badge bg-red">{{v.tampil}}</span>
-                {% endif %}
-              </td>
-              <td>
-                <a id="edit" class="btn btn-primary btn-xs btn-flat" onclick="text_editor('{{v.id}}')" data-toggle="modal" data-target="#myModal{{v.id}}"><i class="glyphicon glyphicon-edit"></i> </a>
-                  <!-- Modal -->
-                  <div class="modal fade" id="myModal{{v.id}}" role="dialog">
-                    <div class="modal-dialog modal-lg">
-                    
-                      <!-- Modal content-->
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          <h4 class="modal-title">Edit Data</h4>
-                        </div>
-                        <div class="modal-body" style="  border: 1px solid #eee;  width: 80%; margin: 0 auto;">
-                          	<div class="col-md-6">
-						          <label for="judul">Judul</label>
-						          <input style="width:80%;" type="text" class="form-control" id="judul{{v.id}}" value="{{v.judul}}">
-					        </div>
-                          	<div class="col-md-6">
-			                  <label>Aktif</label>
-			                  <select class="form-control" id="tampil{{v.id}}">
-			                    <option value="Y">Ya</option>
-			                    <option value="N">Tidak</option>
-			                  </select>
-			              	</div><!-- /.col-lg-6 --><br><br><br>
-	                          <form id="form_berita">
-							    <textarea id="editor2{{v.id}}" rows="10" cols="80">{{v.berita}}</textarea>
-							  </form>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" onclick="edit_berita('{{v.id}}')" class="btn btn-info">Edit</button>
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                      </div>
-                      
-                    </div>
-                  </div>
-                <a id="delete" onclick="delete_berita('{{v.id}}')" class="btn btn-danger btn-xs btn-flat"><i class="glyphicon glyphicon-trash"></i></a> 
-              </td>
-            </tr>
-            {% set no=no+1 %}
-            {% endfor %}
-
-            </tbody>            
-          </table>
-        </div><!-- /.box-body -->
-      </div><!-- /.box -->
-    </div>
-  </div>
-      
-</section><!-- /.content -->
-
-<script type="text/javascript">
-
-	$(function () {
-		CKEDITOR.replace( 'editor' );
-
-		$(".select2").select2();
-
-    	$('#example2').DataTable({
-			"paging": true,
-			"lengthChange": true,
-			"searching": true,
-			"ordering": true,
-			"info": true,
-			"autoWidth": true
-		});
-
-	});
-
-function text_editor(id) {
-	CKEDITOR.replace( 'editor2'+id);
-}
-
-  function delete_berita(id){
-    var urel = '{{ url("sysinformasi/delBeritaBerjalan") }}/'+id;
-    (new PNotify({
-        title: 'Confirmation Needed',
-        text: 'Apakah Anda Yakin menghapus data ini?',
-        icon: 'glyphicon glyphicon-question-sign',
-        hide: false,
-        confirm: {
-            confirm: true
-        },
-        buttons: {
-            closer: false,
-            sticker: false
-        },
-        history: {
-            history: false
-        }
-    })).get().on('pnotify.confirm', function() {
-        $.ajax({
-            type: "POST",
-            dataType: "JSON",
-            url: urel,
-            success: function(data){ 
-                reload_page2('sysinformasi/berita');
-                new PNotify({
-                     title: 'Regular Notice',
-                     text: 'data telah dihapus',
-                     type:'success'
-                 });
-            }
-        });
-    }).on('pnotify.cancel', function() {
-       console.log('batal');
-    });
-  }
-
-  function edit_berita(id) {
-    var berita = CKEDITOR.instances['editor2'+id].getData();
-    var judul = $("#judul"+id).val();
-    var tampil = $("#tampil"+id).val();
-
-    var datas = "berita="+berita+"&tampil="+tampil+"&judul="+judul;
-    var urel = '{{ url("sysinformasi/editBerita/") }}'+id;
-    $.ajax({
-       type: "POST",
-       url: urel,
-       dataType : "json",
-       data: datas
-    }).done(function( data ) {
-		$('#myModal'+id).modal('hide');
-		$('body').removeClass('modal-open');
-		$("body").css("padding-right", "0px");
-		$('.modal-backdrop').remove();      
-		reload_page2('sysinformasi/berita');
-  		new PNotify({
-  			title: data.title,
-  			text: data.text,
-  			type: data.type
-  		});
-    });
-  }
-
-  function add_berita() {
-
-    var berita = CKEDITOR.instances['editor'].getData();
-    var judul = $("#judul").val();
-
-	    var datas = "berita="+berita+"&judul="+judul;
-	    var urel = '{{ url("sysinformasi/addBerita") }}';
-	    $.ajax({
-	       type: "POST",
-	       url: urel,
-	       dataType : "json",
-	       data: datas
-	    }).done(function( data ) {
-        	reload_page2('sysinformasi/berita');
-          new PNotify({
-    			   title: data.title,
-    			   text: data.text,
-    			   type: data.type
-    			});
-	    });
-  }
-</script>
+<!-- Bootstrap Filestyle -->
+<script src="js/bootstrap-filestyle.min.js"></script>
+{# Global script #}
+<script>{% include "include/view.js" %}</script>
+{# Custom script #}
+<script>{% include "informasi/assets/berita.js" %}</script>

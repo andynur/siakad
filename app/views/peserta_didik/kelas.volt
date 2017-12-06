@@ -1,7 +1,16 @@
+{# Define variables #}
+{% set tanggalIndo = helper.dateBahasaIndo(date('Y-m-d')) %}
+
+{# Global css #}
+<style>{% include "include/view.css" %}</style>
+
 <section class="content-header">
     <h1>
         {{data[0].nama_tingkat}} - {{data[0].nama_rombel}}
-        <small>Pengelolaan data kelas</small>
+        <small>
+            <i class="fa fa-calendar-o"></i> {{ tanggalIndo }} 
+            <i class="fa fa-clock-o"></i> <span id="waktu">00:00:00</span>
+        </small> 
     </h1>    
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> {{data[0].nama_tingkat}}</a></li>
@@ -17,51 +26,18 @@
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">Data Murid Per-Kelas </h3>
+                    <a href="#" onclick="add_data()" class="btn btn-sm btn-success btn_add_new"><i class="fa fa-plus"></i>&nbsp; Tambah Data</a>
                 </div>
-                <div class="box-body">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <div class="col-sm-4">
-                                <a href="#" onclick="go_page('pesertadidik/addMurid/{{rombel_id}}')" class="btn btn-sm btn-success"><i class="fa fa-plus"></i>&nbsp; Tambah Data</a>
-                            </div>
-
-                            <label for="semester" class="col-sm-2 control-label"><i class="fa fa-arrow-circle-o-right"></i> &nbsp; Semester/Kurikulum</label>
-                            <div class="col-sm-3">
-                                <select class="form-control" id="semester">
-                                    <option value="">-- Pilih Semester --</option>
-                                    {% for opt in semester %}
-                                    {% if (opt.semester_id == data[0].semester_id) %}
-                                    <option value="{{ opt.semester_id }}" selected="selected">{{ opt.nama }}</option>
-                                    {% else %}
-                                    <option value="{{ opt.semester_id }}">{{ opt.nama }}</option>
-                                    {% endif %}
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <select class="form-control" id="kurikulum">
-                                    <option value="">-- Pilih kurikulum --</option>
-                                    {% for opt in kurikulum %}
-                                        {% if (opt.kurikulum_id == data[0].kurikulum_id) %}
-                                            <option value="{{ opt.kurikulum_id }}" selected="selected">{{ opt.nama_kurikulum }}</option>
-                                        {% else %}
-                                            <option value="{{ opt.kurikulum_id }}">{{ opt.nama_kurikulum }}</option>
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-                                        
-                    <table id="data_table" class="table table-bordered table-striped">
+                <div class="box-body">                                        
+                    <table id="data_table" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th style="width: 10px">No</th>
                                 <th>Foto</th>
-                                <th style="width: 12em">Murid</th>
-                                <th style="width: 14em">Orang Tua</th>
-                                <th style="width: 10em">Kontak</th>
-                                <th>Alamat</th>
+                                <th style="min-width: 12em">Murid</th>
+                                <th style="min-width: 14em">Orang Tua</th>
+                                <th style="min-width: 10em">Kontak</th>
+                                <th style="min-width: 14em">Alamat</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -69,7 +45,7 @@
                             {% set no=1 %} {% for v in data %}
                             <tr id="data_{{v.murid_id}}" class="middle-row">
                                 <td align="center">{{no}}</td>
-                                <td align="center"><img src="img/mhs/{{v.foto}}" alt="{{v.nama_murid}}" style="height: 3em; border-radius: 100%;"></td>
+                                <td align="center"><img src="img/mhs/{{v.foto}}" alt="{{v.nama_murid}}" style="height: 3em; border-radius: 100%;" class="img-murid"></td>
                                 <td>
                                     <span style="font-weight: 600;">{{v.nama_murid}}</span> <br/> 
                                     <span class="label label-default">NIS</span> 
@@ -84,12 +60,16 @@
                                     {{v.nama_ibu}}
                                 </td>
                                 <td>
+                                    {% if (v.nomor_ayah != '') %}
                                     <span class="label label-default"><i class="fa fa-phone"></i>&nbsp; No Ayah</span>
                                     {{v.nomor_ayah}}<br/>
+                                    {% endif %}
+                                    {% if (v.nomor_ibu != '') %}
                                     <span class="label label-primary"><i class="fa fa-phone"></i>&nbsp; No Ibu &nbsp;&nbsp;</span>
                                     {{v.nomor_ibu}}<br/>
+                                    {% endif %}
                                 </td>
-                                <td>{{v.alamat}}</td>
+                                <td>{{ v.alamat }}</td>
                                 <td align="center">
                                     <a class="btn btn-primary btn-xs btn-flat" onclick="edit_data('{{v.murid_id}}', '{{rombel_id}}')"><i class="glyphicon glyphicon-edit"></i> Ubah &nbsp;</a>
 
@@ -113,6 +93,7 @@
 <script type="text/javascript">
     $(function () {
         $('#data_table').DataTable({
+            "scrollX": true,
             "paging": true,
             "lengthChange": true,
             "searching": true,
@@ -128,6 +109,11 @@
                 "url": "js/Indonesian.json"
             }
         });
+
+        // change image when error
+        $(".img-murid").on("error", function() {
+            $(this).attr('src', 'img/user.png');
+        });        
     });
 
     function add_new(id) {
@@ -174,6 +160,14 @@
         });
 
         return false;
+    }
+
+    function add_data() {
+        var url = '{{ url("pesertadidik/addMurid/") }}' + '{{ rombel_id }}';
+        var back_link = '{{ url("pesertadidik/kelas/") }}' + '{{ rombel_id }}';
+        var data = 'back_link='+back_link;
+
+        go_page_data(url, data);
     }
 
     function edit_data(id, rombel_id) {

@@ -6,12 +6,80 @@ use Phalcon\Validation\Validator\Numericality;
 
 class UserController extends \Phalcon\Mvc\Controller
 {
+    protected $check;
+    protected $messages;
+    protected $title;
+    protected $type;
+    protected $text;
+
   	public function initialize()
     {
         if (empty($this->session->get('uid'))) {
             $this->response->redirect('account/loginEnd');
         }
         $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
+    }
+
+    public function indexAction($jenis = '1', $tingkat = '')
+    {        
+        if ($jenis == '1') {
+            $conditions = "id_jenis = '1'";
+            $tingkat_conditions = "tingkat_pendidikan_id != ''";            
+
+            if ($tingkat != '') {
+                $conditions = "id_jenis = '1' AND id_ps = '$tingkat'";            
+            }
+
+            $data = ViewUser::find(["conditions" => $conditions]);        
+        } else if ($jenis != '') {
+            if ($tingkat != '0') {
+                $get_id = $this->modelsManager->createBuilder()
+                    ->addFrom('RefRombelAnggota', 'a')
+                    ->join('RefAkdMhs', 'a.peserta_didik_id = m.id_mhs', 'm')
+                    ->join('RefRombonganBelajar', 'a.rombongan_belajar_id = r.rombongan_belajar_id', 'r')
+                    ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
+                    ->columns(['m.nis'])
+                    ->where('t.tingkat_pendidikan_id IN ('.$tingkat.')')
+                    ->getQuery()
+                    ->execute()
+                    ->toArray();
+                    
+                $list_id = '';
+                foreach ($get_id as $v) {
+                    $list_id .= "'".$v['nis'] . "',";
+                }
+                $list_id = substr($list_id, 0, -1);
+                
+                $tingkat_conditions = "tingkat_pendidikan_id IN ($tingkat)";
+
+                $data = ViewUser::find(["conditions" => "login IN ($list_id)"]);
+            } else {
+                $data = ViewUser::find(["conditions" => "id_jenis = '2'"]);
+            }
+        } else {
+            $data = '';
+        }
+
+        $getTingkat = RefTingkatPendidikan::find([
+            "columns" => "tingkat_pendidikan_id AS id, nama",
+            "order" => "nama",
+            "conditions" => $tingkat_conditions
+        ]);
+        $getJenis = RefUserJenis::find(["conditions" => "id_aktif = 'Y'"]);
+        $usergroup = RefUsergroup::find(["conditions" => "aktif = 'Y'"]);
+        $area = RefArea::find(["conditions" => "aktif = 'Y'"]);
+
+        $this->view->setVars([
+            "data" => $data,
+            "jenis" => $getJenis,
+            "usergroup" => $usergroup,
+            "area" => $area,
+            "tingkat" => $getTingkat,
+            "set_tingkat" => $tingkat,
+            "set_jenis" => $jenis
+        ]);
+
+        $this->view->pick('akd_user/index');        
     }
 
     public function profilAction()
@@ -268,4 +336,177 @@ class UserController extends \Phalcon\Mvc\Controller
         }
       echo json_encode($notif);
     }
+
+    public function searchNamaAction($id_jenis)
+    {
+        if ($id_jenis != '' || $id_jenis != 0) {
+            // ambil list yg sdh terdaftar
+            if ($id_jenis == 1) {
+                $user = ViewUser::find([
+                    "columns" => "nip",
+                    "conditions" => "id_jenis = 1"
+                ])->toArray();
+            } else {
+                $user = ViewUser::find([
+                    "columns" => "nip",
+                    "conditions" => "id_jenis = 2"
+                ])->toArray();
+            }
+
+            $list = '';
+            for ($i = 0; $i < count($user); $i++) {
+                $list .= "'".$user[$i]['nip'] . "',";
+            }
+            $list = substr($list, 0, -1);                      
+
+            if ($id_jenis == 1) {
+                $data = RefAkdSdm::find([
+                    "columns" => "nip AS id, nama AS text, foto",
+                    "conditions" => "nip NOT IN ($list)",
+                    "order" => "nama"
+                ]);
+            } else {
+                $data = RefAkdMhs::find([
+                    "columns" => "nis AS id, nama AS text, foto",
+                    "conditions" => "nis NOT IN ($list)",
+                    "order" => "nama"
+                ]);
+            }
+
+            echo json_encode($data->toArray());
+            
+            $this->view->disable();
+        }
+    }    
+
+    public function addUserAction()
+    {        
+        $this->checkValidation();
+        
+        if (count($this->messages) == 0) {
+            $data = new RefUser();
+            $this->save($data, 'tambah');        
+        }
+        
+        $notif = ['title' => $this->title, 'text' => $this->text, 'type' => $this->type];
+        echo json_encode($notif);        
+    }
+
+    public function editUserAction($uid)
+    {
+        $check = new Validation();    
+        
+        $this->presenceOf($check, 'uid', 'UID');        
+        $this->presenceOf($check, 'area', 'Area Akses Menu');        
+        $this->presenceOf($check, 'usergroup', 'Usergroup');        
+
+        $this->messages = $check->validate($_POST);
+        
+        if (count($this->messages) == 0) {
+            $data = RefUser::findFirst(["conditions" => "uid = '$uid'"]);
+            
+            $data->assign(array(
+                'uid' => $_POST['uid'],
+                'area' => ','.$_POST['area'].',',            
+                'usergroup' => ','.$_POST['usergroup'].','
+            ));
+
+            if ($_POST['password'] != '') {
+                $data->assign(['passwd' => md5($_POST['password'])]);
+            }
+            
+            if ($data->save()) {
+                $this->title = 'Sukses';
+                $this->text = 'Data berhasil diubah';
+                $this->type = 'success';
+            } else {
+                $errors = $data->getMessages();
+                foreach ($errors as $error) {
+                    $this->text .= "$error"."</br>";
+                }
+                $this->title = 'Error!';
+                $this->type = 'warning';
+            }            
+        } else {
+            foreach ($this->messages as $message) {
+                $this->text .= "$message"."</br>";
+            }
+            $this->title = 'Gagal';
+            $this->type = 'warning';            
+        }
+
+        $notif = ['title' => $this->title, 'text' => $this->text, 'type' => $this->type];
+        echo json_encode($notif);     
+    }      
+
+    public function deleteUserAction($uid)
+    {
+        $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
+        $del = RefUser::findFirst(["conditions" => "uid = '$uid'"]);
+        $del->delete();
+        echo json_encode(array("status" => true));
+    }
+
+    public function getAction($uid)
+    {
+        $data = ViewUser::findFirst([
+            "columns" => "id_jenis, login, nip, area, usergroup, foto, nama",
+            "conditions" => "login = '$uid'"
+        ]);
+
+        echo json_encode($data->toArray());
+    }
+
+    public function save($data, $message) 
+    {
+        $data->assign(array(
+            'uid' => $_POST['uid'],
+            'nip' => $_POST['nip'],
+            'id_jenis' => $_POST['jenis'],
+            'area' => ','.$_POST['area'].',',            
+            'usergroup' => ','.$_POST['usergroup'].',',            
+            'passwd' => md5($_POST['password']),
+            'aktif' => 'Y'
+        ));
+        
+        if ($data->save()) {
+            $this->title = 'Sukses';
+            $this->text = 'Data berhasil di' . $message;
+            $this->type = 'success';
+        } else {
+            $errors = $data->getMessages();
+            foreach ($errors as $error) {
+                $this->text .= "$error"."</br>";
+            }
+            $this->title = 'Error!';
+            $this->type = 'warning';
+        }         
+    }   
+        
+    public function presenceOf($validation, $column, $name) 
+    {
+        $validation->add($column, new PresenceOf([
+            'message' => '<b>&raquo; '.$name.'</b> tidak boleh kosong'
+        ]));
+    }
+
+    public function checkValidation() 
+    {
+        $check = new Validation();    
+        
+        $this->presenceOf($check, 'jenis', 'Jenis User');        
+        $this->presenceOf($check, 'uid', 'UID');        
+        $this->presenceOf($check, 'password', 'Password');        
+        $this->presenceOf($check, 'area', 'Area Akses Menu');        
+        $this->presenceOf($check, 'usergroup', 'Usergroup');        
+
+        $this->messages = $check->validate($_POST);
+
+        foreach ($this->messages as $message) {
+            $this->text .= "$message"."</br>";
+        }
+        $this->title = 'Gagal';
+        $this->type = 'warning';  
+    }        
+    
 }
