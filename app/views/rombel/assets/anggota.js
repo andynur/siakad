@@ -5,7 +5,7 @@
 
     // Define variables
     var pageUrl         = "{{ url('rombelanggota') }}",
-        pageReload      = "rombelanggota/index";
+        pageReload      = "rombelanggota/index/{{ rombel_id }}";
 
     // Form elements object
     var $form           = $("#form_input"),   
@@ -22,8 +22,10 @@
         $siswa          = $('select[name=siswa_id]'),
         $jenis          = $('select[name=jenis_pendaftaran_id]'),
         $siswaHidden    = $('input[name=siswa_id_hidden]'),
+        $siswaView      = $('#siswa'),
+        $siswaAdd       = $('#siswa_add'),
         filterRombel    = $('#filter_rombel'),
-        filterSemester  = $('#filter_semester');           
+        filterSemester  = $('#filter_semester');
 
     // Save data when submit
     $form.on("submit", function(e) {
@@ -75,7 +77,7 @@
     // Reset or cancel form
     $reset.on("click", function() {
         $form.attr('action', pageUrl + '/addRombelAnggota');
-        $title.text('Tambah Data');
+        $title.text('Tambah Anggota');
         $rombel.removeAttr('disabled');
         $semester.removeAttr('disabled');
         $siswa.val('').trigger('change');
@@ -89,7 +91,7 @@
 
     // Filter data when click
     $proses.on("click", function() {      
-        pageReload = pageReload + '/' + filterRombel.val() + '/' + filterSemester.val();  
+        pageReload = 'rombelanggota/index/' + filterRombel.val() + '/' + filterSemester.val();
         reload_page2(pageReload);
     });
 
@@ -97,6 +99,26 @@
     $siswa.on("change", function(e) { 
         $siswaHidden.val( $siswa.val() );
     });
+
+    // view detail murid on murid name click
+    $siswaView.on("click", function(e) {
+        var id = $(this).attr('data-siswa');
+        var rombel = $(this).attr('data-rombel');
+        var url = '{{ url("pesertadidik/editMurid/") }}' + id + '/' + rombel;
+        var back_link = '{{ url("rombelanggota/index/") }}' + rombel;
+        var data = 'back_link=' + back_link;
+    
+        go_page_data(url, data);
+    });
+
+    // add new murid on click
+    $siswaAdd.on("click", function(e) {
+        var url = '{{ url("pesertadidik/addMurid") }}';
+        var back_link = '{{ url("rombelanggota/index/") }}' + '{{ rombel_id }}';
+        var data = 'back_link='+back_link;
+
+        go_page_data(url, data);
+    });    
 
     // Intialize datatable
     dataTableConfig();

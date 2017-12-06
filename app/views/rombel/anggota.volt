@@ -30,7 +30,10 @@
         <div class="col-md-4">
             <div class="box box-primary">
                 <div class="box-header">
-                    <h3 class="box-title" id="form_title">Tambah Data</h3>
+                    <h3 class="box-title" id="form_title">Tambah Anggota</h3>
+                    <div class="pull-right box-tools">                    
+                      <button class="btn btn-primary btn-sm" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-minus" style="padding:0"></i></button>
+                    </div>                    
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body pad">
@@ -88,6 +91,7 @@
             <div class="box">
                 <div class="box-header">
                     <h3 class="box-title">Data Rombel Anggota</h3>
+                    <button class="btn btn-xs btn-flat bg-orange" id="siswa_add" style="    margin-left: 0.5em;"><i class="fa fa-plus"></i> Murid</button>
                 </div>
                 <div class="box-body">
                     <!-- Filter section -->
@@ -133,7 +137,7 @@
                         <thead>
                             <tr>
                                 <th class="width-10">No</th>
-                                <th>Murid</th>
+                                <th class="min-260">Murid</th>
                                 <th>Jenis Pendaftaran</th>
                                 <th>Aksi</th>
                             </tr>

@@ -23,8 +23,33 @@ class RombelAnggotaController extends \Phalcon\Mvc\Controller
         $this->view->setRenderLevel(View::LEVEL_ACTION_VIEW);
     }
 
-    public function indexAction($rombel_id = 1, $semester_id = '20171')
+    public function indexAction($rombel_id = '', $semester_id = '20171')
     {
+        $id_ps = $this->session->get('id_ps');
+        $usergroup = explode(',', substr($this->session->get('usergroup'), 1, -1));
+        $list_ps = substr($id_ps, 1, -1);
+        
+        // ambil data tingkat berdasar list program studi
+        $data_tingkat = RefAkdPs::find([
+            "columns" => "id_tingkat",
+            "conditions" => "id_ps IN ($list_ps)"
+        ]);
+
+        foreach ($data_tingkat as $tingkat) {
+            $list_tingkat .= $tingkat["id_tingkat"] . ',';
+        }
+
+        $list_tingkat = substr($list_tingkat, 0, -1);
+
+        if ($rombel_id == '') {
+            $rombel_id = 1;
+            $conditions = "r.rombongan_belajar_id = '$rombel_id'";
+        } else {        
+            $conditions = "r.rombongan_belajar_id IN ($rombel_id)";
+        }        
+        
+        $option_conditions = "t.tingkat_pendidikan_id IN ($list_tingkat)";
+
         $data = $this->modelsManager->createBuilder()
                 ->addFrom('RefRombelAnggota', 'a')
                 ->join('RefRombonganBelajar', 'a.rombongan_belajar_id = r.rombongan_belajar_id', 'r')
@@ -33,7 +58,7 @@ class RombelAnggotaController extends \Phalcon\Mvc\Controller
                 ->join('RefAkdMhs', 'a.peserta_didik_id = p.id_mhs', 'p')
                 ->join('RefJenisPendaftaran', 'a.jenis_pendaftaran_id = j.jenis_pendaftaran_id', 'j')
                 ->columns(['a.anggota_rombel_id', 'r.rombongan_belajar_id AS rombel_id', 'r.nama AS nama_rombel', 't.nama AS nama_tingkat', 's.nama AS nama_semester', 'p.id_mhs AS siswa_id', 'p.nama AS nama_siswa', 'p.nis', 'p.foto', 'j.nama AS nama_jenis'])
-                ->where('a.rombongan_belajar_id = ' . $rombel_id)
+                ->where($conditions)
                 ->andWhere('a.semester_id = ' . $semester_id)
                 ->orderBy('r.nama')
                 ->getQuery()
@@ -44,6 +69,7 @@ class RombelAnggotaController extends \Phalcon\Mvc\Controller
                 ->join('RefSemester', 'r.semester_id = s.semester_id', 's')
                 ->join('RefTingkatPendidikan', 'r.tingkat_pendidikan_id = t.tingkat_pendidikan_id', 't')
                 ->columns(['r.rombongan_belajar_id', 'r.nama AS nama_rombel', 's.nama AS nama_semester', 't.nama AS nama_tingkat'])
+                ->where($option_conditions)
                 ->groupBy('r.rombongan_belajar_id')
                 ->orderBy('t.nama')
                 ->getQuery()
