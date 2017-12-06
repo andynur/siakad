@@ -4,7 +4,6 @@
 	</a>
 	<div class="float-label-container">
 		<div class="float-label-text">Refresh Halaman</div>
-		<i class="fa fa-play float-label-arrow"></i>
 	</div>	
 	<!-- end floating refresh button  -->
 
