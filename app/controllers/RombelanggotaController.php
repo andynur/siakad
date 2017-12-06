@@ -42,8 +42,7 @@ class RombelAnggotaController extends \Phalcon\Mvc\Controller
         $list_tingkat = substr($list_tingkat, 0, -1);
 
         if ($rombel_id == '') {
-            $rombel_id = 1;
-            $conditions = "r.rombongan_belajar_id = '$rombel_id'";
+            $conditions = "t.tingkat_pendidikan_id IN ($list_tingkat)";
         } else {        
             $conditions = "r.rombongan_belajar_id IN ($rombel_id)";
         }        
