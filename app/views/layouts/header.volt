@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SISKO KB-TK Al Azhar 29 BSB City Semarang</title>
+  <title>SISKO SMP Al Azhar 29 BSB City Semarang</title>
   <!-- favicon  -->
   <link rel="icon" href="img/favicon.png" sizes="32x32" />
   <link rel="icon" href="img/favicon.png" sizes="192x192" />
@@ -45,7 +45,7 @@
 
   </head>
   <!-- <body onload="StartTimers();" onmousemove="ResetTimers();" class=" skin-purple hold-transition skin-blue sidebar-mini"> -->
-  <body class=" skin-green hold-transition fixed sidebar-mini">
+  <body class=" skin-blue hold-transition fixed sidebar-mini">
 
     <!-- Site wrapper -->
     <div class="wrapper">
@@ -56,7 +56,7 @@
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>SI</b>A</span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>SISKO</b> Al Azhar</span>
+          <span class="logo-lg"><b>SISKO SMP</b> Al Azhar</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -102,7 +102,7 @@
 
                     <div class="col-xs-12 text-center">
                       <!-- <a href="#" onclick="return load_page2('user/gantiLogin')">Ubah Akun Login</a> -->
-                      Selamat Datang di Web SISKO <br/> TK Al Azhar 29 BSB City Semarang
+                      Selamat Datang di Web SISKO <br/> SMP Al Azhar 29 BSB City Semarang
                     </div>
 
                   </li>

@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1' />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SISKO KB-TK Al Azhar 29 BSB City Semarang</title>
+  <title>SISKO SMP Al Azhar 29 BSB City Semarang</title>
   <!-- favicon  -->
   <link rel="icon" href="../img/favicon.png" sizes="32x32" />
   <link rel="icon" href="../img/favicon.png" sizes="192x192" />
@@ -30,7 +30,7 @@
         <img src="../img/logo-himsya.png" class="logo">
 
         <div class="info">
-          <h1>SISKO KB-TK Al Azhar 29 BSB City Semarang</h1>
+          <h1>SISKO SMP Al Azhar 29 BSB City Semarang</h1>
           <p>Jalan RM. Hadisoebeno Sosro Wardoyo, Mijen, Kedungpane, Jawa Tengah, <br> Kode Pos. 50211, Telepon. 08112799510</p>
         </div>
       </div>
@@ -50,7 +50,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="http://portal.al-azharbsbcity.or.id/">Beranda</a></li>
-            <li class="active"><a href="#">SISKO KB-TK</a></li>
+            <li class="active"><a href="#">SISKO SMP</a></li>
             <li><a href="http://pmb.al-azharbsbcity.or.id/" target="_blank">PMB</a></li>
             <li><a href="http://tkialazhar29.sch.id/" target="_blank">KB-TK</a></li>
             <li><a href="http://sd-alazhar29.sch.id/" target="_blank">SD</a></li>
@@ -123,7 +123,7 @@
       <!-- Form  -->
       <div class="col-md-4">
         <div class="form card card-container">
-          <h3>AKUN SISKO KB-TK</h3>
+          <h3>AKUN SISKO SMP</h3>
           <form class="form-signin" action="{{ url('account/loginProses') }}" method="post">
             <div class="form-group">
               <label for="uid">Username</label>
@@ -158,7 +158,7 @@
         <footer>
           <p>Sistem Informasi Sekolah</p>
           <p class="link">
-            <a href="http://sd-alazhar29.sch.id/" target="_blank">SISKO KB-TK Al Azhar 29 BSB City Semarang</a>
+            <a href="http://sd-alazhar29.sch.id/" target="_blank">SISKO SMP Al Azhar 29 BSB City Semarang</a>
           </p>
           <p>Copyright © 2017</p>
         </footer>      
