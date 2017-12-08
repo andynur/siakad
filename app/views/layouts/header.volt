@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SISKO Al Azhar 29 & 16 BSB City Semarang</title>
+  <title>SISKO TK Al Azhar 29 BSB City Semarang</title>
   <!-- favicon  -->
   <link rel="icon" href="img/favicon.png" sizes="32x32" />
   <link rel="icon" href="img/favicon.png" sizes="192x192" />
@@ -102,7 +102,7 @@
 
                     <div class="col-xs-12 text-center">
                       <!-- <a href="#" onclick="return load_page2('user/gantiLogin')">Ubah Akun Login</a> -->
-                      Selamat Datang di Web SISKO <br/> Al Azhar 29 & 16 BSB City Semarang
+                      Selamat Datang di Web SISKO <br/> TK Al Azhar 29 BSB City Semarang
                     </div>
 
                   </li>
