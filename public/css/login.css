@@ -29,7 +29,7 @@ a {
 .header h1 {
     text-transform: uppercase;
     margin: 4px 0;
-    color: #0282c6;
+    color: #02c690;
     font-size: 2em;
     font-weight: 500;
 }
@@ -64,7 +64,7 @@ a {
 }
 
 .navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover {
-    background-color: #0282c6;
+    background-color: #02c690;
 }
 
 .navbar-inverse .navbar-nav>li>a {
@@ -113,7 +113,7 @@ a {
     width: auto;
     height: 36px;
     display: inline-block;
-    background: #0282c6;
+    background: #02c690;
     position: relative;
 }
 
@@ -137,7 +137,7 @@ a {
     height: 0;
     border-style: solid;
     border-width: 8px 0 8px 12px;
-    border-color: transparent transparent transparent #0282c6;
+    border-color: transparent transparent transparent #02c690;
 }
 
 .breaking-news>ul {
@@ -165,7 +165,7 @@ a {
 .form h3 {
     width: 100%;
     text-align: left;
-    color: #0282c6;
+    color: #02c690;
     border-bottom: solid;
     margin: 0 0 0.5em 0;
     padding-bottom: 0.4em;
@@ -237,9 +237,12 @@ footer {
     text-align: center;
 }
 
-footer .link {
-    color: #0282c6;
+footer .link {    
     font-weight: 500;
+}
+
+footer .link a {
+    color: #02c690;
 }
 
 @media only screen and (max-width: 768px) {
@@ -312,4 +315,12 @@ footer .link {
     footer p {        
         line-height: 1;
     }
+}
+
+.btn-signin {
+    background-color: #02c690;
+}
+
+.btn-signin:hover, .btn-signin:active, .btn-signin:focus {
+    background-color: #00a879;
 }
