@@ -9,7 +9,7 @@
 
 	<footer class="main-footer">
 	    <div class="container">
-	      <strong>Copyright &copy; 2017 <a href="#"> SISKO TK Al Azhar 29 BSB City Semarang</a>.</strong> All rights
+	      <strong>Copyright &copy; 2017 <a href="#"> SISKO KB-TK Al Azhar 29 BSB City Semarang</a>.</strong> All rights
 	      reserved.
 	    </div>
 	    <!-- /.container -->

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SISKO TK Al Azhar 29 BSB City Semarang</title>
+  <title>SISKO KB-TK Al Azhar 29 BSB City Semarang</title>
   <!-- favicon  -->
   <link rel="icon" href="img/favicon.png" sizes="32x32" />
   <link rel="icon" href="img/favicon.png" sizes="192x192" />
@@ -45,7 +45,7 @@
 
   </head>
   <!-- <body onload="StartTimers();" onmousemove="ResetTimers();" class=" skin-purple hold-transition skin-blue sidebar-mini"> -->
-  <body class=" skin-red hold-transition fixed sidebar-mini">
+  <body class=" skin-green hold-transition fixed sidebar-mini">
 
     <!-- Site wrapper -->
     <div class="wrapper">
